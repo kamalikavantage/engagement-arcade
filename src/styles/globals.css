@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-gradient-to-br from-slate-950 via-primary-900 to-slate-950;
+    color: #e2e8f0;
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  * {
+    @apply transition-all duration-300;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/10 backdrop-blur-xl border border-white/20;
+  }
+
+  .glass-lg {
+    @apply bg-white/5 backdrop-blur-2xl border border-white/10;
+  }
+
+  .gradient-border {
+    @apply relative border border-transparent bg-clip-padding;
+    background-image: linear-gradient(white, white), linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-origin: border, content;
+    background-clip: padding-box, border-box;
+  }
+
+  .shimmer {
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  .premium-card {
+    @apply rounded-2xl p-6 glass;
+  }
+
+  .premium-button {
+    @apply px-6 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 active:scale-95;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent;
+  }
+
+  .floating-badge {
+    @apply absolute -top-2 -right-2 w-8 h-8 bg-accent-500 rounded-full flex items-center justify-center text-white text-xs font-bold;
+  }
+
+  .stat-card {
+    @apply rounded-xl p-4 glass border border-primary-500/30;
+  }
+
+  .icon-circle {
+    @apply w-12 h-12 rounded-full flex items-center justify-center text-xl;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.8);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+.slide-in {
+  animation: slideIn 0.5s ease-out;
+}

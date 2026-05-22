@@ -1,0 +1,152 @@
+[
+  {
+    "id": "quiz_001",
+    "question": "What is our company's core value?",
+    "category": "company-values",
+    "difficulty": "easy",
+    "options": ["Innovation & Integrity", "Profit Only", "No Values", "Change Daily"],
+    "correctAnswer": 0,
+    "points": 10,
+    "explanation": "Our company is built on the foundation of Innovation & Integrity in everything we do."
+  },
+  {
+    "id": "quiz_002",
+    "question": "Which year was our company founded?",
+    "category": "company-values",
+    "difficulty": "medium",
+    "options": ["2015", "2008", "2018", "2012"],
+    "correctAnswer": 1,
+    "points": 15,
+    "explanation": "Our company was established in 2008 by a group of visionary entrepreneurs."
+  },
+  {
+    "id": "quiz_003",
+    "question": "What does our company mission statement emphasize?",
+    "category": "company-values",
+    "difficulty": "hard",
+    "options": ["Customer Success & Employee Wellbeing", "Revenue Growth Only", "Market Dominance", "Technology at Any Cost"],
+    "correctAnswer": 0,
+    "points": 20,
+    "explanation": "Our mission centers on delivering customer success while ensuring employee wellbeing and satisfaction."
+  },
+  {
+    "id": "quiz_004",
+    "question": "How many employees do we have globally?",
+    "category": "company-values",
+    "difficulty": "medium",
+    "options": ["500", "1,500", "5,000", "10,000"],
+    "correctAnswer": 2,
+    "points": 15,
+    "explanation": "We have grown to approximately 5,000 employees across 30+ countries."
+  },
+  {
+    "id": "quiz_005",
+    "question": "What is the recommended daily water intake?",
+    "category": "wellness",
+    "difficulty": "easy",
+    "options": ["2-3 Liters", "10 Liters", "0.5 Liters", "20 Liters"],
+    "correctAnswer": 0,
+    "points": 10,
+    "explanation": "Health experts recommend drinking 2-3 liters of water daily for optimal hydration."
+  },
+  {
+    "id": "quiz_006",
+    "question": "How many minutes of exercise per week is recommended for adults?",
+    "category": "wellness",
+    "difficulty": "medium",
+    "options": ["30 minutes", "150 minutes", "500 minutes", "1000 minutes"],
+    "correctAnswer": 1,
+    "points": 15,
+    "explanation": "WHO recommends at least 150 minutes of moderate-intensity exercise per week."
+  },
+  {
+    "id": "quiz_007",
+    "question": "What is the impact of regular meditation on stress levels?",
+    "category": "wellness",
+    "difficulty": "hard",
+    "options": ["Increases stress", "Reduces cortisol levels", "No effect", "Only works for monks"],
+    "correctAnswer": 1,
+    "points": 20,
+    "explanation": "Regular meditation has been scientifically proven to reduce cortisol (stress hormone) levels."
+  },
+  {
+    "id": "quiz_008",
+    "question": "How much sleep do most adults need per night?",
+    "category": "wellness",
+    "difficulty": "easy",
+    "options": ["4-5 hours", "7-9 hours", "12 hours", "3 hours"],
+    "correctAnswer": 1,
+    "points": 10,
+    "explanation": "Most adults need 7-9 hours of quality sleep for optimal health and cognitive function."
+  },
+  {
+    "id": "quiz_009",
+    "question": "What programming language was created by Guido van Rossum?",
+    "category": "learning",
+    "difficulty": "easy",
+    "options": ["Java", "Python", "JavaScript", "C++"],
+    "correctAnswer": 1,
+    "points": 10,
+    "explanation": "Python was created by Guido van Rossum and released in 1991."
+  },
+  {
+    "id": "quiz_010",
+    "question": "What does API stand for?",
+    "category": "learning",
+    "difficulty": "medium",
+    "options": ["Application Programming Interface", "Advanced Processing Interface", "Automated Process Integration", "Application Protocol Integration"],
+    "correctAnswer": 0,
+    "points": 15,
+    "explanation": "API stands for Application Programming Interface, enabling software components to communicate."
+  },
+  {
+    "id": "quiz_011",
+    "question": "What is the time complexity of binary search?",
+    "category": "learning",
+    "difficulty": "hard",
+    "options": ["O(n)", "O(n²)", "O(log n)", "O(1)"],
+    "correctAnswer": 2,
+    "points": 20,
+    "explanation": "Binary search has a logarithmic time complexity of O(log n) for sorted arrays."
+  },
+  {
+    "id": "quiz_012",
+    "question": "What does Git's 'commit' command do?",
+    "category": "learning",
+    "difficulty": "easy",
+    "options": ["Uploads code to internet", "Saves changes locally", "Deletes files", "Breaks your code"],
+    "correctAnswer": 1,
+    "points": 10,
+    "explanation": "Git commit saves changes to the local repository with a message describing the changes."
+  },
+  {
+    "id": "quiz_013",
+    "question": "What is the purpose of code documentation?",
+    "category": "learning",
+    "difficulty": "medium",
+    "options": ["To waste time", "To explain code purpose and usage", "To make files larger", "No purpose"],
+    "correctAnswer": 1,
+    "points": 15,
+    "explanation": "Documentation explains what code does, why it exists, and how to use it effectively."
+  },
+  {
+    "id": "quiz_014",
+    "question": "In Agile methodology, what is a Sprint?",
+    "category": "learning",
+    "difficulty": "medium",
+    "options": ["A run", "A 2-4 week iteration period", "A meeting", "A programming language"],
+    "correctAnswer": 1,
+    "points": 15,
+    "explanation": "A Sprint is a fixed time-boxed period (typically 2-4 weeks) for completing work in Agile."
+  },
+  {
+    "id": "quiz_015",
+    "question": "What principle emphasizes breaking code into reusable pieces?",
+    "category": "learning",
+    "difficulty": "hard",
+    "options": ["Copy-Paste Programming", "DRY (Don't Repeat Yourself)", "WET (Write Everything Twice)", "RAW (Repeat All Work)"],
+    "correctAnswer": 1,
+    "points": 20,
+    "explanation": "The DRY principle encourages reusable components to reduce code duplication and improve maintainability."
+  }
+]

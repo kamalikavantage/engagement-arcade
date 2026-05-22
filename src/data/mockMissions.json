@@ -1,0 +1,116 @@
+[
+  {
+    "id": "mission_001",
+    "title": "Send Recognition",
+    "description": "Recognize a colleague's great work",
+    "type": "recognition",
+    "frequency": "daily",
+    "xpReward": 25,
+    "pointsReward": 50,
+    "icon": "Heart",
+    "color": "bg-rose-500"
+  },
+  {
+    "id": "mission_002",
+    "title": "Complete Wellness Check",
+    "description": "Log your daily wellness activity or meditation",
+    "type": "wellness",
+    "frequency": "daily",
+    "xpReward": 15,
+    "pointsReward": 30,
+    "icon": "Activity",
+    "color": "bg-green-500",
+    "targetCount": 1
+  },
+  {
+    "id": "mission_003",
+    "title": "Appreciate a Peer",
+    "description": "Give positive feedback to a colleague",
+    "type": "appreciation",
+    "frequency": "daily",
+    "xpReward": 20,
+    "pointsReward": 40,
+    "icon": "Smile",
+    "color": "bg-yellow-500"
+  },
+  {
+    "id": "mission_004",
+    "title": "Learn Something New",
+    "description": "Complete a learning module or course lesson",
+    "type": "learning",
+    "frequency": "daily",
+    "xpReward": 30,
+    "pointsReward": 60,
+    "icon": "BookOpen",
+    "color": "bg-blue-500"
+  },
+  {
+    "id": "mission_005",
+    "title": "Collaborate with Team",
+    "description": "Participate in a team activity or meeting",
+    "type": "collaboration",
+    "frequency": "daily",
+    "xpReward": 25,
+    "pointsReward": 50,
+    "icon": "Users",
+    "color": "bg-purple-500"
+  },
+  {
+    "id": "mission_006",
+    "title": "5 Recognitions",
+    "description": "Send 5 recognitions to colleagues",
+    "type": "recognition",
+    "frequency": "weekly",
+    "xpReward": 100,
+    "pointsReward": 200,
+    "icon": "Award",
+    "color": "bg-red-500",
+    "targetCount": 5
+  },
+  {
+    "id": "mission_007",
+    "title": "Weekly Wellness Challenge",
+    "description": "Complete 5 wellness activities this week",
+    "type": "wellness",
+    "frequency": "weekly",
+    "xpReward": 75,
+    "pointsReward": 150,
+    "icon": "Zap",
+    "color": "bg-green-400",
+    "targetCount": 5
+  },
+  {
+    "id": "mission_008",
+    "title": "Mentor a Colleague",
+    "description": "Help a teammate learn something new",
+    "type": "collaboration",
+    "frequency": "weekly",
+    "xpReward": 80,
+    "pointsReward": 160,
+    "icon": "Compass",
+    "color": "bg-indigo-500"
+  },
+  {
+    "id": "mission_009",
+    "title": "Complete 3 Quizzes",
+    "description": "Test your knowledge with 3 quiz challenges",
+    "type": "learning",
+    "frequency": "weekly",
+    "xpReward": 90,
+    "pointsReward": 180,
+    "icon": "Brain",
+    "color": "bg-cyan-500",
+    "targetCount": 3
+  },
+  {
+    "id": "mission_010",
+    "title": "Share Knowledge",
+    "description": "Share a useful tip or resource with the team",
+    "type": "collaboration",
+    "frequency": "weekly",
+    "xpReward": 70,
+    "pointsReward": 140,
+    "icon": "Share2",
+    "color": "bg-teal-500"
+  }
+]

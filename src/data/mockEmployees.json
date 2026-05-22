@@ -1,0 +1,137 @@
+[
+  {
+    "id": "emp_001",
+    "name": "Sarah Chen",
+    "email": "sarah.chen@company.com",
+    "department": "Engineering",
+    "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=sarah",
+    "title": "Senior Software Engineer",
+    "joinDate": "2021-03-15"
+  },
+  {
+    "id": "emp_002",
+    "name": "Marcus Johnson",
+    "email": "marcus.johnson@company.com",
+    "department": "Sales",
+    "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=marcus",
+    "title": "Sales Manager",
+    "joinDate": "2020-06-10"
+  },
+  {
+    "id": "emp_003",
+    "name": "Emily Rodriguez",
+    "email": "emily.rodriguez@company.com",
+    "department": "Marketing",
+    "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=emily",
+    "title": "Marketing Lead",
+    "joinDate": "2022-01-20"
+  },
+  {
+    "id": "emp_004",
+    "name": "James Wilson",
+    "email": "james.wilson@company.com",
+    "department": "HR",
+    "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=james",
+    "title": "HR Specialist",
+    "joinDate": "2019-09-05"
+  },
+  {
+    "id": "emp_005",
+    "name": "Priya Patel",
+    "email": "priya.patel@company.com",
+    "department": "Engineering",
+    "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=priya",
+    "title": "Product Engineer",
+    "joinDate": "2021-11-12"
+  },
+  {
+    "id": "emp_006",
+    "name": "David Kim",
+    "email": "david.kim@company.com",
+    "department": "Sales",
+    "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=david",
+    "title": "Account Executive",
+    "joinDate": "2022-05-18"
+  },
+  {
+    "id": "emp_007",
+    "name": "Lisa Anderson",
+    "email": "lisa.anderson@company.com",
+    "department": "Finance",
+    "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=lisa",
+    "title": "Financial Analyst",
+    "joinDate": "2020-12-01"
+  },
+  {
+    "id": "emp_008",
+    "name": "Alex Thompson",
+    "email": "alex.thompson@company.com",
+    "department": "Engineering",
+    "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=alex",
+    "title": "DevOps Engineer",
+    "joinDate": "2021-02-22"
+  },
+  {
+    "id": "emp_009",
+    "name": "Jessica Lee",
+    "email": "jessica.lee@company.com",
+    "department": "Product",
+    "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=jessica",
+    "title": "Product Manager",
+    "joinDate": "2020-08-15"
+  },
+  {
+    "id": "emp_010",
+    "name": "Robert Martinez",
+    "email": "robert.martinez@company.com",
+    "department": "Sales",
+    "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=robert",
+    "title": "Sales Representative",
+    "joinDate": "2023-03-01"
+  },
+  {
+    "id": "emp_011",
+    "name": "Michelle Brown",
+    "email": "michelle.brown@company.com",
+    "department": "Marketing",
+    "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=michelle",
+    "title": "Content Strategist",
+    "joinDate": "2021-07-30"
+  },
+  {
+    "id": "emp_012",
+    "name": "Christopher Garcia",
+    "email": "christopher.garcia@company.com",
+    "department": "Engineering",
+    "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=christopher",
+    "title": "Junior Developer",
+    "joinDate": "2023-06-15"
+  },
+  {
+    "id": "emp_013",
+    "name": "Amanda White",
+    "email": "amanda.white@company.com",
+    "department": "Finance",
+    "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=amanda",
+    "title": "Accounting Manager",
+    "joinDate": "2019-04-10"
+  },
+  {
+    "id": "emp_014",
+    "name": "Ryan Taylor",
+    "email": "ryan.taylor@company.com",
+    "department": "Operations",
+    "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=ryan",
+    "title": "Operations Coordinator",
+    "joinDate": "2022-09-01"
+  },
+  {
+    "id": "emp_015",
+    "name": "Sophie Lewis",
+    "email": "sophie.lewis@company.com",
+    "department": "Product",
+    "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=sophie",
+    "title": "UX Designer",
+    "joinDate": "2020-10-20"
+  }
+]

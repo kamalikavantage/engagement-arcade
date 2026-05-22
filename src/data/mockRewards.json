@@ -1,0 +1,92 @@
+[
+  {
+    "id": "reward_100_points",
+    "type": "points",
+    "name": "100 Points",
+    "value": 100,
+    "probability": 0.25,
+    "icon": "Star",
+    "description": "Earn 100 reward points"
+  },
+  {
+    "id": "reward_50_points",
+    "type": "points",
+    "name": "50 Points",
+    "value": 50,
+    "probability": 0.35,
+    "icon": "Zap",
+    "description": "Earn 50 reward points"
+  },
+  {
+    "id": "reward_25_points",
+    "type": "points",
+    "name": "25 Points",
+    "value": 25,
+    "probability": 0.15,
+    "icon": "Heart",
+    "description": "Earn 25 reward points"
+  },
+  {
+    "id": "reward_badge_excellence",
+    "type": "badge",
+    "name": "Excellence Badge",
+    "value": "excellence",
+    "probability": 0.08,
+    "icon": "Trophy",
+    "description": "Special badge for outstanding performance"
+  },
+  {
+    "id": "reward_badge_collaboration",
+    "type": "badge",
+    "name": "Team Player Badge",
+    "value": "teamplayer",
+    "probability": 0.06,
+    "icon": "Users",
+    "description": "Recognition for great teamwork"
+  },
+  {
+    "id": "reward_voucher_coffee",
+    "type": "voucher",
+    "name": "Coffee Voucher",
+    "value": "coffee_25",
+    "probability": 0.04,
+    "icon": "Coffee",
+    "description": "$25 Coffee shop voucher"
+  },
+  {
+    "id": "reward_voucher_lunch",
+    "type": "voucher",
+    "name": "Lunch Voucher",
+    "value": "lunch_50",
+    "probability": 0.03,
+    "icon": "Utensils",
+    "description": "$50 Restaurant voucher"
+  },
+  {
+    "id": "reward_raffle_5",
+    "type": "raffle",
+    "name": "5 Raffle Entries",
+    "value": 5,
+    "probability": 0.02,
+    "icon": "Ticket",
+    "description": "5 entries in monthly draw"
+  },
+  {
+    "id": "reward_raffle_10",
+    "type": "raffle",
+    "name": "10 Raffle Entries",
+    "value": 10,
+    "probability": 0.01,
+    "icon": "Gift",
+    "description": "10 entries in monthly draw"
+  },
+  {
+    "id": "reward_no_luck",
+    "type": "no_reward",
+    "name": "Better Luck Next Time!",
+    "value": 0,
+    "probability": 0.01,
+    "icon": "Frown",
+    "description": "Don't worry, try again tomorrow!"
+  }
+]

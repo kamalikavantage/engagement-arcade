@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(npm uninstall *)",
+      "Bash(npm install *)",
+      "Bash(pkill -f \"npm run dev\")",
+      "Bash(curl -s http://localhost:5173)",
+      "Bash(npx playwright *)"
+    ]
+  }
+}
