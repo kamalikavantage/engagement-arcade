@@ -351,82 +351,123 @@
             justify-content: center;
         }
 
-        .network-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 72px;
-            font-weight: 900;
-            margin-bottom: 20px;
-            text-align: center;
-            animation: slideDownBounce 1s ease-out;
-        }
-
-        .network-subtitle {
-            font-size: 24px;
-            text-align: center;
-            margin-bottom: 60px;
-            opacity: 0.95;
-            animation: fadeInUp 1s ease-out 0.2s both;
-            font-weight: 500;
-        }
-
-        .network-container {
-            display: flex;
-            justify-content: center;
+        .impact-comparison {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 50px;
             align-items: center;
-            gap: 80px;
-            flex-wrap: wrap;
+            max-width: 1000px;
         }
 
-        .network-section {
+        .comparison-left,
+        .comparison-right {
             text-align: center;
+            animation: slideInLeft 1s ease-out forwards;
+            opacity: 0;
         }
 
-        .network-nodes {
+        .comparison-left { animation-delay: 0.2s; }
+        .comparison-right { animation-delay: 0.2s; animation-name: slideInRight; }
+
+        @keyframes slideInRight {
+            0% { opacity: 0; transform: translateX(60px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        .comparison-big-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 120px;
+            font-weight: 900;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #ffffff, #ffef96);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: scaleNumber 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;
+            line-height: 1;
+        }
+
+        .comparison-label {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            animation: slideUpText 1s ease-out 0.4s both;
+        }
+
+        .comparison-action {
+            font-size: 16px;
+            opacity: 0.8;
+            margin-bottom: 30px;
+            font-weight: 600;
+            animation: slideUpText 1s ease-out 0.5s both;
+        }
+
+        .comparison-nodes {
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
-            gap: 30px;
-            margin: 30px 0;
+            gap: 15px;
+            margin-top: 20px;
         }
 
-        .network-node {
-            width: 90px;
-            height: 90px;
+        .comparison-avatar {
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.25);
             border: 3px solid rgba(255, 255, 255, 0.6);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 45px;
-            box-shadow: 0 0 40px rgba(255, 255, 255, 0.4);
+            font-size: 32px;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
             animation: popBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
             opacity: 0;
             cursor: pointer;
             transition: all 0.3s ease;
+            font-weight: 700;
         }
 
-        .network-node:nth-child(1) { animation-delay: 0.3s; }
-        .network-node:nth-child(2) { animation-delay: 0.4s; }
-        .network-node:nth-child(3) { animation-delay: 0.5s; }
-        .network-node:nth-child(4) { animation-delay: 0.6s; }
-        .network-node:nth-child(5) { animation-delay: 0.7s; }
+        .comparison-left .comparison-avatar:nth-child(1) { animation-delay: 0.5s; }
+        .comparison-left .comparison-avatar:nth-child(2) { animation-delay: 0.6s; }
+        .comparison-left .comparison-avatar:nth-child(3) { animation-delay: 0.7s; }
+        .comparison-left .comparison-avatar:nth-child(4) { animation-delay: 0.8s; }
+        .comparison-left .comparison-avatar:nth-child(5) { animation-delay: 0.9s; font-size: 16px; }
 
-        .network-node:hover {
-            transform: scale(1.25);
-            box-shadow: 0 0 60px rgba(255, 255, 255, 0.8);
+        .comparison-right .comparison-avatar:nth-child(1) { animation-delay: 0.5s; }
+        .comparison-right .comparison-avatar:nth-child(2) { animation-delay: 0.6s; }
+        .comparison-right .comparison-avatar:nth-child(3) { animation-delay: 0.7s; }
+        .comparison-right .comparison-avatar:nth-child(4) { animation-delay: 0.8s; font-size: 16px; }
+
+        .comparison-avatar:hover {
+            transform: scale(1.3);
+            box-shadow: 0 0 50px rgba(255, 255, 255, 0.8);
         }
 
-        .network-count {
-            font-size: 32px;
-            font-weight: 800;
-            margin-top: 15px;
+        .comparison-divider {
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+            position: relative;
+            animation: slideUpText 1s ease-out 0.3s both;
         }
 
-        .network-desc {
-            font-size: 15px;
-            opacity: 0.85;
-            margin-top: 8px;
+        .pulse-dot {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: white;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.5); }
         }
 
         /* ===== SCREEN 5: MOMENTS ===== */
@@ -808,30 +849,33 @@
         <!-- SCREEN 4 -->
         <div class="screen" id="screen-4">
             <div class="screen-wrap">
-                <div class="network-title">Your Network</div>
-                <div class="network-subtitle">Colleagues you impacted this year</div>
-                <div class="network-container">
-                    <div class="network-section">
-                        <div class="network-title" style="font-size: 48px; margin: 0 0 20px 0;">Recognized</div>
-                        <div class="network-nodes">
-                            <div class="network-node">👨‍💼</div>
-                            <div class="network-node">👩‍💼</div>
-                            <div class="network-node">👨‍💻</div>
-                            <div class="network-node">👩‍💻</div>
-                            <div class="network-node">👤</div>
+                <div class="wrapped-title-2" style="margin-bottom: 80px;">Your Recognition Impact</div>
+                <div class="impact-comparison">
+                    <div class="comparison-left">
+                        <div class="comparison-big-number">37</div>
+                        <div class="comparison-label">People You Recognized</div>
+                        <div class="comparison-action">→ You gave</div>
+                        <div class="comparison-nodes">
+                            <div class="comparison-avatar">👨‍💼</div>
+                            <div class="comparison-avatar">👩‍💼</div>
+                            <div class="comparison-avatar">👨‍💻</div>
+                            <div class="comparison-avatar">👩‍💻</div>
+                            <div class="comparison-avatar">+32 more</div>
                         </div>
-                        <div class="network-count">37</div>
-                        <div class="network-desc">People You Recognized</div>
                     </div>
-                    <div class="network-section">
-                        <div class="network-title" style="font-size: 48px; margin: 0 0 20px 0;">By</div>
-                        <div class="network-nodes">
-                            <div class="network-node">👨‍💼</div>
-                            <div class="network-node">👩‍💼</div>
-                            <div class="network-node">👨‍🔬</div>
+                    <div class="comparison-divider">
+                        <div class="pulse-dot"></div>
+                    </div>
+                    <div class="comparison-right">
+                        <div class="comparison-big-number">52</div>
+                        <div class="comparison-label">Times You Were Recognized</div>
+                        <div class="comparison-action">← You received</div>
+                        <div class="comparison-nodes">
+                            <div class="comparison-avatar">👨‍💼</div>
+                            <div class="comparison-avatar">👩‍💼</div>
+                            <div class="comparison-avatar">👨‍🔬</div>
+                            <div class="comparison-avatar">+19 more</div>
                         </div>
-                        <div class="network-count">52</div>
-                        <div class="network-desc">Times You Were Recognized</div>
                     </div>
                 </div>
             </div>
