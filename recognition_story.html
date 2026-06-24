@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recognition Story 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #1a1a1a;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1200px;
+        }
+
+        .screen {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: translateX(100px) rotateY(25deg);
+            pointer-events: none;
+            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .screen.active {
+            opacity: 1;
+            transform: translateX(0) rotateY(0deg);
+            pointer-events: auto;
+            z-index: 10;
+        }
+
+        .screen.prev {
+            opacity: 0;
+            transform: translateX(-100px) rotateY(-25deg);
+        }
+
+        .screen-content {
+            width: 90%;
+            max-width: 900px;
+            height: 90vh;
+            max-height: 900px;
+            border-radius: 32px;
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Screen 1 - Hero */
+        .screen-1 .screen-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .screen-1 .screen-content::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .screen-1 .screen-content::after {
+            content: '';
+            position: absolute;
+            bottom: -20%;
+            left: -5%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite reverse;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            animation: slideUp 1s ease-out;
+        }
+
+        .hero-photo {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
+            margin: 0 auto 30px;
+            border: 3px solid rgba(255, 255, 255, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .hero-name {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 40px;
+            opacity: 0.95;
+        }
+
+        .hero-headline {
+            font-size: 56px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            line-height: 1.2;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-subheadline {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-bottom: 60px;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            background: rgba(255, 255, 255, 0.25);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            color: white;
+            padding: 16px 40px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            backdrop-filter: blur(10px);
+            margin: 0 10px;
+        }
+
+        .cta-button:hover {
+            background: rgba(255, 255, 255, 0.4);
+            border-color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Screen 2 - Impact Numbers */
+        .screen-2 .screen-content {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .screen-headline {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+            animation: slideUp 1s ease-out 0.2s both;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transform: scale(0.8);
+            animation: scaleIn 0.6s ease-out forwards;
+        }
+
+        .stat-card:nth-child(1) { animation-delay: 0.3s; }
+        .stat-card:nth-child(2) { animation-delay: 0.4s; }
+        .stat-card:nth-child(3) { animation-delay: 0.5s; }
+
+        .stat-number {
+            font-size: 56px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #fff, rgba(255, 255, 255, 0.7));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 16px;
+            opacity: 0.95;
+            font-weight: 500;
+        }
+
+        /* Screen 3 - Superpower */
+        .screen-3 .screen-content {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .superpower-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+            animation: slideUp 1s ease-out 0.2s both;
+        }
+
+        .superpower-text {
+            text-align: left;
+        }
+
+        .superpower-title {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .superpower-value {
+            font-size: 72px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #fff, rgba(255, 255, 255, 0.8));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 40px;
+            line-height: 1;
+        }
+
+        .breakdown-items {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 16px;
+        }
+
+        .breakdown-bar {
+            flex: 1;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+            margin: 0 16px;
+            overflow: hidden;
+        }
+
+        .breakdown-fill {
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.6));
+            border-radius: 3px;
+            animation: fillBar 1.5s ease-out forwards;
+            width: 0;
+        }
+
+        .breakdown-item:nth-child(1) .breakdown-fill { animation-delay: 0.3s; width: 45%; }
+        .breakdown-item:nth-child(2) .breakdown-fill { animation-delay: 0.4s; width: 20%; }
+        .breakdown-item:nth-child(3) .breakdown-fill { animation-delay: 0.5s; width: 15%; }
+        .breakdown-item:nth-child(4) .breakdown-fill { animation-delay: 0.6s; width: 20%; }
+
+        .pie-chart {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            background: conic-gradient(
+                from 0deg,
+                #ff6b9d 0% 45%,
+                #a78bfa 45% 65%,
+                #60a5fa 65% 80%,
+                #34d399 80% 100%
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            animation: rotate 20s linear infinite;
+        }
+
+        .pie-center {
+            width: 220px;
+            height: 220px;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            border-radius: 50%;
+        }
+
+        /* Screen 4 - Recognition Network */
+        .screen-4 .screen-content {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: white;
+        }
+
+        .network-section {
+            margin: 30px 0;
+        }
+
+        .network-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .network-graph {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+            animation: slideUp 1s ease-out 0.2s both;
+        }
+
+        .network-node {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            opacity: 0;
+        }
+
+        .network-node:nth-child(1) { animation-delay: 0.2s; }
+        .network-node:nth-child(2) { animation-delay: 0.3s; }
+        .network-node:nth-child(3) { animation-delay: 0.4s; }
+        .network-node:nth-child(4) { animation-delay: 0.5s; }
+        .network-node:nth-child(5) { animation-delay: 0.6s; }
+
+        .network-node:hover {
+            transform: scale(1.2);
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Screen 5 - Timeline */
+        .screen-5 .screen-content {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #1a1a1a;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+            animation: slideUp 1s ease-out 0.2s both;
+        }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+            align-items: start;
+            opacity: 0;
+            animation: slideInLeft 0.6s ease-out forwards;
+        }
+
+        .timeline-item:nth-child(1) { animation-delay: 0.2s; }
+        .timeline-item:nth-child(2) { animation-delay: 0.3s; }
+        .timeline-item:nth-child(3) { animation-delay: 0.4s; }
+
+        .timeline-month {
+            font-size: 20px;
+            font-weight: 700;
+            color: #764ba2;
+        }
+
+        .timeline-card {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #764ba2;
+            backdrop-filter: blur(10px);
+        }
+
+        .timeline-card-title {
+            font-weight: 700;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .timeline-card-desc {
+            font-size: 14px;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+
+        /* Screen 6 - Story */
+        .screen-6 .screen-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            justify-content: center;
+        }
+
+        .story-text {
+            font-size: 24px;
+            line-height: 1.8;
+            text-align: center;
+            max-width: 700px;
+            animation: fadeIn 1.5s ease-out;
+            font-weight: 400;
+        }
+
+        .story-text strong {
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffd89b, #19547b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Screen 7 - Thank You */
+        .screen-7 .screen-content {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .thank-you-headline {
+            font-size: 56px;
+            font-weight: 800;
+            margin-bottom: 40px;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        .final-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 50px;
+            animation: slideUp 1s ease-out 0.2s both;
+        }
+
+        .final-stat {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .final-stat-value {
+            font-size: 40px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .final-stat-label {
+            font-size: 14px;
+            opacity: 0.85;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            animation: slideUp 1s ease-out 0.4s both;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ffd89b, #19547b);
+            color: white;
+            padding: 14px 32px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: white;
+        }
+
+        /* Navigation */
+        .nav-dots {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            z-index: 20;
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-dot.active {
+            background: white;
+            transform: scale(1.3);
+        }
+
+        /* Animations */
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes popIn {
+            from {
+                opacity: 0;
+                transform: scale(0) rotate(-180deg);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) rotate(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes fillBar {
+            from {
+                width: 0;
+            }
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .screen-content {
+                padding: 40px 20px;
+                border-radius: 20px;
+                height: auto;
+                max-height: none;
+            }
+
+            .hero-headline {
+                font-size: 36px;
+            }
+
+            .screen-headline {
+                font-size: 32px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .superpower-container {
+                grid-template-columns: 1fr;
+            }
+
+            .pie-chart {
+                width: 200px;
+                height: 200px;
+            }
+
+            .final-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .nav-dots {
+                bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Screen 1: Hero -->
+        <div class="screen active" id="screen-1">
+            <div class="screen-content">
+                <div class="hero-content">
+                    <div class="hero-photo">👤</div>
+                    <div class="hero-name">Sarah Johnson</div>
+                </div>
+                <div class="hero-content">
+                    <div class="hero-headline">Your Impact in 2026</div>
+                    <div class="hero-subheadline">A year of recognition, appreciation, collaboration, and growth.</div>
+                    <button class="cta-button" onclick="nextScreen()">View My Story →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 2: Impact -->
+        <div class="screen" id="screen-2">
+            <div class="screen-content">
+                <div class="screen-headline">You Made a Difference</div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">52</div>
+                        <div class="stat-label">Recognitions Received</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">37</div>
+                        <div class="stat-label">Recognitions Given</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">12</div>
+                        <div class="stat-label">Different Teams</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 3: Superpower -->
+        <div class="screen" id="screen-3">
+            <div class="screen-content">
+                <div class="screen-headline" style="grid-column: 1/-1; margin-bottom: 30px;">Your Superpower</div>
+                <div class="superpower-container">
+                    <div class="superpower-text">
+                        <div class="superpower-title">Most Recognized Value</div>
+                        <div class="superpower-value">Collaboration</div>
+                        <div class="breakdown-items">
+                            <div class="breakdown-item">
+                                <span>Collaboration</span>
+                                <div class="breakdown-bar"><div class="breakdown-fill"></div></div>
+                                <span>45%</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span>Leadership</span>
+                                <div class="breakdown-bar"><div class="breakdown-fill"></div></div>
+                                <span>20%</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span>Innovation</span>
+                                <div class="breakdown-bar"><div class="breakdown-fill"></div></div>
+                                <span>15%</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span>Ownership</span>
+                                <div class="breakdown-bar"><div class="breakdown-fill"></div></div>
+                                <span>20%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pie-chart">
+                        <div class="pie-center"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 4: Recognition Network -->
+        <div class="screen" id="screen-4">
+            <div class="screen-content">
+                <div class="screen-headline">Your Recognition Network</div>
+                <div class="network-section">
+                    <div class="network-title">People Who Recognized You Most</div>
+                    <div class="network-graph">
+                        <div class="network-node">👨‍💼</div>
+                        <div class="network-node">👩‍💼</div>
+                        <div class="network-node">👨‍💻</div>
+                        <div class="network-node">👩‍💻</div>
+                        <div class="network-node">👤</div>
+                    </div>
+                </div>
+                <div class="network-section">
+                    <div class="network-title">People You Recognized Most</div>
+                    <div class="network-graph">
+                        <div class="network-node">👨‍💼</div>
+                        <div class="network-node">👩‍💼</div>
+                        <div class="network-node">👨‍🔬</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 5: Timeline -->
+        <div class="screen" id="screen-5">
+            <div class="screen-content">
+                <div class="screen-headline" style="margin-bottom: 30px;">Your Biggest Moments</div>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-month">March</div>
+                        <div class="timeline-card">
+                            <div class="timeline-card-title">Client Escalation Support</div>
+                            <div class="timeline-card-desc">Recognized for exceptional support in resolving a critical client issue ahead of schedule.</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-month">June</div>
+                        <div class="timeline-card">
+                            <div class="timeline-card-title">Mentoring New Employees</div>
+                            <div class="timeline-card-desc">Praised for outstanding onboarding and mentorship of three new team members.</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-month">September</div>
+                        <div class="timeline-card">
+                            <div class="timeline-card-title">Annual Campaign Recognition</div>
+                            <div class="timeline-card-desc">Recognized during the company-wide recognition campaign for collaborative excellence.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 6: Story -->
+        <div class="screen" id="screen-6">
+            <div class="screen-content">
+                <div class="screen-headline" style="margin-bottom: 40px;">Your Impact Story</div>
+                <div class="story-text">
+                    Throughout 2026, you <strong>supported colleagues across multiple teams</strong>, demonstrated <strong>strong collaboration</strong>, and helped create a <strong>culture of appreciation</strong>. Your impact extends beyond your own achievements—you've become a <strong>trusted mentor</strong>, a <strong>valued team player</strong>, and a <strong>driving force for positive change</strong>. Thank you for making our workplace better.
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 7: Thank You -->
+        <div class="screen" id="screen-7">
+            <div class="screen-content">
+                <div class="thank-you-headline">Thank You</div>
+                <div class="final-stats">
+                    <div class="final-stat">
+                        <div class="final-stat-value">52</div>
+                        <div class="final-stat-label">Recognition Moments</div>
+                    </div>
+                    <div class="final-stat">
+                        <div class="final-stat-value">12</div>
+                        <div class="final-stat-label">Teams Connected</div>
+                    </div>
+                    <div class="final-stat">
+                        <div class="final-stat-value">∞</div>
+                        <div class="final-stat-label">Impact Potential</div>
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-primary" onclick="downloadStory()">📥 Download My Story</button>
+                    <button class="btn-secondary" onclick="shareStory()">📤 Share with Team</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Dots -->
+    <div class="nav-dots">
+        <div class="nav-dot active" onclick="goToScreen(1)"></div>
+        <div class="nav-dot" onclick="goToScreen(2)"></div>
+        <div class="nav-dot" onclick="goToScreen(3)"></div>
+        <div class="nav-dot" onclick="goToScreen(4)"></div>
+        <div class="nav-dot" onclick="goToScreen(5)"></div>
+        <div class="nav-dot" onclick="goToScreen(6)"></div>
+        <div class="nav-dot" onclick="goToScreen(7)"></div>
+    </div>
+
+    <script>
+        let currentScreen = 1;
+        const totalScreens = 7;
+
+        function nextScreen() {
+            if (currentScreen < totalScreens) {
+                goToScreen(currentScreen + 1);
+            }
+        }
+
+        function prevScreen() {
+            if (currentScreen > 1) {
+                goToScreen(currentScreen - 1);
+            }
+        }
+
+        function goToScreen(screenNum) {
+            const currentEl = document.getElementById(`screen-${currentScreen}`);
+            const nextEl = document.getElementById(`screen-${screenNum}`);
+
+            if (currentEl) {
+                currentEl.classList.remove('active');
+                if (screenNum > currentScreen) {
+                    currentEl.classList.add('prev');
+                }
+            }
+
+            if (nextEl) {
+                nextEl.classList.add('active');
+                nextEl.classList.remove('prev');
+            }
+
+            // Update nav dots
+            document.querySelectorAll('.nav-dot').forEach((dot, idx) => {
+                dot.classList.toggle('active', idx + 1 === screenNum);
+            });
+
+            currentScreen = screenNum;
+        }
+
+        function downloadStory() {
+            alert('📥 Recognition Story would be downloaded as a beautiful PDF or image file!');
+        }
+
+        function shareStory() {
+            alert('📤 Share options: Copy Link • Email • LinkedIn • Slack • Teams');
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextScreen();
+            if (e.key === 'ArrowLeft') prevScreen();
+        });
+    </script>
+</body>
+</html>
