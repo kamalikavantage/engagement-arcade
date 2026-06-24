@@ -470,6 +470,221 @@
             50% { transform: translate(-50%, -50%) scale(1.5); }
         }
 
+        /* ===== BADGES SCREEN ===== */
+        .badges-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            margin-bottom: 60px;
+            animation: slideUpText 1s ease-out 0.2s both;
+        }
+
+        .badges-section {
+            text-align: center;
+            animation: slideInLeft 1s ease-out forwards;
+            opacity: 0;
+        }
+
+        .badges-grid .badges-section:last-child {
+            animation-name: slideInRight;
+        }
+
+        .badges-label {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 40px;
+            animation: slideUpText 1s ease-out 0.3s both;
+        }
+
+        .badge-items {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .badge-item {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            padding: 25px;
+            border-radius: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            animation: popBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            opacity: 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .badges-section:nth-child(1) .badge-item:nth-child(1) { animation-delay: 0.4s; }
+        .badges-section:nth-child(1) .badge-item:nth-child(2) { animation-delay: 0.5s; }
+        .badges-section:nth-child(1) .badge-item:nth-child(3) { animation-delay: 0.6s; }
+        .badges-section:nth-child(2) .badge-item:nth-child(1) { animation-delay: 0.4s; }
+        .badges-section:nth-child(2) .badge-item:nth-child(2) { animation-delay: 0.5s; }
+        .badges-section:nth-child(2) .badge-item:nth-child(3) { animation-delay: 0.6s; }
+
+        .badge-item:hover {
+            transform: translateY(-12px) scale(1.08);
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .badge-icon {
+            font-size: 48px;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        .badges-section:nth-child(1) .badge-item:nth-child(1) .badge-icon { animation-delay: 0.4s; }
+        .badges-section:nth-child(1) .badge-item:nth-child(2) .badge-icon { animation-delay: 0.5s; }
+        .badges-section:nth-child(1) .badge-item:nth-child(3) .badge-icon { animation-delay: 0.6s; }
+
+        .badge-name {
+            flex: 1;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .badge-count {
+            font-size: 24px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffc0ff, #ffff00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .leaderboard-section {
+            animation: popBounce 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) 0.7s both;
+        }
+
+        .leaderboard-stat {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            padding: 40px;
+            border-radius: 24px;
+            border: 3px solid rgba(255, 255, 255, 0.4);
+            text-align: center;
+        }
+
+        .leaderboard-number {
+            font-size: 80px;
+            font-weight: 900;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #ffc0ff, #ffff00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: scaleNumber 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.8s both;
+        }
+
+        .leaderboard-label {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        /* ===== AWARD SCREEN ===== */
+        .award-container {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr 0.8fr;
+            gap: 40px;
+            align-items: center;
+            animation: slideUpText 1s ease-out 0.2s both;
+        }
+
+        .award-main {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 165, 0, 0.2));
+            backdrop-filter: blur(20px);
+            padding: 50px;
+            border-radius: 30px;
+            border: 3px solid rgba(255, 215, 0, 0.5);
+            text-align: center;
+            animation: popBounce 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;
+            box-shadow: 0 0 80px rgba(255, 215, 0, 0.3);
+        }
+
+        .award-icon {
+            font-size: 100px;
+            margin-bottom: 20px;
+            animation: bounce 2s ease-in-out infinite 0.4s;
+            display: inline-block;
+        }
+
+        .award-name {
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: rgba(255, 215, 0, 0.95);
+            animation: slideUpText 1s ease-out 0.5s both;
+        }
+
+        .award-value {
+            font-size: 56px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            animation: scaleNumber 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.6s both;
+        }
+
+        .award-date {
+            font-size: 14px;
+            opacity: 0.85;
+            animation: slideUpText 1s ease-out 0.7s both;
+        }
+
+        .award-story {
+            animation: slideInLeft 1s ease-out 0.4s both;
+        }
+
+        .story-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 25px;
+            animation: slideUpText 1s ease-out 0.5s both;
+        }
+
+        .story-content {
+            font-size: 18px;
+            line-height: 1.8;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            padding: 30px;
+            border-radius: 20px;
+            border-left: 5px solid rgba(255, 215, 0, 0.6);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            animation: slideUpText 1s ease-out 0.6s both;
+        }
+
+        .awards-total {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            padding: 35px;
+            border-radius: 24px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            text-align: center;
+            animation: slideInRight 1s ease-out 0.4s both;
+        }
+
+        .total-number {
+            font-size: 72px;
+            font-weight: 900;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #ffc0ff, #ffff00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: scaleNumber 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.7s both;
+        }
+
+        .total-label {
+            font-size: 14px;
+            font-weight: 700;
+            opacity: 0.9;
+        }
+
         /* ===== SCREEN 5: MOMENTS ===== */
         .screen-5 .screen-wrap {
             background: linear-gradient(135deg, #a8edea 0%, #fed6e3 50%, #ffe66d 100%);
@@ -849,40 +1064,85 @@
         <!-- SCREEN 4 -->
         <div class="screen" id="screen-4">
             <div class="screen-wrap">
-                <div class="wrapped-title-2" style="margin-bottom: 80px;">Your Recognition Impact</div>
-                <div class="impact-comparison">
-                    <div class="comparison-left">
-                        <div class="comparison-big-number">37</div>
-                        <div class="comparison-label">People You Recognized</div>
-                        <div class="comparison-action">→ You gave</div>
-                        <div class="comparison-nodes">
-                            <div class="comparison-avatar">👨‍💼</div>
-                            <div class="comparison-avatar">👩‍💼</div>
-                            <div class="comparison-avatar">👨‍💻</div>
-                            <div class="comparison-avatar">👩‍💻</div>
-                            <div class="comparison-avatar">+32 more</div>
+                <div class="wrapped-title-2" style="margin-bottom: 50px;">Your Recognition Badges</div>
+                <div class="badges-grid">
+                    <div class="badges-section">
+                        <div class="badges-label">🎁 Badges You Gave</div>
+                        <div class="badge-items">
+                            <div class="badge-item">
+                                <div class="badge-icon">⭐</div>
+                                <div class="badge-name">Collaboration</div>
+                                <div class="badge-count">18x</div>
+                            </div>
+                            <div class="badge-item">
+                                <div class="badge-icon">🚀</div>
+                                <div class="badge-name">Innovation</div>
+                                <div class="badge-count">12x</div>
+                            </div>
+                            <div class="badge-item">
+                                <div class="badge-icon">💡</div>
+                                <div class="badge-name">Leadership</div>
+                                <div class="badge-count">7x</div>
+                            </div>
                         </div>
                     </div>
-                    <div class="comparison-divider">
-                        <div class="pulse-dot"></div>
-                    </div>
-                    <div class="comparison-right">
-                        <div class="comparison-big-number">52</div>
-                        <div class="comparison-label">Times You Were Recognized</div>
-                        <div class="comparison-action">← You received</div>
-                        <div class="comparison-nodes">
-                            <div class="comparison-avatar">👨‍💼</div>
-                            <div class="comparison-avatar">👩‍💼</div>
-                            <div class="comparison-avatar">👨‍🔬</div>
-                            <div class="comparison-avatar">+19 more</div>
+                    <div class="badges-section">
+                        <div class="badges-label">🏆 Badges You Received</div>
+                        <div class="badge-items">
+                            <div class="badge-item">
+                                <div class="badge-icon">⭐</div>
+                                <div class="badge-name">Collaboration</div>
+                                <div class="badge-count">22x</div>
+                            </div>
+                            <div class="badge-item">
+                                <div class="badge-icon">🎯</div>
+                                <div class="badge-name">Excellence</div>
+                                <div class="badge-count">16x</div>
+                            </div>
+                            <div class="badge-item">
+                                <div class="badge-icon">💪</div>
+                                <div class="badge-name">Ownership</div>
+                                <div class="badge-count">14x</div>
+                            </div>
                         </div>
+                    </div>
+                </div>
+                <div class="leaderboard-section">
+                    <div class="leaderboard-stat">
+                        <div class="leaderboard-number">8</div>
+                        <div class="leaderboard-label">Times in Top 3 Leaderboard</div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- SCREEN 5 -->
+        <!-- SCREEN 5 - TOP AWARD -->
         <div class="screen" id="screen-5">
+            <div class="screen-wrap">
+                <div class="wrapped-title-2" style="margin-bottom: 60px;">Your Greatest Achievement</div>
+                <div class="award-container">
+                    <div class="award-main">
+                        <div class="award-icon">🏅</div>
+                        <div class="award-name">Excellence in Leadership Award</div>
+                        <div class="award-value">$5,000</div>
+                        <div class="award-date">Awarded: December 2026</div>
+                    </div>
+                    <div class="award-story">
+                        <div class="story-title">Your Story</div>
+                        <div class="story-content">
+                            Recognized for exceptional leadership throughout 2026. You transformed three departments, mentored 5 high-potential employees, and led the most successful recognition campaign in company history. Your impact was measurable, your dedication unwavering.
+                        </div>
+                    </div>
+                    <div class="awards-total">
+                        <div class="total-number">4</div>
+                        <div class="total-label">Total Awards in Career</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 6 -->
+        <div class="screen" id="screen-6">
             <div class="screen-wrap">
                 <div class="moments-title">Your Biggest Moments</div>
                 <div class="moments-grid">
@@ -955,6 +1215,7 @@
         <div class="nav-dot-wrap" onclick="goToWrapped(5)"></div>
         <div class="nav-dot-wrap" onclick="goToWrapped(6)"></div>
         <div class="nav-dot-wrap" onclick="goToWrapped(7)"></div>
+        <div class="nav-dot-wrap" onclick="goToWrapped(8)"></div>
     </div>
 
     <script>
@@ -968,7 +1229,7 @@
         }
 
         document.addEventListener('keydown', e => {
-            if (e.key === 'ArrowRight' && current < 7) goToWrapped(current + 1);
+            if (e.key === 'ArrowRight' && current < 8) goToWrapped(current + 1);
             if (e.key === 'ArrowLeft' && current > 1) goToWrapped(current - 1);
         });
     </script>
