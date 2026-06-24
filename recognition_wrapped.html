@@ -685,6 +685,99 @@
             opacity: 0.9;
         }
 
+        /* ===== LEADERBOARD SCREEN ===== */
+        .screen-4b .screen-wrap {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF6B6B 100%);
+            justify-content: center;
+        }
+
+        .leaderboard-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            max-width: 1000px;
+            animation: slideUpText 1s ease-out 0.2s both;
+        }
+
+        .leaderboard-big-stat {
+            text-align: center;
+            animation: slideInLeft 1s ease-out 0.3s both;
+        }
+
+        .leaderboard-big-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 150px;
+            font-weight: 900;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #ffffff, #ffe6e6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: scaleNumber 1.3s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s both;
+            line-height: 1;
+        }
+
+        .leaderboard-big-label {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            animation: slideUpText 1s ease-out 0.5s both;
+        }
+
+        .leaderboard-subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+            font-weight: 600;
+            animation: slideUpText 1s ease-out 0.6s both;
+        }
+
+        .leaderboard-detail {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            animation: slideInRight 1s ease-out 0.3s both;
+        }
+
+        .detail-row {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            padding: 35px;
+            border-radius: 24px;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: popBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            opacity: 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .detail-row:nth-child(1) { animation-delay: 0.4s; }
+        .detail-row:nth-child(2) { animation-delay: 0.5s; }
+        .detail-row:nth-child(3) { animation-delay: 0.6s; }
+
+        .detail-row:hover {
+            transform: translateX(20px) scale(1.08);
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        .rank {
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .count {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff, #ffef96);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
         /* ===== SCREEN 5: MOMENTS ===== */
         .screen-5 .screen-wrap {
             background: linear-gradient(135deg, #a8edea 0%, #fed6e3 50%, #ffe66d 100%);
@@ -1107,10 +1200,32 @@
                         </div>
                     </div>
                 </div>
-                <div class="leaderboard-section">
-                    <div class="leaderboard-stat">
-                        <div class="leaderboard-number">8</div>
-                        <div class="leaderboard-label">Times in Top 3 Leaderboard</div>
+            </div>
+        </div>
+
+        <!-- SCREEN 4B - LEADERBOARD -->
+        <div class="screen" id="screen-4b">
+            <div class="screen-wrap">
+                <div class="wrapped-title-2" style="margin-bottom: 100px;">Your Leaderboard Ranking</div>
+                <div class="leaderboard-container">
+                    <div class="leaderboard-big-stat">
+                        <div class="leaderboard-big-number">8</div>
+                        <div class="leaderboard-big-label">Times in Top 3</div>
+                        <div class="leaderboard-subtitle">Monthly Recognition Leaders</div>
+                    </div>
+                    <div class="leaderboard-detail">
+                        <div class="detail-row">
+                            <span class="rank">🥇 1st Place</span>
+                            <span class="count">2 months</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="rank">🥈 2nd Place</span>
+                            <span class="count">3 months</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="rank">🥉 3rd Place</span>
+                            <span class="count">3 months</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1212,6 +1327,7 @@
         <div class="nav-dot-wrap" onclick="goToWrapped(2)"></div>
         <div class="nav-dot-wrap" onclick="goToWrapped(3)"></div>
         <div class="nav-dot-wrap" onclick="goToWrapped(4)"></div>
+        <div class="nav-dot-wrap" onclick="goToWrapped(4.5)"></div>
         <div class="nav-dot-wrap" onclick="goToWrapped(5)"></div>
         <div class="nav-dot-wrap" onclick="goToWrapped(6)"></div>
         <div class="nav-dot-wrap" onclick="goToWrapped(7)"></div>
@@ -1223,14 +1339,24 @@
 
         function goToWrapped(n) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(`screen-${n}`).classList.add('active');
-            document.querySelectorAll('.nav-dot-wrap').forEach((d, i) => d.classList.toggle('active', i + 1 === n));
+            const screenId = n === 4.5 ? 'screen-4b' : `screen-${n}`;
+            document.getElementById(screenId).classList.add('active');
+            document.querySelectorAll('.nav-dot-wrap').forEach((d, i) => {
+                const dotValue = i === 4 ? 4.5 : (i < 4 ? i + 1 : i);
+                d.classList.toggle('active', dotValue === n);
+            });
             current = n;
         }
 
         document.addEventListener('keydown', e => {
-            if (e.key === 'ArrowRight' && current < 8) goToWrapped(current + 1);
-            if (e.key === 'ArrowLeft' && current > 1) goToWrapped(current - 1);
+            if (e.key === 'ArrowRight') {
+                const nextScreen = current === 4 ? 4.5 : (current === 4.5 ? 5 : (current < 8 ? current + 1 : 8));
+                if (nextScreen <= 8) goToWrapped(nextScreen);
+            }
+            if (e.key === 'ArrowLeft') {
+                const prevScreen = current === 5 ? 4.5 : (current === 4.5 ? 4 : (current > 1 ? current - 1 : 1));
+                if (prevScreen >= 1) goToWrapped(prevScreen);
+            }
         });
     </script>
 </body>
