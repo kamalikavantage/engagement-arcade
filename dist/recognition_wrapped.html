@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recognition Wrapped 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #0f0c29;
+            color: white;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .screen {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .screen.active {
+            opacity: 1;
+            pointer-events: auto;
+            z-index: 10;
+        }
+
+        .screen-wrap {
+            width: 95%;
+            max-width: 1050px;
+            height: 95vh;
+            max-height: 1000px;
+            border-radius: 50px;
+            padding: 80px 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 50px 150px rgba(0, 0, 0, 0.8);
+        }
+
+        /* ===== SCREEN 1: HERO ===== */
+        .screen-1 .screen-wrap {
+            background: linear-gradient(135deg, #1DB954 0%, #1ed760 50%, #1DB954 100%);
+            text-align: center;
+            justify-content: center;
+        }
+
+        .screen-1 .screen-wrap::before {
+            content: '';
+            position: absolute;
+            top: -40%;
+            right: -15%;
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: orbitFloat 12s linear infinite;
+        }
+
+        .screen-1 .screen-wrap::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: orbitFloat 15s linear infinite reverse;
+        }
+
+        .wrapped-hero {
+            position: relative;
+            z-index: 2;
+        }
+
+        .wrapped-avatar {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.25);
+            margin: 0 auto 50px;
+            border: 5px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 100px;
+            box-shadow: 0 0 80px rgba(29, 185, 84, 0.6);
+            animation: glowPulse 2s ease-in-out infinite;
+            backdrop-filter: blur(10px);
+        }
+
+        .wrapped-name {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 60px;
+            animation: slideDownBounce 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+            letter-spacing: 2px;
+        }
+
+        .wrapped-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 100px;
+            font-weight: 900;
+            margin-bottom: 30px;
+            line-height: 1;
+            animation: zoomInText 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
+            text-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .wrapped-year {
+            font-size: 24px;
+            opacity: 0.95;
+            margin-bottom: 80px;
+            animation: slideUpText 1s ease-out 0.4s both;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .btn-wrapped {
+            background: rgba(255, 255, 255, 0.3);
+            border: 3px solid rgba(255, 255, 255, 0.7);
+            color: white;
+            padding: 20px 60px;
+            font-size: 18px;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            animation: bounceButton 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.6s both;
+            letter-spacing: 1px;
+        }
+
+        .btn-wrapped:hover {
+            background: rgba(255, 255, 255, 0.5);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        /* ===== SCREEN 2: IMPACT ===== */
+        .screen-2 .screen-wrap {
+            background: linear-gradient(135deg, #FF006E 0%, #FB5607 50%, #FFBE0B 100%);
+            justify-content: center;
+        }
+
+        .wrapped-title-2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 72px;
+            font-weight: 900;
+            margin-bottom: 70px;
+            text-align: center;
+            animation: slideDownBounce 1s ease-out;
+        }
+
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+
+        .impact-card {
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(20px);
+            padding: 50px;
+            border-radius: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            text-align: center;
+            animation: popBounce 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            opacity: 0;
+            cursor: pointer;
+            transition: all 0.4s ease;
+        }
+
+        .impact-card:nth-child(1) { animation-delay: 0.3s; }
+        .impact-card:nth-child(2) { animation-delay: 0.5s; }
+        .impact-card:nth-child(3) { animation-delay: 0.7s; }
+
+        .impact-card:hover {
+            transform: translateY(-25px) scale(1.1);
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+        }
+
+        .impact-number {
+            font-size: 72px;
+            font-weight: 900;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #ffffff, #ffef96);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: scaleNumber 1.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;
+        }
+
+        .impact-label {
+            font-size: 18px;
+            font-weight: 600;
+            opacity: 0.95;
+        }
+
+        /* ===== SCREEN 3: SUPERPOWER ===== */
+        .screen-3 .screen-wrap {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            justify-content: center;
+        }
+
+        .superpower-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .superpower-text {
+            text-align: left;
+        }
+
+        .superpower-label {
+            font-size: 16px;
+            font-weight: 700;
+            opacity: 0.9;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: slideInLeft 1s ease-out;
+        }
+
+        .superpower-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 80px;
+            font-weight: 900;
+            margin-bottom: 50px;
+            background: linear-gradient(135deg, #fff, rgba(255, 255, 255, 0.8));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: slideInLeft 1s ease-out 0.2s both;
+            line-height: 1;
+        }
+
+        .breakdown {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .breakdown-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            animation: slideInLeft 0.8s ease-out forwards;
+            opacity: 0;
+        }
+
+        .breakdown-item:nth-child(1) { animation-delay: 0.4s; }
+        .breakdown-item:nth-child(2) { animation-delay: 0.5s; }
+        .breakdown-item:nth-child(3) { animation-delay: 0.6s; }
+        .breakdown-item:nth-child(4) { animation-delay: 0.7s; }
+
+        .breakdown-label {
+            font-weight: 600;
+            font-size: 16px;
+            min-width: 120px;
+        }
+
+        .breakdown-bar {
+            flex: 1;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .breakdown-fill {
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.7));
+            border-radius: 10px;
+            width: 0;
+            animation: fillBar 1.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        .breakdown-item:nth-child(1) .breakdown-fill { animation-delay: 0.5s; width: 45%; }
+        .breakdown-item:nth-child(2) .breakdown-fill { animation-delay: 0.6s; width: 32%; }
+        .breakdown-item:nth-child(3) .breakdown-fill { animation-delay: 0.7s; width: 18%; }
+        .breakdown-item:nth-child(4) .breakdown-fill { animation-delay: 0.8s; width: 5%; }
+
+        .breakdown-pct {
+            font-weight: 700;
+            font-size: 16px;
+            min-width: 40px;
+            text-align: right;
+        }
+
+        .donut-chart {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: conic-gradient(
+                from 0deg,
+                #ff006e 0% 45%,
+                #fb5607 45% 77%,
+                #ffbe0b 77% 95%,
+                #8338ec 95% 100%
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            animation: spinSlow 20s linear infinite;
+        }
+
+        .donut-center {
+            width: 240px;
+            height: 240px;
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        /* ===== SCREEN 4: NETWORK ===== */
+        .screen-4 .screen-wrap {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #4facfe 100%);
+            justify-content: center;
+        }
+
+        .impact-comparison {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 50px;
+            align-items: center;
+            max-width: 1000px;
+        }
+
+        .comparison-left,
+        .comparison-right {
+            text-align: center;
+            animation: slideInLeft 1s ease-out forwards;
+            opacity: 0;
+        }
+
+        .comparison-left { animation-delay: 0.2s; }
+        .comparison-right { animation-delay: 0.2s; animation-name: slideInRight; }
+
+        @keyframes slideInRight {
+            0% { opacity: 0; transform: translateX(60px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        .comparison-big-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 120px;
+            font-weight: 900;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #ffffff, #ffef96);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: scaleNumber 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;
+            line-height: 1;
+        }
+
+        .comparison-label {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            animation: slideUpText 1s ease-out 0.4s both;
+        }
+
+        .comparison-action {
+            font-size: 16px;
+            opacity: 0.8;
+            margin-bottom: 30px;
+            font-weight: 600;
+            animation: slideUpText 1s ease-out 0.5s both;
+        }
+
+        .comparison-nodes {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .comparison-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.25);
+            border: 3px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
+            animation: popBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            opacity: 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 700;
+        }
+
+        .comparison-left .comparison-avatar:nth-child(1) { animation-delay: 0.5s; }
+        .comparison-left .comparison-avatar:nth-child(2) { animation-delay: 0.6s; }
+        .comparison-left .comparison-avatar:nth-child(3) { animation-delay: 0.7s; }
+        .comparison-left .comparison-avatar:nth-child(4) { animation-delay: 0.8s; }
+        .comparison-left .comparison-avatar:nth-child(5) { animation-delay: 0.9s; font-size: 16px; }
+
+        .comparison-right .comparison-avatar:nth-child(1) { animation-delay: 0.5s; }
+        .comparison-right .comparison-avatar:nth-child(2) { animation-delay: 0.6s; }
+        .comparison-right .comparison-avatar:nth-child(3) { animation-delay: 0.7s; }
+        .comparison-right .comparison-avatar:nth-child(4) { animation-delay: 0.8s; font-size: 16px; }
+
+        .comparison-avatar:hover {
+            transform: scale(1.3);
+            box-shadow: 0 0 50px rgba(255, 255, 255, 0.8);
+        }
+
+        .comparison-divider {
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+            position: relative;
+            animation: slideUpText 1s ease-out 0.3s both;
+        }
+
+        .pulse-dot {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: white;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.5); }
+        }
+
+        /* ===== BADGES SCREEN ===== */
+        .badges-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            margin-bottom: 60px;
+            animation: slideUpText 1s ease-out 0.2s both;
+        }
+
+        .badges-section {
+            text-align: center;
+            animation: slideInLeft 1s ease-out forwards;
+            opacity: 0;
+        }
+
+        .badges-grid .badges-section:last-child {
+            animation-name: slideInRight;
+        }
+
+        .badges-label {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 40px;
+            animation: slideUpText 1s ease-out 0.3s both;
+        }
+
+        .badge-items {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .badge-item {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            padding: 25px;
+            border-radius: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            animation: popBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            opacity: 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .badges-section:nth-child(1) .badge-item:nth-child(1) { animation-delay: 0.4s; }
+        .badges-section:nth-child(1) .badge-item:nth-child(2) { animation-delay: 0.5s; }
+        .badges-section:nth-child(1) .badge-item:nth-child(3) { animation-delay: 0.6s; }
+        .badges-section:nth-child(2) .badge-item:nth-child(1) { animation-delay: 0.4s; }
+        .badges-section:nth-child(2) .badge-item:nth-child(2) { animation-delay: 0.5s; }
+        .badges-section:nth-child(2) .badge-item:nth-child(3) { animation-delay: 0.6s; }
+
+        .badge-item:hover {
+            transform: translateY(-12px) scale(1.08);
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .badge-icon {
+            font-size: 48px;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        .badges-section:nth-child(1) .badge-item:nth-child(1) .badge-icon { animation-delay: 0.4s; }
+        .badges-section:nth-child(1) .badge-item:nth-child(2) .badge-icon { animation-delay: 0.5s; }
+        .badges-section:nth-child(1) .badge-item:nth-child(3) .badge-icon { animation-delay: 0.6s; }
+
+        .badge-name {
+            flex: 1;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .badge-count {
+            font-size: 24px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffc0ff, #ffff00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .leaderboard-section {
+            animation: popBounce 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) 0.7s both;
+        }
+
+        .leaderboard-stat {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            padding: 40px;
+            border-radius: 24px;
+            border: 3px solid rgba(255, 255, 255, 0.4);
+            text-align: center;
+        }
+
+        .leaderboard-number {
+            font-size: 80px;
+            font-weight: 900;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #ffc0ff, #ffff00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: scaleNumber 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.8s both;
+        }
+
+        .leaderboard-label {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        /* ===== AWARD SCREEN ===== */
+        .award-container {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr 0.8fr;
+            gap: 40px;
+            align-items: center;
+            animation: slideUpText 1s ease-out 0.2s both;
+        }
+
+        .award-main {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 165, 0, 0.2));
+            backdrop-filter: blur(20px);
+            padding: 50px;
+            border-radius: 30px;
+            border: 3px solid rgba(255, 215, 0, 0.5);
+            text-align: center;
+            animation: popBounce 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;
+            box-shadow: 0 0 80px rgba(255, 215, 0, 0.3);
+        }
+
+        .award-icon {
+            font-size: 100px;
+            margin-bottom: 20px;
+            animation: bounce 2s ease-in-out infinite 0.4s;
+            display: inline-block;
+        }
+
+        .award-name {
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: rgba(255, 215, 0, 0.95);
+            animation: slideUpText 1s ease-out 0.5s both;
+        }
+
+        .award-value {
+            font-size: 56px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            animation: scaleNumber 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.6s both;
+        }
+
+        .award-date {
+            font-size: 14px;
+            opacity: 0.85;
+            animation: slideUpText 1s ease-out 0.7s both;
+        }
+
+        .award-story {
+            animation: slideInLeft 1s ease-out 0.4s both;
+        }
+
+        .story-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 25px;
+            animation: slideUpText 1s ease-out 0.5s both;
+        }
+
+        .story-content {
+            font-size: 18px;
+            line-height: 1.8;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            padding: 30px;
+            border-radius: 20px;
+            border-left: 5px solid rgba(255, 215, 0, 0.6);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            animation: slideUpText 1s ease-out 0.6s both;
+        }
+
+        .awards-total {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            padding: 35px;
+            border-radius: 24px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            text-align: center;
+            animation: slideInRight 1s ease-out 0.4s both;
+        }
+
+        .total-number {
+            font-size: 72px;
+            font-weight: 900;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #ffc0ff, #ffff00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: scaleNumber 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.7s both;
+        }
+
+        .total-label {
+            font-size: 14px;
+            font-weight: 700;
+            opacity: 0.9;
+        }
+
+        /* ===== LEADERBOARD SCREEN ===== */
+        .screen-4b .screen-wrap {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF6B6B 100%);
+            justify-content: center;
+        }
+
+        .leaderboard-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            max-width: 1000px;
+            animation: slideUpText 1s ease-out 0.2s both;
+        }
+
+        .leaderboard-big-stat {
+            text-align: center;
+            animation: slideInLeft 1s ease-out 0.3s both;
+        }
+
+        .leaderboard-big-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 150px;
+            font-weight: 900;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #ffffff, #ffe6e6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: scaleNumber 1.3s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s both;
+            line-height: 1;
+        }
+
+        .leaderboard-big-label {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            animation: slideUpText 1s ease-out 0.5s both;
+        }
+
+        .leaderboard-subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+            font-weight: 600;
+            animation: slideUpText 1s ease-out 0.6s both;
+        }
+
+        .leaderboard-detail {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            animation: slideInRight 1s ease-out 0.3s both;
+        }
+
+        .detail-row {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            padding: 35px;
+            border-radius: 24px;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: popBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            opacity: 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .detail-row:nth-child(1) { animation-delay: 0.4s; }
+        .detail-row:nth-child(2) { animation-delay: 0.5s; }
+        .detail-row:nth-child(3) { animation-delay: 0.6s; }
+
+        .detail-row:hover {
+            transform: translateX(20px) scale(1.08);
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        .rank {
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .count {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff, #ffef96);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ===== SCREEN 5: MOMENTS ===== */
+        .screen-5 .screen-wrap {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 50%, #ffe66d 100%);
+            color: #1a1a1a;
+            justify-content: center;
+        }
+
+        .moments-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 72px;
+            font-weight: 900;
+            margin-bottom: 60px;
+            text-align: center;
+            animation: slideDownBounce 1s ease-out;
+        }
+
+        .moments-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .moment-card {
+            background: white;
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            animation: slideUpZoom 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            opacity: 0;
+            cursor: pointer;
+            transition: all 0.4s ease;
+        }
+
+        .moment-card:nth-child(1) { animation-delay: 0.3s; }
+        .moment-card:nth-child(2) { animation-delay: 0.5s; }
+        .moment-card:nth-child(3) { animation-delay: 0.7s; }
+
+        .moment-card:hover {
+            transform: translateY(-20px) scale(1.05);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
+        }
+
+        .moment-month {
+            font-size: 32px;
+            font-weight: 800;
+            color: #a8edea;
+            margin-bottom: 15px;
+        }
+
+        .moment-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #1a1a1a;
+        }
+
+        .moment-desc {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* ===== SCREEN 6: STORY ===== */
+        .screen-6 .screen-wrap {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            text-align: center;
+            justify-content: center;
+        }
+
+        .story-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 72px;
+            font-weight: 900;
+            margin-bottom: 50px;
+            animation: slideDownBounce 1s ease-out;
+        }
+
+        .story-text {
+            font-size: 26px;
+            line-height: 1.8;
+            max-width: 800px;
+            animation: fadeInUp 1.5s ease-out 0.2s both;
+            font-weight: 400;
+        }
+
+        .story-text strong {
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffd89b, #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ===== SCREEN 8: THANK YOU ===== */
+        .screen-8 .screen-wrap {
+            background: linear-gradient(135deg, #1DB954 0%, #1ed760 50%, #1DB954 100%);
+            text-align: center;
+            justify-content: center;
+        }
+
+        .thank-you-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 100px;
+            font-weight: 900;
+            margin-bottom: 50px;
+            animation: zoomInText 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .final-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            margin-bottom: 60px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .final-stat-card {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            padding: 30px;
+            border-radius: 24px;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            animation: popBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            opacity: 0;
+        }
+
+        .final-stat-card:nth-child(1) { animation-delay: 0.3s; }
+        .final-stat-card:nth-child(2) { animation-delay: 0.5s; }
+        .final-stat-card:nth-child(3) { animation-delay: 0.7s; }
+        .final-stat-card:nth-child(4) { animation-delay: 0.9s; }
+
+        .final-number {
+            font-size: 52px;
+            font-weight: 900;
+            margin-bottom: 8px;
+        }
+
+        .final-label {
+            font-size: 14px;
+            font-weight: 600;
+            opacity: 0.9;
+        }
+
+        .thank-message {
+            font-size: 28px;
+            margin: 50px 0;
+            font-weight: 600;
+            animation: slideUpText 1s ease-out 0.4s both;
+        }
+
+        .final-buttons {
+            display: flex;
+            gap: 25px;
+            justify-content: center;
+            animation: slideUpText 1s ease-out 0.6s both;
+        }
+
+        .btn-final {
+            background: rgba(255, 255, 255, 0.3);
+            border: 3px solid rgba(255, 255, 255, 0.7);
+            color: white;
+            padding: 18px 45px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            letter-spacing: 1px;
+        }
+
+        .btn-final:hover {
+            background: rgba(255, 255, 255, 0.5);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        /* ===== NAVIGATION ===== */
+        .nav-dots-wrap {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 14px;
+            z-index: 20;
+        }
+
+        .nav-dot-wrap {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            transition: all 0.4s ease;
+        }
+
+        .nav-dot-wrap.active {
+            background: white;
+            transform: scale(1.5);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes orbitFloat {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(50px, -50px) rotate(90deg); }
+            50% { transform: translate(0, -100px) rotate(180deg); }
+            75% { transform: translate(-50px, -50px) rotate(270deg); }
+            100% { transform: translate(0, 0) rotate(360deg); }
+        }
+
+        @keyframes glowPulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 50px rgba(29, 185, 84, 0.6);
+            }
+            50% {
+                transform: scale(1.08);
+                box-shadow: 0 0 80px rgba(29, 185, 84, 0.9);
+            }
+        }
+
+        @keyframes slideDownBounce {
+            0% { opacity: 0; transform: translateY(-60px); }
+            60% { transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes zoomInText {
+            0% { opacity: 0; transform: scale(0.3); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes slideUpText {
+            0% { opacity: 0; transform: translateY(50px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes bounceButton {
+            0% { opacity: 0; transform: scale(0) translateY(50px); }
+            50% { transform: scale(1.1); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes popBounce {
+            0% { opacity: 0; transform: scale(0) rotate(-180deg); }
+            70% { transform: scale(1.15); }
+            100% { opacity: 1; transform: scale(1) rotate(0); }
+        }
+
+        @keyframes scaleNumber {
+            0% { opacity: 0; transform: scale(0.2); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes slideInLeft {
+            0% { opacity: 0; transform: translateX(-60px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes fillBar {
+            from { width: 0; }
+        }
+
+        @keyframes spinSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes slideUpZoom {
+            0% { opacity: 0; transform: translateY(60px) scale(0.9); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(40px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .screen-wrap {
+                padding: 40px 20px;
+                height: auto;
+                border-radius: 30px;
+            }
+            .wrapped-title { font-size: 60px; }
+            .wrapped-title-2 { font-size: 48px; }
+            .impact-grid { grid-template-columns: 1fr; }
+            .superpower-grid { grid-template-columns: 1fr; }
+            .moments-grid { grid-template-columns: 1fr; }
+            .final-stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .nav-dots-wrap { bottom: 20px; gap: 8px; }
+            .nav-dot-wrap { width: 10px; height: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- SCREEN 1 -->
+        <div class="screen active" id="screen-1">
+            <div class="screen-wrap">
+                <div class="wrapped-hero">
+                    <div class="wrapped-avatar">👤</div>
+                    <div class="wrapped-name">Sarah Johnson</div>
+                </div>
+                <div class="wrapped-hero">
+                    <div class="wrapped-title">Your 2026</div>
+                    <div class="wrapped-year">A Year of Recognition and Impact</div>
+                    <button class="btn-wrapped" onclick="goToWrapped(2)">SEE YOUR YEAR →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 2 -->
+        <div class="screen" id="screen-2">
+            <div class="screen-wrap">
+                <div class="wrapped-title-2">You Made An Impact</div>
+                <div class="impact-grid">
+                    <div class="impact-card">
+                        <div class="impact-number">52</div>
+                        <div class="impact-label">Recognitions Received</div>
+                    </div>
+                    <div class="impact-card">
+                        <div class="impact-number">37</div>
+                        <div class="impact-label">Recognitions Given</div>
+                    </div>
+                    <div class="impact-card">
+                        <div class="impact-number">12</div>
+                        <div class="impact-label">Teams Connected</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 3 -->
+        <div class="screen" id="screen-3">
+            <div class="screen-wrap">
+                <div class="wrapped-title-2">Your Superpower</div>
+                <div class="superpower-grid">
+                    <div class="superpower-text">
+                        <div class="superpower-label">Your Top Value</div>
+                        <div class="superpower-value">Collaboration</div>
+                        <div class="breakdown">
+                            <div class="breakdown-item">
+                                <div class="breakdown-label">Collaboration</div>
+                                <div class="breakdown-bar"><div class="breakdown-fill"></div></div>
+                                <div class="breakdown-pct">45%</div>
+                            </div>
+                            <div class="breakdown-item">
+                                <div class="breakdown-label">Leadership</div>
+                                <div class="breakdown-bar"><div class="breakdown-fill"></div></div>
+                                <div class="breakdown-pct">32%</div>
+                            </div>
+                            <div class="breakdown-item">
+                                <div class="breakdown-label">Innovation</div>
+                                <div class="breakdown-bar"><div class="breakdown-fill"></div></div>
+                                <div class="breakdown-pct">18%</div>
+                            </div>
+                            <div class="breakdown-item">
+                                <div class="breakdown-label">Ownership</div>
+                                <div class="breakdown-bar"><div class="breakdown-fill"></div></div>
+                                <div class="breakdown-pct">5%</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="donut-chart">
+                        <div class="donut-center">Your Values</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 4 -->
+        <div class="screen" id="screen-4">
+            <div class="screen-wrap">
+                <div class="wrapped-title-2" style="margin-bottom: 50px;">Your Recognition Badges</div>
+                <div class="badges-grid">
+                    <div class="badges-section">
+                        <div class="badges-label">🎁 Badges You Gave</div>
+                        <div class="badge-items">
+                            <div class="badge-item">
+                                <div class="badge-icon">⭐</div>
+                                <div class="badge-name">Collaboration</div>
+                                <div class="badge-count">18x</div>
+                            </div>
+                            <div class="badge-item">
+                                <div class="badge-icon">🚀</div>
+                                <div class="badge-name">Innovation</div>
+                                <div class="badge-count">12x</div>
+                            </div>
+                            <div class="badge-item">
+                                <div class="badge-icon">💡</div>
+                                <div class="badge-name">Leadership</div>
+                                <div class="badge-count">7x</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="badges-section">
+                        <div class="badges-label">🏆 Badges You Received</div>
+                        <div class="badge-items">
+                            <div class="badge-item">
+                                <div class="badge-icon">⭐</div>
+                                <div class="badge-name">Collaboration</div>
+                                <div class="badge-count">22x</div>
+                            </div>
+                            <div class="badge-item">
+                                <div class="badge-icon">🎯</div>
+                                <div class="badge-name">Excellence</div>
+                                <div class="badge-count">16x</div>
+                            </div>
+                            <div class="badge-item">
+                                <div class="badge-icon">💪</div>
+                                <div class="badge-name">Ownership</div>
+                                <div class="badge-count">14x</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 4B - LEADERBOARD -->
+        <div class="screen" id="screen-4b">
+            <div class="screen-wrap">
+                <div class="wrapped-title-2" style="margin-bottom: 100px;">Your Leaderboard Ranking</div>
+                <div class="leaderboard-container">
+                    <div class="leaderboard-big-stat">
+                        <div class="leaderboard-big-number">8</div>
+                        <div class="leaderboard-big-label">Times in Top 3</div>
+                        <div class="leaderboard-subtitle">Monthly Recognition Leaders</div>
+                    </div>
+                    <div class="leaderboard-detail">
+                        <div class="detail-row">
+                            <span class="rank">🥇 1st Place</span>
+                            <span class="count">2 months</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="rank">🥈 2nd Place</span>
+                            <span class="count">3 months</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="rank">🥉 3rd Place</span>
+                            <span class="count">3 months</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 5 - TOP AWARD -->
+        <div class="screen" id="screen-5">
+            <div class="screen-wrap">
+                <div class="wrapped-title-2" style="margin-bottom: 60px;">Your Greatest Achievement</div>
+                <div class="award-container">
+                    <div class="award-main">
+                        <div class="award-icon">🏅</div>
+                        <div class="award-name">Excellence in Leadership Award</div>
+                        <div class="award-value">$5,000</div>
+                        <div class="award-date">Awarded: December 2026</div>
+                    </div>
+                    <div class="award-story">
+                        <div class="story-title">Your Story</div>
+                        <div class="story-content">
+                            Recognized for exceptional leadership throughout 2026. You transformed three departments, mentored 5 high-potential employees, and led the most successful recognition campaign in company history. Your impact was measurable, your dedication unwavering.
+                        </div>
+                    </div>
+                    <div class="awards-total">
+                        <div class="total-number">4</div>
+                        <div class="total-label">Total Awards in Career</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 6 -->
+        <div class="screen" id="screen-6">
+            <div class="screen-wrap">
+                <div class="moments-title">Your Biggest Moments</div>
+                <div class="moments-grid">
+                    <div class="moment-card">
+                        <div class="moment-month">March</div>
+                        <div class="moment-title">Client Excellence</div>
+                        <div class="moment-desc">Recognized for exceptional client support and problem-solving</div>
+                    </div>
+                    <div class="moment-card">
+                        <div class="moment-month">June</div>
+                        <div class="moment-title">Mentorship</div>
+                        <div class="moment-desc">Praised for mentoring 3 new team members to excellence</div>
+                    </div>
+                    <div class="moment-card">
+                        <div class="moment-month">September</div>
+                        <div class="moment-title">Leadership</div>
+                        <div class="moment-desc">Led annual campaign with record-breaking results</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 7 - STORY -->
+        <div class="screen" id="screen-7">
+            <div class="screen-wrap">
+                <div class="story-title">Your Story</div>
+                <div class="story-text">
+                    Throughout 2026, you <strong>inspired those around you</strong>, demonstrated <strong>consistent excellence</strong>, and became a <strong>trusted leader</strong>. Your <strong>collaborative spirit</strong> and <strong>genuine care</strong> for your colleagues created a ripple of positive impact across every team you touched. That's your legacy.
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 8 - THANK YOU -->
+        <div class="screen" id="screen-8">
+            <div class="screen-wrap">
+                <div class="thank-you-title">Thank You</div>
+                <div class="final-stats-grid">
+                    <div class="final-stat-card">
+                        <div class="final-number">52</div>
+                        <div class="final-label">Moments</div>
+                    </div>
+                    <div class="final-stat-card">
+                        <div class="final-number">37</div>
+                        <div class="final-label">Connections</div>
+                    </div>
+                    <div class="final-stat-card">
+                        <div class="final-number">12</div>
+                        <div class="final-label">Teams</div>
+                    </div>
+                    <div class="final-stat-card">
+                        <div class="final-number">∞</div>
+                        <div class="final-label">Impact</div>
+                    </div>
+                </div>
+                <div class="thank-message">Share your 2026</div>
+                <div class="final-buttons">
+                    <button class="btn-final" onclick="alert('📥 Downloading...')">DOWNLOAD</button>
+                    <button class="btn-final" onclick="alert('📤 Sharing...')">SHARE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NAV -->
+    <div class="nav-dots-wrap">
+        <div class="nav-dot-wrap active" onclick="goToWrapped(1)"></div>
+        <div class="nav-dot-wrap" onclick="goToWrapped(2)"></div>
+        <div class="nav-dot-wrap" onclick="goToWrapped(3)"></div>
+        <div class="nav-dot-wrap" onclick="goToWrapped(4)"></div>
+        <div class="nav-dot-wrap" onclick="goToWrapped(4.5)"></div>
+        <div class="nav-dot-wrap" onclick="goToWrapped(5)"></div>
+        <div class="nav-dot-wrap" onclick="goToWrapped(6)"></div>
+        <div class="nav-dot-wrap" onclick="goToWrapped(7)"></div>
+        <div class="nav-dot-wrap" onclick="goToWrapped(8)"></div>
+    </div>
+
+    <script>
+        let current = 1;
+
+        function goToWrapped(n) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            const screenId = n === 4.5 ? 'screen-4b' : `screen-${n}`;
+            document.getElementById(screenId).classList.add('active');
+            document.querySelectorAll('.nav-dot-wrap').forEach((d, i) => {
+                const dotValue = i === 4 ? 4.5 : (i < 4 ? i + 1 : i);
+                d.classList.toggle('active', dotValue === n);
+            });
+            current = n;
+        }
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'ArrowRight') {
+                const nextScreen = current === 4 ? 4.5 : (current === 4.5 ? 5 : (current < 9 ? current + 1 : 9));
+                if (nextScreen <= 9) goToWrapped(nextScreen);
+            }
+            if (e.key === 'ArrowLeft') {
+                const prevScreen = current === 5 ? 4.5 : (current === 4.5 ? 4 : (current > 1 ? current - 1 : 1));
+                if (prevScreen >= 1) goToWrapped(prevScreen);
+            }
+        });
+    </script>
+</body>
+</html>

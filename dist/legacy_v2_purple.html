@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Legacy - Premium Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1a0033, #330066, #1a0033);
+            color: #1a1a1a;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1200px;
+        }
+
+        .screen {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: translateX(120px) rotateY(30deg) rotateZ(5deg);
+            pointer-events: none;
+            transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .screen.active {
+            opacity: 1;
+            transform: translateX(0) rotateY(0deg) rotateZ(0deg);
+            pointer-events: auto;
+            z-index: 10;
+        }
+
+        .screen.prev {
+            opacity: 0;
+            transform: translateX(-120px) rotateY(-30deg) rotateZ(-5deg);
+        }
+
+        .screen-content {
+            width: 90%;
+            max-width: 1000px;
+            height: 90vh;
+            max-height: 950px;
+            border-radius: 40px;
+            padding: 70px 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 40px 100px rgba(138, 43, 226, 0.4);
+        }
+
+        /* ===== SCREEN 1: HERO ===== */
+        .screen-1 .screen-content {
+            background: linear-gradient(135deg, #6a0dad 0%, #8b00ff 50%, #b333ff 100%);
+            color: white;
+            text-align: center;
+            justify-content: center;
+        }
+
+        .screen-1 .screen-content::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -15%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255, 200, 255, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: floatMedium 8s ease-in-out infinite;
+        }
+
+        .screen-1 .screen-content::after {
+            content: '';
+            position: absolute;
+            bottom: -20%;
+            left: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(200, 100, 255, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: floatMedium 10s ease-in-out infinite reverse;
+        }
+
+        .hero-legacy {
+            position: relative;
+            z-index: 2;
+        }
+
+        .legacy-photo {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
+            margin: 0 auto 40px;
+            border: 3px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 70px;
+            animation: pulseGlow 2s ease-in-out infinite;
+        }
+
+        .hero-name {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 50px;
+            animation: slideUp 1s ease-out 0.2s both;
+        }
+
+        .legacy-headline {
+            font-family: 'Playfair Display', serif;
+            font-size: 72px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            line-height: 1.1;
+            text-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+            animation: slideUp 1s ease-out 0.3s both;
+        }
+
+        .legacy-subheadline {
+            font-size: 20px;
+            opacity: 0.95;
+            margin-bottom: 60px;
+            line-height: 1.6;
+            font-weight: 300;
+            animation: slideUp 1s ease-out 0.4s both;
+        }
+
+        /* ===== SCREEN 2: WHERE IT STARTED ===== */
+        .screen-2 .screen-content {
+            background: linear-gradient(135deg, #4d0099 0%, #6600cc 50%, #7f1aff 100%);
+            color: white;
+        }
+
+        .timeline-intro {
+            position: relative;
+            z-index: 2;
+            animation: slideUp 1s ease-out 0.2s both;
+        }
+
+        .screen-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 56px;
+            font-weight: 900;
+            margin-bottom: 50px;
+            color: rgba(255, 200, 255, 0.95);
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .start-info {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-bottom: 0;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            padding: 40px;
+            border-radius: 20px;
+            border: 2px solid rgba(255, 200, 255, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            animation: popInScale 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            transform-origin: center;
+        }
+
+        .info-card:nth-child(1) { animation-delay: 0.3s; }
+        .info-card:nth-child(2) { animation-delay: 0.5s; }
+        .info-card:nth-child(3) { animation-delay: 0.7s; }
+
+        .info-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            border-color: rgba(255, 200, 255, 0.6);
+        }
+
+        .info-label {
+            font-size: 14px;
+            color: rgba(255, 200, 255, 0.8);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .info-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+        }
+
+        /* ===== SCREEN 3: RECOGNITION JOURNEY ===== */
+        .screen-3 .screen-content {
+            background: linear-gradient(135deg, #6b0ad9 0%, #9d00ff 50%, #c000ff 100%);
+            color: white;
+        }
+
+        .journey-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+            animation: slideUp 1s ease-out 0.2s both;
+        }
+
+        .journey-card {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(15px);
+            padding: 35px;
+            border-radius: 20px;
+            border: 2px solid rgba(255, 200, 255, 0.25);
+            text-align: center;
+            opacity: 0;
+            animation: bounceIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .journey-card:nth-child(1) { animation-delay: 0.3s; }
+        .journey-card:nth-child(2) { animation-delay: 0.4s; }
+        .journey-card:nth-child(3) { animation-delay: 0.5s; }
+        .journey-card:nth-child(4) { animation-delay: 0.6s; }
+
+        .journey-card:hover {
+            transform: translateY(-15px) scale(1.08);
+            background: rgba(255, 255, 255, 0.18);
+            border-color: rgba(255, 200, 255, 0.6);
+            box-shadow: 0 20px 50px rgba(255, 0, 255, 0.3);
+        }
+
+        .journey-number {
+            font-size: 52px;
+            font-weight: 900;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #ffc0ff, #ffff00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .journey-label {
+            font-size: 16px;
+            opacity: 0.95;
+            font-weight: 500;
+        }
+
+        /* ===== SCREEN 4: PEOPLE IMPACTED ===== */
+        .screen-4 .screen-content {
+            background: linear-gradient(135deg, #7700bb 0%, #aa00ff 50%, #dd00ff 100%);
+            color: white;
+        }
+
+        .impact-text {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 50px;
+            animation: slideUp 1s ease-out 0.2s both;
+        }
+
+        .network-visualization {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 60px;
+            flex-wrap: wrap;
+            animation: slideUp 1s ease-out 0.3s both;
+        }
+
+        .network-item {
+            text-align: center;
+            opacity: 0;
+            animation: zoomIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        .network-item:nth-child(1) { animation-delay: 0.3s; }
+        .network-item:nth-child(2) { animation-delay: 0.5s; }
+        .network-item:nth-child(3) { animation-delay: 0.7s; }
+
+        .network-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            border: 3px solid rgba(255, 200, 255, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 48px;
+            box-shadow: 0 0 30px rgba(255, 100, 255, 0.4);
+            animation: spinFloat 6s linear infinite;
+        }
+
+        .network-stat {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .network-desc {
+            font-size: 14px;
+            opacity: 0.85;
+            margin-top: 8px;
+        }
+
+        /* ===== SCREEN 5: TESTIMONIALS ===== */
+        .screen-5 .screen-content {
+            background: linear-gradient(135deg, #5500aa 0%, #8800dd 50%, #bb00ff 100%);
+            color: white;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin-top: 40px;
+            animation: slideUp 1s ease-out 0.2s both;
+        }
+
+        .testimonial-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+            border-top: 4px solid rgba(255, 200, 255, 0.8);
+            border-left: 2px solid rgba(255, 100, 255, 0.6);
+            opacity: 0;
+            animation: slideInLeft 0.8s ease-out forwards;
+        }
+
+        .testimonial-card:nth-child(1) { animation-delay: 0.3s; }
+        .testimonial-card:nth-child(2) { animation-delay: 0.4s; }
+        .testimonial-card:nth-child(3) { animation-delay: 0.5s; }
+        .testimonial-card:nth-child(4) { animation-delay: 0.6s; }
+
+        .testimonial-card:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .testimonial-text {
+            font-size: 16px;
+            line-height: 1.7;
+            margin-bottom: 16px;
+            font-style: italic;
+            color: white;
+        }
+
+        .testimonial-author {
+            font-size: 13px;
+            color: rgba(255, 200, 255, 0.9);
+            font-weight: 600;
+        }
+
+        /* ===== SCREEN 6: VALUES ===== */
+        .screen-6 .screen-content {
+            background: linear-gradient(135deg, #660099 0%, #9900cc 50%, #cc00ff 100%);
+            color: white;
+        }
+
+        .values-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-top: 40px;
+            animation: slideUp 1s ease-out 0.2s both;
+        }
+
+        .value-item {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(15px);
+            padding: 25px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(255, 200, 255, 0.25);
+            opacity: 0;
+            animation: flipIn 0.8s ease-out forwards;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .value-item:nth-child(1) { animation-delay: 0.3s; }
+        .value-item:nth-child(2) { animation-delay: 0.4s; }
+        .value-item:nth-child(3) { animation-delay: 0.5s; }
+        .value-item:nth-child(4) { animation-delay: 0.6s; }
+
+        .value-item:hover {
+            transform: translateY(-12px) rotateY(5deg);
+            background: rgba(255, 255, 255, 0.18);
+            border-color: rgba(255, 200, 255, 0.8);
+            box-shadow: 0 20px 50px rgba(255, 100, 255, 0.3);
+        }
+
+        .value-icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        .value-item:nth-child(2) .value-icon { animation-delay: 0.2s; }
+        .value-item:nth-child(3) .value-icon { animation-delay: 0.4s; }
+        .value-item:nth-child(4) .value-icon { animation-delay: 0.6s; }
+
+        .value-name {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: rgba(255, 200, 255, 0.95);
+        }
+
+        .value-stat {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 600;
+        }
+
+        /* ===== SCREEN 7: CAREER HIGHLIGHTS ===== */
+        .screen-7 .screen-content {
+            background: linear-gradient(135deg, #550088 0%, #7700aa 50%, #9900cc 100%);
+            color: white;
+            justify-content: flex-start;
+            padding-top: 60px;
+            overflow-y: auto;
+        }
+
+        .highlights-timeline {
+            position: relative;
+            margin-top: 40px;
+            animation: slideUp 1s ease-out 0.2s both;
+        }
+
+        .highlight-item {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: 40px;
+            margin-bottom: 50px;
+            align-items: start;
+            opacity: 0;
+            animation: slideInLeftBig 0.8s ease-out forwards;
+        }
+
+        .highlight-item:nth-child(1) { animation-delay: 0.2s; }
+        .highlight-item:nth-child(2) { animation-delay: 0.3s; }
+        .highlight-item:nth-child(3) { animation-delay: 0.4s; }
+        .highlight-item:nth-child(4) { animation-delay: 0.5s; }
+        .highlight-item:nth-child(5) { animation-delay: 0.6s; }
+
+        .highlight-year {
+            font-size: 32px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffc0ff, #ffff00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .highlight-content {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(15px);
+            padding: 25px;
+            border-radius: 16px;
+            border-left: 4px solid rgba(255, 200, 255, 0.6);
+            border: 2px solid rgba(255, 200, 255, 0.25);
+            transition: all 0.3s ease;
+        }
+
+        .highlight-item:hover .highlight-content {
+            background: rgba(255, 255, 255, 0.18);
+            border-color: rgba(255, 200, 255, 0.6);
+            box-shadow: 0 15px 40px rgba(255, 100, 255, 0.2);
+        }
+
+        .highlight-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: rgba(255, 200, 255, 0.95);
+        }
+
+        .highlight-desc {
+            font-size: 14px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        /* ===== SCREEN 8: LEGACY ===== */
+        .screen-8 .screen-content {
+            background: linear-gradient(135deg, #440066 0%, #660099 50%, #8800cc 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .legacy-summary {
+            margin: 40px 0;
+            animation: slideUp 1s ease-out 0.2s both;
+        }
+
+        .legacy-headline {
+            font-family: 'Playfair Display', serif;
+            font-size: 64px;
+            font-weight: 900;
+            margin-bottom: 40px;
+            line-height: 1.2;
+            text-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .legacy-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            margin-bottom: 50px;
+            animation: slideUp 1s ease-out 0.3s both;
+        }
+
+        .legacy-stat {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(15px);
+            padding: 25px;
+            border-radius: 16px;
+            border: 2px solid rgba(255, 200, 255, 0.3);
+            opacity: 0;
+            animation: popInScale 0.7s ease-out forwards;
+        }
+
+        .legacy-stat:nth-child(1) { animation-delay: 0.3s; }
+        .legacy-stat:nth-child(2) { animation-delay: 0.4s; }
+        .legacy-stat:nth-child(3) { animation-delay: 0.5s; }
+        .legacy-stat:nth-child(4) { animation-delay: 0.6s; }
+
+        .legacy-stat:hover {
+            transform: translateY(-10px) scale(1.05);
+            background: rgba(255, 255, 255, 0.18);
+            border-color: rgba(255, 200, 255, 0.6);
+        }
+
+        .legacy-stat-value {
+            font-size: 38px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #ffc0ff, #ffff00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .legacy-stat-label {
+            font-size: 13px;
+            opacity: 0.8;
+            font-weight: 500;
+        }
+
+        .legacy-statement {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            font-weight: 700;
+            margin: 50px 0;
+            opacity: 0.95;
+            animation: fadeIn 1.5s ease-out 0.5s both;
+            line-height: 1.6;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            animation: slideUp 1s ease-out 0.7s both;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ffc0ff, #ff00ff);
+            color: #1a1a1a;
+            padding: 16px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(255, 0, 255, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(255, 0, 255, 0.6);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 200, 255, 0.6);
+            color: white;
+            padding: 14px 38px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: white;
+        }
+
+        /* ===== NAVIGATION ===== */
+        .nav-dots {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            z-index: 20;
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(200, 100, 255, 0.3);
+            border: 2px solid rgba(255, 200, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-dot.active {
+            background: rgba(255, 100, 255, 0.8);
+            transform: scale(1.3);
+            box-shadow: 0 0 20px rgba(255, 100, 255, 0.6);
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInLeftBig {
+            from {
+                opacity: 0;
+                transform: translateX(-60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes popInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.6) rotateX(60deg);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) rotateX(0deg);
+            }
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0) translateY(40px);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.1);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0) rotate(-180deg);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) rotate(0);
+            }
+        }
+
+        @keyframes flipIn {
+            from {
+                opacity: 0;
+                transform: rotateY(90deg) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: rotateY(0deg) scale(1);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes floatMedium {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-30px) rotate(5deg);
+            }
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 100, 255, 0.4);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 15px rgba(255, 100, 255, 0);
+            }
+        }
+
+        @keyframes spinFloat {
+            0% {
+                transform: rotate(0deg) translateY(0px);
+            }
+            50% {
+                transform: rotate(180deg) translateY(-10px);
+            }
+            100% {
+                transform: rotate(360deg) translateY(0px);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        /* ===== MOBILE ===== */
+        @media (max-width: 768px) {
+            .screen-content {
+                padding: 40px 20px;
+                border-radius: 24px;
+                height: auto;
+                max-height: none;
+            }
+
+            .legacy-headline {
+                font-size: 48px;
+            }
+
+            .screen-title {
+                font-size: 36px;
+            }
+
+            .start-info {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .journey-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .network-visualization {
+                gap: 30px;
+            }
+
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .values-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+
+            .legacy-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .highlight-item {
+                grid-template-columns: 80px 1fr;
+                gap: 20px;
+            }
+
+            .button-group {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .nav-dots {
+                bottom: 20px;
+                gap: 8px;
+            }
+
+            .nav-dot {
+                width: 10px;
+                height: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- SCREEN 1: HERO -->
+        <div class="screen active" id="screen-1">
+            <div class="screen-content">
+                <div class="hero-legacy">
+                    <div class="legacy-photo">👤</div>
+                    <div class="hero-name">Alexandria Martinez</div>
+                </div>
+                <div class="hero-legacy">
+                    <div class="legacy-headline">Your Legacy</div>
+                    <div class="legacy-subheadline">12 Years of Excellence, Impact and Innovation</div>
+                    <button class="cta-button" onclick="nextScreen()" style="background: rgba(255, 200, 255, 0.3); border: 2px solid rgba(255, 200, 255, 0.6); color: white; padding: 16px 40px; font-size: 16px; font-weight: 600; border-radius: 50px; cursor: pointer; transition: all 0.3s ease;">
+                        Begin Journey →
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 2: WHERE IT STARTED -->
+        <div class="screen" id="screen-2">
+            <div class="screen-content">
+                <div class="timeline-intro">
+                    <div class="screen-title">Where It All Started</div>
+                    <div class="start-info">
+                        <div class="info-card">
+                            <div class="info-label">Joined</div>
+                            <div class="info-value">2013</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-label">First Department</div>
+                            <div class="info-value">Engineering</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-label">First Role</div>
+                            <div class="info-value">Junior Developer</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 3: RECOGNITION JOURNEY -->
+        <div class="screen" id="screen-3">
+            <div class="screen-content">
+                <div class="screen-title">Your Recognition Journey</div>
+                <div class="journey-grid">
+                    <div class="journey-card">
+                        <div class="journey-number">742</div>
+                        <div class="journey-label">Recognitions Received</div>
+                    </div>
+                    <div class="journey-card">
+                        <div class="journey-number">518</div>
+                        <div class="journey-label">Recognitions Given</div>
+                    </div>
+                    <div class="journey-card">
+                        <div class="journey-number">76</div>
+                        <div class="journey-label">Badges Earned</div>
+                    </div>
+                    <div class="journey-card">
+                        <div class="journey-number">14</div>
+                        <div class="journey-label">Awards Received</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 4: PEOPLE IMPACTED -->
+        <div class="screen" id="screen-4">
+            <div class="screen-content">
+                <div class="screen-title">The People You Impacted</div>
+                <div class="impact-text">You impacted 156 colleagues throughout your career.</div>
+                <div class="network-visualization">
+                    <div class="network-item">
+                        <div class="network-circle">👥</div>
+                        <div class="network-stat">156</div>
+                        <div class="network-desc">Colleagues Recognized</div>
+                    </div>
+                    <div class="network-item">
+                        <div class="network-circle">🏢</div>
+                        <div class="network-stat">7</div>
+                        <div class="network-desc">Teams Supported</div>
+                    </div>
+                    <div class="network-item">
+                        <div class="network-circle">🌐</div>
+                        <div class="network-stat">5</div>
+                        <div class="network-desc">Departments Influenced</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 5: TESTIMONIALS -->
+        <div class="screen" id="screen-5">
+            <div class="screen-content">
+                <div class="screen-title">What People Said About You</div>
+                <div class="testimonials-grid">
+                    <div class="testimonial-card">
+                        <div class="testimonial-text">"Your code reviews made me a better engineer. Your patience and wisdom shaped my career."</div>
+                        <div class="testimonial-author">— Michael Chen, Senior Engineer</div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-text">"Leading the infrastructure overhaul with you was the highlight of my career. Pure excellence."</div>
+                        <div class="testimonial-author">— Priya Patel, Architecture Lead</div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-text">"You solve impossible problems with grace. Your impact on our codebase will last for years."</div>
+                        <div class="testimonial-author">— Stefan Rodriguez, Director</div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-text">"More than a brilliant engineer—you're a mentor, a leader, and someone who truly cares."</div>
+                        <div class="testimonial-author">— Emma Thompson, Tech Lead</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 6: VALUES -->
+        <div class="screen" id="screen-6">
+            <div class="screen-content">
+                <div class="screen-title">Your Defining Values</div>
+                <div class="values-container">
+                    <div class="value-item">
+                        <div class="value-icon">💡</div>
+                        <div class="value-name">Innovation</div>
+                        <div class="value-stat">38% of recognitions</div>
+                    </div>
+                    <div class="value-item">
+                        <div class="value-icon">🤝</div>
+                        <div class="value-name">Collaboration</div>
+                        <div class="value-stat">32% of recognitions</div>
+                    </div>
+                    <div class="value-item">
+                        <div class="value-icon">🎯</div>
+                        <div class="value-name">Excellence</div>
+                        <div class="value-stat">22% of recognitions</div>
+                    </div>
+                    <div class="value-item">
+                        <div class="value-icon">🚀</div>
+                        <div class="value-name">Impact</div>
+                        <div class="value-stat">8% of recognitions</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 7: CAREER HIGHLIGHTS -->
+        <div class="screen" id="screen-7">
+            <div class="screen-content">
+                <div class="screen-title">Your Career Highlights</div>
+                <div class="highlights-timeline">
+                    <div class="highlight-item">
+                        <div class="highlight-year">2013</div>
+                        <div class="highlight-content">
+                            <div class="highlight-title">Joined the Company</div>
+                            <div class="highlight-desc">Started as Junior Developer with passion and determination</div>
+                        </div>
+                    </div>
+                    <div class="highlight-item">
+                        <div class="highlight-year">2016</div>
+                        <div class="highlight-content">
+                            <div class="highlight-title">Promoted to Senior Engineer</div>
+                            <div class="highlight-desc">Led the migration to microservices architecture</div>
+                        </div>
+                    </div>
+                    <div class="highlight-item">
+                        <div class="highlight-year">2019</div>
+                        <div class="highlight-content">
+                            <div class="highlight-title">Tech Lead Recognition</div>
+                            <div class="highlight-desc">Became go-to mentor for emerging technical talent</div>
+                        </div>
+                    </div>
+                    <div class="highlight-item">
+                        <div class="highlight-year">2022</div>
+                        <div class="highlight-content">
+                            <div class="highlight-title">Infrastructure Excellence Award</div>
+                            <div class="highlight-desc">Spearheaded company-wide system modernization</div>
+                        </div>
+                    </div>
+                    <div class="highlight-item">
+                        <div class="highlight-year">2025</div>
+                        <div class="highlight-content">
+                            <div class="highlight-title">12 Years Celebrated</div>
+                            <div class="highlight-desc">A remarkable journey of growth, learning, and impact</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 8: LEGACY -->
+        <div class="screen" id="screen-8">
+            <div class="screen-content">
+                <div class="legacy-summary">
+                    <div class="legacy-headline">Your Legacy Lives On</div>
+                    <div class="legacy-stats">
+                        <div class="legacy-stat">
+                            <div class="legacy-stat-value">742</div>
+                            <div class="legacy-stat-label">Recognitions Shared</div>
+                        </div>
+                        <div class="legacy-stat">
+                            <div class="legacy-stat-value">156</div>
+                            <div class="legacy-stat-label">Colleagues Impacted</div>
+                        </div>
+                        <div class="legacy-stat">
+                            <div class="legacy-stat-value">12</div>
+                            <div class="legacy-stat-label">Years of Service</div>
+                        </div>
+                        <div class="legacy-stat">
+                            <div class="legacy-stat-value">∞</div>
+                            <div class="legacy-stat-label">Lasting Impact</div>
+                        </div>
+                    </div>
+                    <div class="legacy-statement">
+                        "Excellence is not a destination—it's a journey. Thank you for inspiring us all to be better."
+                    </div>
+                    <div class="button-group">
+                        <button class="btn-primary" onclick="downloadLegacy()">📥 Download Legacy Book</button>
+                        <button class="btn-secondary" onclick="shareStory()">📤 Share Tribute</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NAVIGATION DOTS -->
+    <div class="nav-dots">
+        <div class="nav-dot active" onclick="goToScreen(1)"></div>
+        <div class="nav-dot" onclick="goToScreen(2)"></div>
+        <div class="nav-dot" onclick="goToScreen(3)"></div>
+        <div class="nav-dot" onclick="goToScreen(4)"></div>
+        <div class="nav-dot" onclick="goToScreen(5)"></div>
+        <div class="nav-dot" onclick="goToScreen(6)"></div>
+        <div class="nav-dot" onclick="goToScreen(7)"></div>
+        <div class="nav-dot" onclick="goToScreen(8)"></div>
+    </div>
+
+    <script>
+        let currentScreen = 1;
+        const totalScreens = 8;
+
+        function nextScreen() {
+            if (currentScreen < totalScreens) {
+                goToScreen(currentScreen + 1);
+            }
+        }
+
+        function prevScreen() {
+            if (currentScreen > 1) {
+                goToScreen(currentScreen - 1);
+            }
+        }
+
+        function goToScreen(screenNum) {
+            const currentEl = document.getElementById(`screen-${currentScreen}`);
+            const nextEl = document.getElementById(`screen-${screenNum}`);
+
+            if (currentEl) {
+                currentEl.classList.remove('active');
+                if (screenNum > currentScreen) {
+                    currentEl.classList.add('prev');
+                }
+            }
+
+            if (nextEl) {
+                nextEl.classList.add('active');
+                nextEl.classList.remove('prev');
+            }
+
+            document.querySelectorAll('.nav-dot').forEach((dot, idx) => {
+                dot.classList.toggle('active', idx + 1 === screenNum);
+            });
+
+            currentScreen = screenNum;
+        }
+
+        function downloadLegacy() {
+            alert('📥 Your Legacy Book would be downloaded as a beautifully formatted PDF with your complete career story.');
+        }
+
+        function shareStory() {
+            alert('📤 Share options: Copy Link • Email • LinkedIn • Slack • Teams\n\nThis tribute can be shared with colleagues to celebrate your legacy.');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextScreen();
+            if (e.key === 'ArrowLeft') prevScreen();
+        });
+    </script>
+</body>
+</html>
