@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee Legacy - Data Flexible</title>
+    <title>Employee Legacy - Flexible Data</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -14,7 +14,7 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #1a0033, #330066, #1a0033);
+            background: linear-gradient(135deg, #1a0a2e 0%, #16213e 50%, #0f3460 100%);
             color: white;
             overflow: hidden;
             height: 100vh;
@@ -26,6 +26,60 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+            filter: blur(40px);
+            animation: float 15s ease-in-out infinite;
+        }
+
+        .orb1 {
+            width: 400px;
+            height: 400px;
+            background: #a78bfa;
+            top: -100px;
+            right: -100px;
+            animation-delay: 0s;
+        }
+
+        .orb2 {
+            width: 300px;
+            height: 300px;
+            background: #7c3aed;
+            bottom: -50px;
+            left: -100px;
+            animation-delay: 5s;
+        }
+
+        .orb3 {
+            width: 350px;
+            height: 350px;
+            background: #c084fc;
+            bottom: 50px;
+            right: -150px;
+            animation-delay: 10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(50px, -50px); }
+            50% { transform: translate(-30px, 100px); }
+            75% { transform: translate(100px, 50px); }
         }
 
         .screen {
@@ -37,7 +91,8 @@
             justify-content: center;
             opacity: 0;
             pointer-events: none;
-            transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 2;
         }
 
         .screen.active {
@@ -58,68 +113,31 @@
             justify-content: space-between;
             position: relative;
             overflow: hidden;
-            background: linear-gradient(135deg, #6a0dad 0%, #8b00ff 50%, #b333ff 100%);
-            box-shadow: 0 40px 100px rgba(138, 43, 226, 0.5);
+            background: rgba(15, 52, 96, 0.4);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(167, 139, 250, 0.2);
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
         }
 
-        .screen-content::before {
-            content: '';
-            position: absolute;
-            top: -30%;
-            right: -15%;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(255, 100, 255, 0.2) 0%, transparent 70%);
-            border-radius: 50%;
-            animation: floatGlow 8s ease-in-out infinite;
-        }
-
-        .screen-content::after {
-            content: '';
-            position: absolute;
-            bottom: -20%;
-            left: -10%;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(200, 100, 255, 0.15) 0%, transparent 70%);
-            border-radius: 50%;
-            animation: floatGlow 10s ease-in-out infinite reverse;
-        }
-
-        @keyframes floatGlow {
-            0%, 100% { transform: translateY(0px) scale(1); }
-            50% { transform: translateY(-30px) scale(1.1); }
-        }
-
-        /* ===== SCREEN 1: HERO ===== */
-        .screen-1 .screen-content {
-            text-align: center;
-            justify-content: center;
-        }
-
-        .hero-section {
-            position: relative;
-            z-index: 2;
-        }
-
+        /* SCREEN 1 */
         .hero-photo {
             width: 180px;
             height: 180px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(167, 139, 250, 0.2);
             margin: 0 auto 40px;
-            border: 4px solid rgba(255, 100, 255, 0.8);
+            border: 4px solid rgba(167, 139, 250, 0.8);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 80px;
-            box-shadow: 0 0 50px rgba(255, 100, 255, 0.6);
-            animation: pulseGlowBig 2.5s ease-in-out infinite;
+            box-shadow: 0 0 50px rgba(167, 139, 250, 0.6);
+            animation: pulseGlow 2.5s ease-in-out infinite;
         }
 
-        @keyframes pulseGlowBig {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 50px rgba(255, 100, 255, 0.6); }
-            50% { transform: scale(1.08); box-shadow: 0 0 80px rgba(255, 100, 255, 0.9); }
+        @keyframes pulseGlow {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 50px rgba(167, 139, 250, 0.6); }
+            50% { transform: scale(1.08); box-shadow: 0 0 80px rgba(167, 139, 250, 0.9); }
         }
 
         .hero-name {
@@ -147,8 +165,8 @@
         }
 
         .btn-start {
-            background: rgba(255, 100, 255, 0.3);
-            border: 2px solid rgba(255, 100, 255, 0.8);
+            background: rgba(167, 139, 250, 0.3);
+            border: 2px solid rgba(167, 139, 250, 0.8);
             color: white;
             padding: 18px 50px;
             font-size: 16px;
@@ -160,36 +178,15 @@
         }
 
         .btn-start:hover {
-            background: rgba(255, 100, 255, 0.5);
+            background: rgba(167, 139, 250, 0.5);
             transform: translateY(-3px);
-            box-shadow: 0 12px 40px rgba(255, 100, 255, 0.6);
+            box-shadow: 0 12px 40px rgba(167, 139, 250, 0.6);
         }
 
-        @keyframes slideInDown {
-            from { opacity: 0; transform: translateY(-50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes slideInUp {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes bounceIn {
-            0% { opacity: 0; transform: scale(0.3) translateY(50px); }
-            50% { opacity: 1; transform: scale(1.1); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-
-        /* ===== SCREEN 2: TENURE ===== */
-        .screen-2 .screen-content {
-            justify-content: center;
-        }
+        @keyframes slideInDown { from { opacity: 0; transform: translateY(-50px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideInUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes bounceIn { 0% { opacity: 0; transform: scale(0.3) translateY(50px); } 50% { opacity: 1; transform: scale(1.1); } 100% { opacity: 1; transform: scale(1); } }
 
         .title {
             font-family: 'Playfair Display', serif;
@@ -208,11 +205,11 @@
         }
 
         .tenure-box {
-            background: rgba(255, 255, 255, 0.12);
+            background: rgba(167, 139, 250, 0.1);
             backdrop-filter: blur(20px);
             padding: 50px;
             border-radius: 24px;
-            border: 2px solid rgba(255, 100, 255, 0.4);
+            border: 2px solid rgba(167, 139, 250, 0.4);
             text-align: center;
             animation: popUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
             opacity: 0;
@@ -225,9 +222,9 @@
 
         .tenure-box:hover {
             transform: translateY(-15px) scale(1.08);
-            background: rgba(255, 255, 255, 0.18);
-            border-color: rgba(255, 100, 255, 0.8);
-            box-shadow: 0 25px 60px rgba(255, 100, 255, 0.4);
+            background: rgba(167, 139, 250, 0.18);
+            border-color: rgba(167, 139, 250, 0.8);
+            box-shadow: 0 25px 60px rgba(167, 139, 250, 0.4);
         }
 
         .tenure-label {
@@ -242,7 +239,7 @@
             font-size: 80px;
             font-weight: 900;
             margin-bottom: 15px;
-            background: linear-gradient(135deg, #ffc0ff, #ffff00);
+            background: linear-gradient(135deg, #a78bfa, #c084fc);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -254,21 +251,10 @@
             opacity: 0.8;
         }
 
-        @keyframes popUp {
-            from { opacity: 0; transform: scale(0.5) rotateX(90deg); }
-            to { opacity: 1; transform: scale(1) rotateX(0); }
-        }
+        @keyframes popUp { from { opacity: 0; transform: scale(0.5) rotateX(90deg); } to { opacity: 1; transform: scale(1) rotateX(0); } }
+        @keyframes scaleNumber { from { opacity: 0; transform: scale(0.2); } to { opacity: 1; transform: scale(1); } }
 
-        @keyframes scaleNumber {
-            from { opacity: 0; transform: scale(0.2); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        /* ===== SCREEN 3: RECOGNITION ===== */
-        .screen-3 .screen-content {
-            justify-content: center;
-        }
-
+        /* RECOGNITION STATS */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -278,11 +264,11 @@
         }
 
         .stat-card {
-            background: rgba(255, 255, 255, 0.12);
+            background: rgba(167, 139, 250, 0.1);
             backdrop-filter: blur(20px);
             padding: 45px;
             border-radius: 24px;
-            border: 2px solid rgba(255, 100, 255, 0.3);
+            border: 2px solid rgba(167, 139, 250, 0.3);
             text-align: center;
             animation: popUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
             opacity: 0;
@@ -296,16 +282,16 @@
 
         .stat-card:hover {
             transform: translateY(-20px) scale(1.1);
-            background: rgba(255, 255, 255, 0.18);
-            border-color: rgba(255, 100, 255, 0.8);
-            box-shadow: 0 30px 70px rgba(255, 100, 255, 0.5);
+            background: rgba(167, 139, 250, 0.18);
+            border-color: rgba(167, 139, 250, 0.8);
+            box-shadow: 0 30px 70px rgba(167, 139, 250, 0.5);
         }
 
         .stat-number {
             font-size: 64px;
             font-weight: 900;
             margin-bottom: 15px;
-            background: linear-gradient(135deg, #ffc0ff, #ffff00);
+            background: linear-gradient(135deg, #a78bfa, #c084fc);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -317,11 +303,7 @@
             opacity: 0.95;
         }
 
-        /* ===== SCREEN 4: DEPARTMENT ===== */
-        .screen-4 .screen-content {
-            justify-content: center;
-        }
-
+        /* DEPARTMENT */
         .dept-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -348,7 +330,7 @@
             font-size: 72px;
             font-weight: 900;
             margin-bottom: 30px;
-            background: linear-gradient(135deg, #ffc0ff, #ffff00);
+            background: linear-gradient(135deg, #a78bfa, #c084fc);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -362,63 +344,66 @@
             animation: slideInUp 1s ease-out 0.5s both;
         }
 
-        .dept-email {
-            font-size: 14px;
-            opacity: 0.7;
-            margin-top: 20px;
-            animation: slideInUp 1s ease-out 0.6s both;
+        @keyframes slideInLeft { from { opacity: 0; transform: translateX(-60px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes slideInRight { from { opacity: 0; transform: translateX(60px); } to { opacity: 1; transform: translateX(0); } }
+
+        /* TESTIMONIALS */
+        .testimonials-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 40px;
+            text-align: center;
+            animation: slideInDown 1s ease-out;
         }
 
-        .dept-network {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 20px;
-            animation: slideInRight 1s ease-out 0.3s both;
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+            animation: slideInUp 1s ease-out 0.2s both;
         }
 
-        .dept-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            border: 3px solid rgba(255, 100, 255, 0.6);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 40px;
-            box-shadow: 0 0 30px rgba(255, 100, 255, 0.4);
-            animation: popUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        .testimonial {
+            background: rgba(167, 139, 250, 0.1);
+            backdrop-filter: blur(20px);
+            padding: 35px;
+            border-radius: 20px;
+            border-left: 5px solid rgba(167, 139, 250, 0.8);
+            border: 2px solid rgba(167, 139, 250, 0.3);
+            animation: slideInLeft 0.9s ease-out forwards;
             opacity: 0;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
         }
 
-        .dept-avatar:nth-child(1) { animation-delay: 0.4s; }
-        .dept-avatar:nth-child(2) { animation-delay: 0.5s; }
-        .dept-avatar:nth-child(3) { animation-delay: 0.6s; }
-        .dept-avatar:nth-child(4) { animation-delay: 0.7s; }
+        .testimonial:nth-child(1) { animation-delay: 0.3s; }
+        .testimonial:nth-child(2) { animation-delay: 0.5s; }
+        .testimonial:nth-child(3) { animation-delay: 0.7s; }
+        .testimonial:nth-child(4) { animation-delay: 0.9s; }
 
-        .dept-avatar:hover {
-            transform: scale(1.2);
-            box-shadow: 0 0 50px rgba(255, 100, 255, 0.8);
+        .testimonial:hover {
+            transform: translateY(-10px);
+            background: rgba(167, 139, 250, 0.18);
+            border-color: rgba(167, 139, 250, 0.8);
+            box-shadow: 0 20px 50px rgba(167, 139, 250, 0.4);
         }
 
-        @keyframes slideInLeft {
-            from { opacity: 0; transform: translateX(-60px); }
-            to { opacity: 1; transform: translateX(0); }
+        .testimonial-text {
+            font-size: 16px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.95);
         }
 
-        @keyframes slideInRight {
-            from { opacity: 0; transform: translateX(60px); }
-            to { opacity: 1; transform: translateX(0); }
+        .testimonial-author {
+            font-size: 13px;
+            color: rgba(167, 139, 250, 0.95);
+            font-weight: 700;
         }
 
-        /* ===== SCREEN 5: VALUES ===== */
-        .screen-5 .screen-content {
-            justify-content: center;
-        }
-
+        /* VALUES */
         .values-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -428,11 +413,11 @@
         }
 
         .value-card {
-            background: rgba(255, 255, 255, 0.12);
+            background: rgba(167, 139, 250, 0.1);
             backdrop-filter: blur(20px);
             padding: 30px;
             border-radius: 20px;
-            border: 2px solid rgba(255, 100, 255, 0.3);
+            border: 2px solid rgba(167, 139, 250, 0.3);
             text-align: center;
             animation: flipCard 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
             opacity: 0;
@@ -447,9 +432,9 @@
 
         .value-card:hover {
             transform: translateY(-15px) rotateY(8deg);
-            background: rgba(255, 255, 255, 0.18);
-            border-color: rgba(255, 100, 255, 0.8);
-            box-shadow: 0 25px 60px rgba(255, 100, 255, 0.5);
+            background: rgba(167, 139, 250, 0.18);
+            border-color: rgba(167, 139, 250, 0.8);
+            box-shadow: 0 25px 60px rgba(167, 139, 250, 0.5);
         }
 
         .value-icon {
@@ -462,21 +447,14 @@
         .value-card:nth-child(3) .value-icon { animation-delay: 0.6s; }
         .value-card:nth-child(4) .value-icon { animation-delay: 0.9s; }
 
-        @keyframes flipCard {
-            from { opacity: 0; transform: rotateY(90deg) scale(0.8); }
-            to { opacity: 1; transform: rotateY(0deg) scale(1); }
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
+        @keyframes flipCard { from { opacity: 0; transform: rotateY(90deg) scale(0.8); } to { opacity: 1; transform: rotateY(0deg) scale(1); } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
 
         .value-name {
             font-size: 20px;
             font-weight: 800;
             margin-bottom: 10px;
-            color: rgba(255, 200, 255, 0.95);
+            color: rgba(167, 139, 250, 0.95);
         }
 
         .value-pct {
@@ -484,78 +462,7 @@
             color: rgba(255, 255, 255, 0.8);
         }
 
-        /* ===== SCREEN 6: TIMELINE ===== */
-        .screen-6 .screen-content {
-            justify-content: flex-start;
-            padding-top: 50px;
-            overflow-y: auto;
-        }
-
-        .timeline {
-            width: 100%;
-        }
-
-        .timeline-item {
-            display: grid;
-            grid-template-columns: 150px 1fr;
-            gap: 40px;
-            margin-bottom: 50px;
-            align-items: flex-start;
-            animation: slideInLeft 0.8s ease-out forwards;
-            opacity: 0;
-        }
-
-        .timeline-item:nth-child(1) { animation-delay: 0.2s; }
-        .timeline-item:nth-child(2) { animation-delay: 0.4s; }
-        .timeline-item:nth-child(3) { animation-delay: 0.6s; }
-        .timeline-item:nth-child(4) { animation-delay: 0.8s; }
-
-        .timeline-date {
-            font-size: 32px;
-            font-weight: 900;
-            background: linear-gradient(135deg, #ffc0ff, #ffff00);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .timeline-event {
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(20px);
-            padding: 30px;
-            border-radius: 16px;
-            border-left: 4px solid rgba(255, 100, 255, 0.8);
-            border: 2px solid rgba(255, 100, 255, 0.3);
-            transition: all 0.4s ease;
-            cursor: pointer;
-        }
-
-        .timeline-item:hover .timeline-event {
-            background: rgba(255, 255, 255, 0.18);
-            border-color: rgba(255, 100, 255, 0.8);
-            box-shadow: 0 15px 40px rgba(255, 100, 255, 0.4);
-            transform: translateX(10px);
-        }
-
-        .timeline-title {
-            font-size: 18px;
-            font-weight: 800;
-            margin-bottom: 8px;
-            color: rgba(255, 200, 255, 0.95);
-        }
-
-        .timeline-desc {
-            font-size: 14px;
-            opacity: 0.85;
-            line-height: 1.6;
-        }
-
-        /* ===== SCREEN 7: LEGACY ===== */
-        .screen-7 .screen-content {
-            text-align: center;
-            justify-content: center;
-        }
-
+        /* LEGACY */
         .legacy-headline {
             font-family: 'Playfair Display', serif;
             font-size: 72px;
@@ -573,11 +480,11 @@
         }
 
         .legacy-stat {
-            background: rgba(255, 255, 255, 0.12);
+            background: rgba(167, 139, 250, 0.1);
             backdrop-filter: blur(20px);
             padding: 30px;
             border-radius: 16px;
-            border: 2px solid rgba(255, 100, 255, 0.3);
+            border: 2px solid rgba(167, 139, 250, 0.3);
             animation: popUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
             opacity: 0;
         }
@@ -590,7 +497,7 @@
             font-size: 48px;
             font-weight: 900;
             margin-bottom: 8px;
-            background: linear-gradient(135deg, #ffc0ff, #ffff00);
+            background: linear-gradient(135deg, #a78bfa, #c084fc);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -619,8 +526,8 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #ffc0ff, #ff00ff);
-            color: #1a0033;
+            background: linear-gradient(135deg, #a78bfa, #c084fc);
+            color: #1a0a2e;
             padding: 16px 45px;
             border: none;
             border-radius: 50px;
@@ -628,32 +535,15 @@
             font-weight: 700;
             cursor: pointer;
             transition: all 0.4s ease;
-            box-shadow: 0 10px 35px rgba(255, 0, 255, 0.5);
+            box-shadow: 0 10px 35px rgba(167, 139, 250, 0.5);
         }
 
         .btn-primary:hover {
             transform: translateY(-4px);
-            box-shadow: 0 15px 50px rgba(255, 0, 255, 0.8);
+            box-shadow: 0 15px 50px rgba(167, 139, 250, 0.8);
         }
 
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.15);
-            border: 2px solid rgba(255, 100, 255, 0.8);
-            color: white;
-            padding: 14px 43px;
-            border-radius: 50px;
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.4s ease;
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.25);
-            border-color: white;
-        }
-
-        /* ===== NAVIGATION ===== */
+        /* NAV */
         .nav-dots {
             position: fixed;
             bottom: 40px;
@@ -668,29 +558,26 @@
             width: 14px;
             height: 14px;
             border-radius: 50%;
-            background: rgba(200, 100, 255, 0.3);
-            border: 2px solid rgba(255, 100, 255, 0.6);
+            background: rgba(167, 139, 250, 0.3);
+            border: 2px solid rgba(167, 139, 250, 0.6);
             cursor: pointer;
             transition: all 0.4s ease;
         }
 
         .nav-dot.active {
-            background: rgba(255, 100, 255, 0.9);
+            background: rgba(167, 139, 250, 0.9);
             transform: scale(1.4);
-            box-shadow: 0 0 25px rgba(255, 100, 255, 0.8);
+            box-shadow: 0 0 25px rgba(167, 139, 250, 0.8);
         }
 
         @media (max-width: 768px) {
-            .screen-content {
-                padding: 40px 20px;
-                height: auto;
-                border-radius: 24px;
-            }
+            .screen-content { padding: 40px 20px; height: auto; border-radius: 24px; }
             .hero-title { font-size: 48px; }
             .title { font-size: 36px; }
             .tenure-grid { grid-template-columns: 1fr; }
             .stats-grid { grid-template-columns: 1fr; }
             .dept-container { grid-template-columns: 1fr; }
+            .testimonials-grid { grid-template-columns: 1fr; }
             .values-grid { grid-template-columns: repeat(2, 1fr); }
             .legacy-stats { grid-template-columns: 1fr; }
             .button-group { flex-direction: column; }
@@ -698,23 +585,29 @@
     </style>
 </head>
 <body>
+    <div class="bg-animation">
+        <div class="orb orb1"></div>
+        <div class="orb orb2"></div>
+        <div class="orb orb3"></div>
+    </div>
+
     <div class="container">
         <!-- SCREEN 1 -->
         <div class="screen active" id="screen-1">
             <div class="screen-content">
-                <div class="hero-section">
+                <div style="text-align: center; position: relative; z-index: 2;">
                     <div class="hero-photo">👤</div>
                     <div class="hero-name">David Peterson</div>
                 </div>
-                <div class="hero-section">
+                <div style="text-align: center; position: relative; z-index: 2;">
                     <div class="hero-title">Your Legacy</div>
-                    <div class="hero-subtitle">A Journey of Growth and Impact on Our Platform</div>
+                    <div class="hero-subtitle">A Journey of Growth and Impact</div>
                     <button class="btn-start" onclick="goToLegacy(2)">Begin Journey →</button>
                 </div>
             </div>
         </div>
 
-        <!-- SCREEN 2 - TENURE -->
+        <!-- SCREEN 2 -->
         <div class="screen" id="screen-2">
             <div class="screen-content">
                 <div class="title">Your Journey in Organisation</div>
@@ -733,7 +626,7 @@
             </div>
         </div>
 
-        <!-- SCREEN 3 - RECOGNITION -->
+        <!-- SCREEN 3 -->
         <div class="screen" id="screen-3">
             <div class="screen-content">
                 <div class="title">Your Recognition Impact</div>
@@ -754,7 +647,7 @@
             </div>
         </div>
 
-        <!-- SCREEN 4 - DEPARTMENT -->
+        <!-- SCREEN 4 -->
         <div class="screen" id="screen-4">
             <div class="screen-content">
                 <div class="title">Your Department</div>
@@ -763,20 +656,44 @@
                         <div class="dept-label">Primary Department</div>
                         <div class="dept-name">Engineering</div>
                         <div class="dept-desc">You've been a driving force in your department, consistently recognized for your contributions and impact on team culture.</div>
-                        <div class="dept-email">📧 Available across departments</div>
                     </div>
-                    <div class="dept-network">
-                        <div class="dept-avatar">👨‍💼</div>
-                        <div class="dept-avatar">👩‍💼</div>
-                        <div class="dept-avatar">👨‍💻</div>
-                        <div class="dept-avatar">👩‍💻</div>
+                    <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; animation: slideInRight 1s ease-out 0.3s both;">
+                        <div style="width: 80px; height: 80px; border-radius: 50%; background: rgba(167, 139, 250, 0.2); border: 3px solid rgba(167, 139, 250, 0.6); display: flex; align-items: center; justify-content: center; font-size: 40px; box-shadow: 0 0 30px rgba(167, 139, 250, 0.4); animation: popUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s both; opacity: 0;">👨‍💼</div>
+                        <div style="width: 80px; height: 80px; border-radius: 50%; background: rgba(167, 139, 250, 0.2); border: 3px solid rgba(167, 139, 250, 0.6); display: flex; align-items: center; justify-content: center; font-size: 40px; box-shadow: 0 0 30px rgba(167, 139, 250, 0.4); animation: popUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.5s both; opacity: 0;">👩‍💼</div>
+                        <div style="width: 80px; height: 80px; border-radius: 50%; background: rgba(167, 139, 250, 0.2); border: 3px solid rgba(167, 139, 250, 0.6); display: flex; align-items: center; justify-content: center; font-size: 40px; box-shadow: 0 0 30px rgba(167, 139, 250, 0.4); animation: popUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.6s both; opacity: 0;">👨‍💻</div>
+                        <div style="width: 80px; height: 80px; border-radius: 50%; background: rgba(167, 139, 250, 0.2); border: 3px solid rgba(167, 139, 250, 0.6); display: flex; align-items: center; justify-content: center; font-size: 40px; box-shadow: 0 0 30px rgba(167, 139, 250, 0.4); animation: popUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.7s both; opacity: 0;">👩‍💻</div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- SCREEN 5 - VALUES -->
+        <!-- SCREEN 5 - TESTIMONIALS -->
         <div class="screen" id="screen-5">
+            <div class="screen-content">
+                <div class="testimonials-title">What Colleagues Say About You</div>
+                <div class="testimonials-grid">
+                    <div class="testimonial">
+                        <div class="testimonial-text">"David's expertise and mentorship have been invaluable. He goes above and beyond to help everyone succeed."</div>
+                        <div class="testimonial-author">— Sarah Kim, Senior Engineer</div>
+                    </div>
+                    <div class="testimonial">
+                        <div class="testimonial-text">"An incredible team player who always puts others first. His positive energy is contagious."</div>
+                        <div class="testimonial-author">— James Rodriguez, Product Manager</div>
+                    </div>
+                    <div class="testimonial">
+                        <div class="testimonial-text">"Consistently delivers excellence and inspires the team. A true leader who builds people up."</div>
+                        <div class="testimonial-author">— Lisa Chen, Team Lead</div>
+                    </div>
+                    <div class="testimonial">
+                        <div class="testimonial-text">"Your dedication and commitment have shaped our department's success. Thank you for everything."</div>
+                        <div class="testimonial-author">— Michael Brown, Manager</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 6 -->
+        <div class="screen" id="screen-6">
             <div class="screen-content">
                 <div class="title">Your Core Values</div>
                 <div class="values-grid">
@@ -804,67 +721,31 @@
             </div>
         </div>
 
-        <!-- SCREEN 6 - TIMELINE -->
-        <div class="screen" id="screen-6">
-            <div class="screen-content">
-                <div class="title" style="margin-bottom: 40px;">Recognition Milestones</div>
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-date">2019</div>
-                        <div class="timeline-event">
-                            <div class="timeline-title">Platform Start</div>
-                            <div class="timeline-desc">Joined recognition platform, beginning your journey</div>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">2021</div>
-                        <div class="timeline-event">
-                            <div class="timeline-title">50 Recognitions Milestone</div>
-                            <div class="timeline-desc">Reached 50 recognitions received from colleagues</div>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">2023</div>
-                        <div class="timeline-event">
-                            <div class="timeline-title">Most Generous Recognizer</div>
-                            <div class="timeline-desc">Gave over 50 recognitions to other colleagues</div>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">2024</div>
-                        <div class="timeline-event">
-                            <div class="timeline-title">Century Achievement</div>
-                            <div class="timeline-desc">Crossed 100 recognitions, cementing your impact</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- SCREEN 7 - LEGACY -->
+        <!-- SCREEN 7 -->
         <div class="screen" id="screen-7">
             <div class="screen-content">
-                <div class="legacy-headline">Your Legacy</div>
-                <div class="legacy-stats">
-                    <div class="legacy-stat">
-                        <div class="legacy-number">127</div>
-                        <div class="legacy-label">Recognitions</div>
+                <div style="text-align: center;">
+                    <div class="legacy-headline">Your Legacy</div>
+                    <div class="legacy-stats">
+                        <div class="legacy-stat">
+                            <div class="legacy-number">127</div>
+                            <div class="legacy-label">Recognitions</div>
+                        </div>
+                        <div class="legacy-stat">
+                            <div class="legacy-number">7</div>
+                            <div class="legacy-label">Years Active</div>
+                        </div>
+                        <div class="legacy-stat">
+                            <div class="legacy-number">42</div>
+                            <div class="legacy-label">People Impacted</div>
+                        </div>
                     </div>
-                    <div class="legacy-stat">
-                        <div class="legacy-number">5</div>
-                        <div class="legacy-label">Years Active</div>
+                    <div class="legacy-message">
+                        Your consistent recognition and support have made a lasting impact on your team and organization. Thank you for being a beacon of positive culture.
                     </div>
-                    <div class="legacy-stat">
-                        <div class="legacy-number">42</div>
-                        <div class="legacy-label">People Impacted</div>
+                    <div class="button-group">
+                        <button class="btn-primary" onclick="alert('📥 Download as PDF!')">📥 Download</button>
                     </div>
-                </div>
-                <div class="legacy-message">
-                    Your consistent recognition and support have made a lasting impact on your team and organization. Thank you for being a beacon of positive culture.
-                </div>
-                <div class="button-group">
-                    <button class="btn-primary" onclick="alert('📥 Download as PDF!')">📥 Download</button>
-                    <button class="btn-secondary" onclick="alert('📤 Share with team!')">📤 Share</button>
                 </div>
             </div>
         </div>
