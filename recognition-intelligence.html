@@ -893,6 +893,132 @@
             margin-bottom: 0;
         }
 
+        /* AI Response Panel */
+        .ai-response-panel {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 420px;
+            max-height: 600px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            box-shadow: 0 12px 40px rgba(111, 63, 245, 0.2);
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+            pointer-events: none;
+            transition: all 0.3s ease;
+            z-index: 1002;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .ai-response-panel.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: all;
+        }
+
+        .ai-response-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .ai-close-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            font-size: 1.2rem;
+        }
+
+        .ai-close-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .ai-response-content {
+            padding: 1.5rem;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .ai-response-message {
+            background: rgba(111, 63, 245, 0.05);
+            border-left: 3px solid var(--primary);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .ai-response-message strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .ai-insight {
+            background: rgba(111, 63, 245, 0.03);
+            border: 1px solid rgba(111, 63, 245, 0.1);
+            padding: 0.875rem;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .ai-insight-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.35rem;
+        }
+
+        .ai-insight-value {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .ai-loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            color: var(--primary);
+            font-weight: 600;
+            padding: 2rem 1.5rem;
+        }
+
+        .ai-loading-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        .ai-loading-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .ai-loading-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
         /* Executive Report */
         .report-grid {
             display: grid;
@@ -2052,6 +2178,17 @@
         </div>
     </div>
 
+    <!-- AI Response Panel -->
+    <div class="ai-response-panel" id="ai-response-panel">
+        <div class="ai-response-header">
+            <span>🤖 Recognition Intelligence</span>
+            <button class="ai-close-btn" id="ai-close-btn">✕</button>
+        </div>
+        <div class="ai-response-content" id="ai-response-content">
+            <!-- Response will be populated here -->
+        </div>
+    </div>
+
     <script>
         // Animate counters
         function animateCounters() {
@@ -2089,15 +2226,100 @@
             }
         });
 
-        // AI Suggestions
+        // AI Response Panel
+        const aiResponsePanel = document.getElementById('ai-response-panel');
+        const aiResponseContent = document.getElementById('ai-response-content');
+        const aiCloseBtn = document.getElementById('ai-close-btn');
+
+        // AI Response data
+        const aiResponses = {
+            'Why did participation decrease?': {
+                message: '<strong>Recognition Participation Analysis</strong><br><br>Your recognition participation remains strong at 68% MAU, but we\'ve noticed some weekly fluctuations. Here\'s what\'s happening:',
+                insights: [
+                    { label: 'Finance Department', value: 'Manager participation down 8% this week - likely due to budget closing cycle' },
+                    { label: 'Root Cause', value: 'Seasonal activity pattern typical for this month. Engineering showing opposite trend (↑14%)' },
+                    { label: 'Recommendation', value: 'Launch targeted Finance campaign focusing on peer recognition to offset manager constraints' },
+                    { label: 'Expected Impact', value: 'Recovery to +12% by end of week based on historical patterns' }
+                ]
+            },
+            'Summarize this month.': {
+                message: '<strong>July Recognition Summary</strong><br><br>Your recognition program delivered exceptional results this month:',
+                insights: [
+                    { label: 'Recognition Volume', value: '2,847 recognitions sent (+22% YoY, +12% MoM)' },
+                    { label: 'Participation', value: '68% MAU, 82% returning users - strongest retention this year' },
+                    { label: 'Culture Highlight', value: 'Collaboration value surged to 31% of recognitions (↑8%)' },
+                    { label: 'Budget Health', value: '87% utilized ($73,080 / $84,000) - optimal spending velocity' },
+                    { label: 'Action Items', value: 'Focus on Finance re-engagement and celebrate hidden heroes' }
+                ]
+            },
+            'Show departments needing attention.': {
+                message: '<strong>Department Performance Analysis</strong><br><br>Three departments require strategic attention:',
+                insights: [
+                    { label: 'Finance (Priority: High)', value: 'Score: 61/100 | Manager participation 52% (↓11% WoW) | Recognition -3%' },
+                    { label: 'Recommended Action', value: 'Launch Finance Manager Appreciation Campaign targeting mid-level leaders' },
+                    { label: 'Sales (Priority: Medium)', value: 'Score: 88/100 | Strong momentum but new hire engagement lag detected' },
+                    { label: 'Engineering (Priority: Low)', value: 'Score: 92/100 | Highest performer - share practices with other departments' },
+                    { label: 'Quick Win', value: 'Cross-team recognition ceremonies between high-performers and growth areas' }
+                ]
+            },
+            'How can we improve manager participation?': {
+                message: '<strong>Manager Participation Enhancement Strategy</strong><br><br>Your managers are engaged (85%), but here\'s how to drive adoption further:',
+                insights: [
+                    { label: 'Current State', value: 'Manager recognitions: 26% of total (target: 30%)' },
+                    { label: 'Quick Wins', value: '1) Mobile push notifications for milestone triggers\n2) Manager recognition dashboard showing their impact\n3) Weekly "recognition moments" emails' },
+                    { label: 'Finance Opportunity', value: 'Manager participation 52% - biggest improvement lever. Expected +15% gain from targeted outreach' },
+                    { label: 'Success Stories', value: 'Marketing managers averaging 8.2 recognitions/month vs company avg 3.1' },
+                    { label: 'Implementation', value: 'Share Marketing\'s approach with Finance - expect 3-week payoff' }
+                ]
+            },
+            'What should I discuss in my QBR?': {
+                message: '<strong>Executive QBR Talking Points</strong><br><br>Here\'s what will resonate with your leadership team:',
+                insights: [
+                    { label: 'Key Win', value: '22% YoY growth in recognition activity - strong engagement signal' },
+                    { label: 'ROI Story', value: 'Budget-to-result ratio: $84K spend → 68% monthly participation → measurable culture shift' },
+                    { label: 'Risk Mitigation', value: '584 employees inactive 90+ days - recommend targeted re-engagement campaign ($8K investment)' },
+                    { label: 'Quick Metrics', value: '82% returning users, 6:20 avg session time, 74% peer-to-peer recognition' },
+                    { label: 'Next Quarter Goal', value: 'Push MAU from 68% to 75% (+938 employees) + increase manager participation to 90%' }
+                ]
+            }
+        };
+
+        // Handle AI suggestions
         document.querySelectorAll('.ai-suggestion').forEach(suggestion => {
             suggestion.addEventListener('click', function() {
-                const text = this.textContent;
-                alert('Recognition Intelligence AI Response:\n\n' +
-                    'Query: "' + text + '"\n\n' +
-                    'The AI would generate a contextual response based on your program data, providing actionable insights and recommendations.');
+                const query = this.textContent;
+                const response = aiResponses[query];
+
                 aiPanel.classList.remove('active');
+                aiResponseContent.innerHTML = '<div class="ai-loading"><span>Analyzing</span><span class="ai-loading-dot"></span><span class="ai-loading-dot"></span><span class="ai-loading-dot"></span></div>';
+                aiResponsePanel.classList.add('active');
+
+                // Simulate AI thinking time
+                setTimeout(() => {
+                    aiResponseContent.innerHTML = `
+                        <div class="ai-response-message">${response.message}</div>
+                        ${response.insights.map(insight => `
+                            <div class="ai-insight">
+                                <div class="ai-insight-label">${insight.label}</div>
+                                <div class="ai-insight-value">${insight.value}</div>
+                            </div>
+                        `).join('')}
+                    `;
+                }, 1200);
             });
+        });
+
+        // Close AI Response Panel
+        aiCloseBtn.addEventListener('click', () => {
+            aiResponsePanel.classList.remove('active');
+        });
+
+        // Close response panel when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('#ai-response-panel') && !e.target.closest('.ai-assistant')) {
+                aiResponsePanel.classList.remove('active');
+                aiPanel.classList.remove('active');
+            }
         });
 
         // Action Buttons
