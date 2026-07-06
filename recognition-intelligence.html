@@ -1,0 +1,1700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recognition Intelligence™ - Executive Advisor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6F3FF5;
+            --primary-dark: #5a2ed4;
+            --primary-light: #8857ff;
+            --accent-blue: #2563eb;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --bg-white: #ffffff;
+            --bg-light: #f8f9fb;
+            --border-light: #e5e7eb;
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.18);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-white);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Subtle background gradient */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f8f9fb 0%, #faf7ff 50%, #f8f9fb 100%);
+            z-index: -1;
+        }
+
+        /* Floating shapes background */
+        .shapes-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.03;
+            filter: blur(40px);
+        }
+
+        .shape-1 {
+            width: 400px;
+            height: 400px;
+            background: var(--primary);
+            top: -100px;
+            right: -100px;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .shape-2 {
+            width: 300px;
+            height: 300px;
+            background: var(--accent-blue);
+            bottom: -50px;
+            left: -50px;
+            animation: float 25s infinite ease-in-out reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-30px) translateX(20px); }
+        }
+
+        /* Header */
+        .header {
+            padding: 2.5rem 2rem;
+            background: var(--bg-white);
+            border-bottom: 1px solid var(--border-light);
+            animation: fadeInDown 0.6s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .greeting {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            animation: slideInLeft 0.6s ease-out;
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .health-status {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .health-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .health-score {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .score-badge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 16px;
+            color: white;
+            box-shadow: 0 8px 24px rgba(111, 63, 245, 0.2);
+            animation: scaleIn 0.6s ease-out 0.1s both;
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .score-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .score-label {
+            font-size: 0.75rem;
+            opacity: 0.9;
+            margin-top: 0.25rem;
+        }
+
+        .score-status {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .status-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .status-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Executive Brief */
+        .executive-brief {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            animation: cardSlideIn 0.6s ease-out;
+            box-shadow: 0 4px 12px rgba(111, 63, 245, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .executive-brief::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+            pointer-events: none;
+        }
+
+        @keyframes cardSlideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .brief-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .brief-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .brief-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .brief-content {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            position: relative;
+            z-index: 1;
+        }
+
+        .brief-content strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* Section */
+        .section {
+            margin-bottom: 3rem;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-icon {
+            font-size: 1.75rem;
+        }
+
+        /* Program Health Grid */
+        .health-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        .health-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: cardSlideIn 0.6s ease-out backwards;
+            box-shadow: 0 4px 12px rgba(111, 63, 245, 0.06);
+            position: relative;
+            overflow: hidden;
+            border-left: 4px solid;
+        }
+
+        .health-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+            pointer-events: none;
+        }
+
+        .health-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(111, 63, 245, 0.12);
+        }
+
+        .health-card:nth-child(1) { animation-delay: 0.05s; border-left-color: var(--success); }
+        .health-card:nth-child(2) { animation-delay: 0.1s; border-left-color: var(--primary); }
+        .health-card:nth-child(3) { animation-delay: 0.15s; border-left-color: var(--warning); }
+        .health-card:nth-child(4) { animation-delay: 0.2s; border-left-color: var(--primary); }
+        .health-card:nth-child(5) { animation-delay: 0.25s; border-left-color: var(--success); }
+        .health-card:nth-child(6) { animation-delay: 0.3s; border-left-color: var(--accent-blue); }
+
+        .health-card-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+            position: relative;
+            z-index: 1;
+        }
+
+        .health-card-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .health-status-text {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .health-trend {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .trend-up { color: var(--success); }
+        .trend-down { color: var(--danger); }
+        .trend-stable { color: var(--warning); }
+
+        .health-impact {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            padding-top: 1rem;
+            border-top: 1px solid rgba(111, 63, 245, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .impact-label {
+            display: block;
+            margin-bottom: 0.3rem;
+            font-weight: 500;
+        }
+
+        .impact-value {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* AI Findings Grid */
+        .findings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .finding-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.75rem;
+            animation: cardSlideIn 0.6s ease-out backwards;
+            box-shadow: 0 4px 12px rgba(111, 63, 245, 0.06);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .finding-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+            pointer-events: none;
+        }
+
+        .finding-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(111, 63, 245, 0.12);
+        }
+
+        .finding-card:nth-child(1) { animation-delay: 0.05s; }
+        .finding-card:nth-child(2) { animation-delay: 0.1s; }
+        .finding-card:nth-child(3) { animation-delay: 0.15s; }
+        .finding-card:nth-child(4) { animation-delay: 0.2s; }
+        .finding-card:nth-child(5) { animation-delay: 0.25s; }
+
+        .finding-icon {
+            font-size: 1.75rem;
+            margin-bottom: 0.75rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .finding-title {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .finding-detail {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+            position: relative;
+            z-index: 1;
+        }
+
+        .finding-footer {
+            padding-top: 1rem;
+            border-top: 1px solid rgba(111, 63, 245, 0.1);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .finding-metric {
+            font-size: 0.8rem;
+        }
+
+        .metric-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-value {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        /* Recommended Actions */
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .action-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.75rem;
+            animation: cardSlideIn 0.6s ease-out backwards;
+            box-shadow: 0 4px 12px rgba(111, 63, 245, 0.06);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .action-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+            pointer-events: none;
+        }
+
+        .action-card:nth-child(1) { animation-delay: 0.05s; }
+        .action-card:nth-child(2) { animation-delay: 0.1s; }
+        .action-card:nth-child(3) { animation-delay: 0.15s; }
+
+        .action-title {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .action-metrics {
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+            flex: 1;
+        }
+
+        .action-metric {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            font-size: 0.9rem;
+            border-bottom: 1px solid rgba(111, 63, 245, 0.1);
+        }
+
+        .action-metric:last-child {
+            border-bottom: none;
+        }
+
+        .action-metric-label {
+            color: var(--text-secondary);
+        }
+
+        .action-metric-value {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .action-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 0.875rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(111, 63, 245, 0.3);
+        }
+
+        /* Story Card */
+        .story-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 2rem;
+            animation: cardSlideIn 0.6s ease-out;
+            box-shadow: 0 4px 12px rgba(111, 63, 245, 0.06);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .story-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+            pointer-events: none;
+        }
+
+        .story-content {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            position: relative;
+            z-index: 1;
+        }
+
+        .story-content strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .story-highlight {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Health Score Breakdown */
+        .health-breakdown-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .score-category {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            animation: cardSlideIn 0.6s ease-out backwards;
+            box-shadow: 0 4px 12px rgba(111, 63, 245, 0.06);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .score-category::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+            pointer-events: none;
+        }
+
+        .score-category:nth-child(1) { animation-delay: 0.05s; }
+        .score-category:nth-child(2) { animation-delay: 0.1s; }
+        .score-category:nth-child(3) { animation-delay: 0.15s; }
+        .score-category:nth-child(4) { animation-delay: 0.2s; }
+        .score-category:nth-child(5) { animation-delay: 0.25s; }
+        .score-category:nth-child(6) { animation-delay: 0.3s; }
+        .score-category:nth-child(7) { animation-delay: 0.35s; }
+
+        .category-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+            position: relative;
+            z-index: 1;
+        }
+
+        .category-score {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .category-status {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .status-excellent { color: var(--success); }
+        .status-good { color: var(--primary); }
+        .status-average { color: var(--warning); }
+        .status-attention { color: var(--danger); }
+
+        /* Department Spotlight */
+        .dept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .dept-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.75rem;
+            animation: cardSlideIn 0.6s ease-out backwards;
+            box-shadow: 0 4px 12px rgba(111, 63, 245, 0.06);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dept-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+            pointer-events: none;
+        }
+
+        .dept-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(111, 63, 245, 0.12);
+        }
+
+        .dept-card:nth-child(1) { animation-delay: 0.05s; }
+        .dept-card:nth-child(2) { animation-delay: 0.1s; }
+        .dept-card:nth-child(3) { animation-delay: 0.15s; }
+        .dept-card:nth-child(4) { animation-delay: 0.2s; }
+
+        .dept-name {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.25rem;
+            font-size: 1.2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .dept-score {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .score-big {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .score-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .dept-metrics {
+            display: grid;
+            gap: 0.75rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .dept-metric {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(111, 63, 245, 0.1);
+        }
+
+        .dept-metric:last-child {
+            border-bottom: none;
+        }
+
+        .dept-metric-label {
+            color: var(--text-secondary);
+        }
+
+        .dept-metric-value {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* AI Assistant */
+        .ai-assistant {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1000;
+        }
+
+        .ai-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 8px 24px rgba(111, 63, 245, 0.3);
+            transition: all 0.3s ease;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .ai-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 32px rgba(111, 63, 245, 0.4);
+        }
+
+        .ai-panel {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 340px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 12px 40px rgba(111, 63, 245, 0.2);
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+            pointer-events: none;
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+
+        .ai-panel.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: all;
+        }
+
+        .ai-panel-title {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.25rem;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .ai-suggestion {
+            padding: 0.9rem;
+            background: rgba(111, 63, 245, 0.05);
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            color: var(--text-secondary);
+            border-left: 2px solid transparent;
+            font-weight: 500;
+        }
+
+        .ai-suggestion:hover {
+            background: rgba(111, 63, 245, 0.1);
+            border-left-color: var(--primary);
+            color: var(--text-primary);
+            transform: translateX(4px);
+        }
+
+        .ai-suggestion:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Executive Report */
+        .report-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .report-preview {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 2rem;
+            animation: cardSlideIn 0.6s ease-out;
+            box-shadow: 0 4px 12px rgba(111, 63, 245, 0.06);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .report-preview::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+            pointer-events: none;
+        }
+
+        .report-title {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .report-content {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            position: relative;
+            z-index: 1;
+            margin-bottom: 1.5rem;
+        }
+
+        .report-content strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .report-actions {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            animation: cardSlideIn 0.6s ease-out 0.1s both;
+            box-shadow: 0 4px 12px rgba(111, 63, 245, 0.06);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .report-actions::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+            pointer-events: none;
+        }
+
+        .actions-title {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 0.9rem;
+            background: rgba(111, 63, 245, 0.1);
+            border: 1px solid rgba(111, 63, 245, 0.2);
+            border-radius: 8px;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 0.75rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .action-btn:hover {
+            background: rgba(111, 63, 245, 0.2);
+            border-color: rgba(111, 63, 245, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .action-btn:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .report-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .health-score-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header {
+                padding: 1.5rem 1rem;
+            }
+
+            .greeting {
+                font-size: 1.35rem;
+            }
+
+            .health-status {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .health-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            .findings-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .actions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .health-breakdown-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .dept-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .ai-assistant {
+                bottom: 1rem;
+                right: 1rem;
+            }
+
+            .ai-panel {
+                width: 90vw;
+                max-width: 340px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .health-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .health-breakdown-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dept-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .score-badge {
+                width: 90px;
+                height: 90px;
+            }
+
+            .score-number {
+                font-size: 2rem;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(111, 63, 245, 0.05);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(111, 63, 245, 0.25);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(111, 63, 245, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Shapes -->
+    <div class="shapes-bg">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <div class="greeting">Good Morning, Sarah 👋</div>
+            <div class="health-status">
+                <div class="health-label">Recognition Health</div>
+                <div class="health-score">
+                    <div class="score-badge">
+                        <div class="score-number counter" data-target="91">0</div>
+                        <div class="score-label">/ 100</div>
+                    </div>
+                    <div class="score-status">
+                        <div class="status-label">Status</div>
+                        <div class="status-text">Excellent</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Executive Brief -->
+        <div class="executive-brief">
+            <div class="brief-header">
+                <div class="brief-title">✨ Executive Brief</div>
+                <div class="brief-badge">
+                    <span>Generated Today</span>
+                </div>
+            </div>
+            <div class="brief-content">
+                <strong>This week your organization demonstrated healthy recognition momentum.</strong> Marketing generated the highest peer recognition with a 19% increase in collaborative exchanges. <strong>Finance manager participation decreased for the second consecutive week</strong>, indicating a need for leadership engagement. Overall employee participation increased by 8%, showing strong momentum. Budget utilization remains healthy at 87%. Additionally, <strong>52 work anniversaries are approaching over the next 10 days</strong>, presenting excellent engagement opportunities.
+            </div>
+        </div>
+
+        <!-- Program Health Section -->
+        <div class="section">
+            <div class="section-title">
+                <span class="section-icon">💚</span>
+                Program Health
+            </div>
+            <div class="health-grid">
+                <div class="health-card">
+                    <div class="health-card-label">Recognition</div>
+                    <div class="health-card-status">
+                        <span class="health-status-text">Healthy</span>
+                        <span class="health-trend trend-up">↑ +8%</span>
+                    </div>
+                    <div class="health-impact">
+                        <span class="impact-label">Impact on Culture</span>
+                        <span class="impact-value">Very Positive</span>
+                    </div>
+                </div>
+
+                <div class="health-card">
+                    <div class="health-card-label">Manager Participation</div>
+                    <div class="health-card-status">
+                        <span class="health-status-text">Excellent</span>
+                        <span class="health-trend trend-stable">→ Stable</span>
+                    </div>
+                    <div class="health-impact">
+                        <span class="impact-label">Leadership Engagement</span>
+                        <span class="impact-value">85%</span>
+                    </div>
+                </div>
+
+                <div class="health-card">
+                    <div class="health-card-label">Campaign Activity</div>
+                    <div class="health-card-status">
+                        <span class="health-status-text">Moderate</span>
+                        <span class="health-trend trend-up">↑ +12%</span>
+                    </div>
+                    <div class="health-impact">
+                        <span class="impact-label">Participation Rate</span>
+                        <span class="impact-value">82%</span>
+                    </div>
+                </div>
+
+                <div class="health-card">
+                    <div class="health-card-label">Budget Health</div>
+                    <div class="health-card-status">
+                        <span class="health-status-text">Excellent</span>
+                        <span class="health-trend trend-stable">→ Optimized</span>
+                    </div>
+                    <div class="health-impact">
+                        <span class="impact-label">Utilization</span>
+                        <span class="impact-value">87%</span>
+                    </div>
+                </div>
+
+                <div class="health-card">
+                    <div class="health-card-label">Celebration Health</div>
+                    <div class="health-card-status">
+                        <span class="health-status-text">Healthy</span>
+                        <span class="health-trend trend-up">↑ +14%</span>
+                    </div>
+                    <div class="health-impact">
+                        <span class="impact-label">Milestone Recognition</span>
+                        <span class="impact-value">Excellent</span>
+                    </div>
+                </div>
+
+                <div class="health-card">
+                    <div class="health-card-label">Peer Recognition</div>
+                    <div class="health-card-status">
+                        <span class="health-status-text">Growing</span>
+                        <span class="health-trend trend-up">↑ +22%</span>
+                    </div>
+                    <div class="health-impact">
+                        <span class="impact-label">Collaboration</span>
+                        <span class="impact-value">Very High</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Findings Section -->
+        <div class="section">
+            <div class="section-title">
+                <span class="section-icon">🧠</span>
+                AI Findings
+            </div>
+            <div class="findings-grid">
+                <div class="finding-card">
+                    <div class="finding-icon">📈</div>
+                    <div class="finding-title">Marketing Surge</div>
+                    <div class="finding-detail">Recognition increased 18% with strong peer engagement and collaborative wins being celebrated.</div>
+                    <div class="finding-footer">
+                        <div class="finding-metric">
+                            <div class="metric-label">Why It Matters</div>
+                            <div class="metric-value">Culture Builder</div>
+                        </div>
+                        <div class="finding-metric">
+                            <div class="metric-label">Impact</div>
+                            <div class="metric-value">+12 Score</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="finding-card">
+                    <div class="finding-icon">🚀</div>
+                    <div class="finding-title">Engineering Growth</div>
+                    <div class="finding-detail">Engineering has become the fastest growing department with consistent innovation recognitions and team momentum.</div>
+                    <div class="finding-footer">
+                        <div class="finding-metric">
+                            <div class="metric-label">Why It Matters</div>
+                            <div class="metric-value">Strategic Focus</div>
+                        </div>
+                        <div class="finding-metric">
+                            <div class="metric-label">Impact</div>
+                            <div class="metric-value">+8 Score</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="finding-card">
+                    <div class="finding-icon">⚠️</div>
+                    <div class="finding-title">Finance Attention Needed</div>
+                    <div class="finding-detail">Finance manager participation has decreased for two weeks. Leadership engagement is below company average.</div>
+                    <div class="finding-footer">
+                        <div class="finding-metric">
+                            <div class="metric-label">Why It Matters</div>
+                            <div class="metric-value">Risk Area</div>
+                        </div>
+                        <div class="finding-metric">
+                            <div class="metric-label">Impact</div>
+                            <div class="metric-value">-5 Score</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="finding-card">
+                    <div class="finding-icon">💬</div>
+                    <div class="finding-title">Quality Improvement</div>
+                    <div class="finding-detail">Recognition comments became more meaningful this month with 35% increase in personalized feedback.</div>
+                    <div class="finding-footer">
+                        <div class="finding-metric">
+                            <div class="metric-label">Why It Matters</div>
+                            <div class="metric-value">Engagement</div>
+                        </div>
+                        <div class="finding-metric">
+                            <div class="metric-label">Impact</div>
+                            <div class="metric-value">+6 Score</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="finding-card">
+                    <div class="finding-icon">🤝</div>
+                    <div class="finding-title">Cross-Functional Boost</div>
+                    <div class="finding-detail">Cross-functional recognition increased 26%, showing improved collaboration between departments and teams.</div>
+                    <div class="finding-footer">
+                        <div class="finding-metric">
+                            <div class="metric-label">Why It Matters</div>
+                            <div class="metric-value">Unity Builder</div>
+                        </div>
+                        <div class="finding-metric">
+                            <div class="metric-label">Impact</div>
+                            <div class="metric-value">+10 Score</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recommended Actions Section -->
+        <div class="section">
+            <div class="section-title">
+                <span class="section-icon">✅</span>
+                Recommended Actions
+            </div>
+            <div class="actions-grid">
+                <div class="action-card">
+                    <div class="action-title">Launch Finance Manager Campaign</div>
+                    <div class="action-metrics">
+                        <div class="action-metric">
+                            <span class="action-metric-label">Expected Improvement</span>
+                            <span class="action-metric-value">High</span>
+                        </div>
+                        <div class="action-metric">
+                            <span class="action-metric-label">Estimated Impact</span>
+                            <span class="action-metric-value">+9 Score</span>
+                        </div>
+                        <div class="action-metric">
+                            <span class="action-metric-label">Timeline</span>
+                            <span class="action-metric-value">This Week</span>
+                        </div>
+                    </div>
+                    <button class="action-button">Create Campaign →</button>
+                </div>
+
+                <div class="action-card">
+                    <div class="action-title">Celebrate Upcoming Work Anniversaries</div>
+                    <div class="action-metrics">
+                        <div class="action-metric">
+                            <span class="action-metric-label">Expected Improvement</span>
+                            <span class="action-metric-value">Medium</span>
+                        </div>
+                        <div class="action-metric">
+                            <span class="action-metric-label">Estimated Impact</span>
+                            <span class="action-metric-value">+5 Score</span>
+                        </div>
+                        <div class="action-metric">
+                            <span class="action-metric-label">Timing</span>
+                            <span class="action-metric-value">Next 10 Days</span>
+                        </div>
+                    </div>
+                    <button class="action-button">View Employees →</button>
+                </div>
+
+                <div class="action-card">
+                    <div class="action-title">Increase Cross-Team Recognition</div>
+                    <div class="action-metrics">
+                        <div class="action-metric">
+                            <span class="action-metric-label">Expected Improvement</span>
+                            <span class="action-metric-label">High</span>
+                        </div>
+                        <div class="action-metric">
+                            <span class="action-metric-label">Estimated Impact</span>
+                            <span class="action-metric-value">+8 Score</span>
+                        </div>
+                        <div class="action-metric">
+                            <span class="action-metric-label">Success Rate</span>
+                            <span class="action-metric-value">89%</span>
+                        </div>
+                    </div>
+                    <button class="action-button">View Departments →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recognition Story Section -->
+        <div class="section">
+            <div class="section-title">
+                <span class="section-icon">📖</span>
+                Recognition Story
+            </div>
+            <div class="story-card">
+                <div class="story-content">
+                    <strong>This month, Marketing demonstrated exceptional appreciation culture</strong> through increased peer recognition and collaborative celebrations. The team's proactive approach created positive momentum that rippled across the organization. <strong>Engineering showed consistent manager engagement</strong> and innovation-focused recognitions, positioning them as the company's growth engine. <strong>Finance displayed a reduction in recognition frequency,</strong> though this appears seasonal and presents a timely opportunity for strategic re-engagement. <span class="story-highlight">Overall organizational culture remains strong</span> with <strong>collaboration continuing as the most celebrated value</strong>, reflecting the company's commitment to teamwork and shared success.
+                </div>
+            </div>
+        </div>
+
+        <!-- Health Score Breakdown -->
+        <div class="section">
+            <div class="section-title">
+                <span class="section-icon">🎯</span>
+                Recognition Health Score Breakdown
+            </div>
+            <div class="health-breakdown-grid">
+                <div class="score-category">
+                    <div class="category-label">Recognition Activity</div>
+                    <div class="category-score counter" data-target="92">0</div>
+                    <div class="category-status status-excellent">Excellent</div>
+                </div>
+
+                <div class="score-category">
+                    <div class="category-label">Manager Adoption</div>
+                    <div class="category-score counter" data-target="85">0</div>
+                    <div class="category-status status-excellent">Excellent</div>
+                </div>
+
+                <div class="score-category">
+                    <div class="category-label">Employee Adoption</div>
+                    <div class="category-score counter" data-target="89">0</div>
+                    <div class="category-status status-excellent">Excellent</div>
+                </div>
+
+                <div class="score-category">
+                    <div class="category-label">Campaign Participation</div>
+                    <div class="category-score counter" data-target="82">0</div>
+                    <div class="category-status status-good">Good</div>
+                </div>
+
+                <div class="score-category">
+                    <div class="category-label">Recognition Quality</div>
+                    <div class="category-score counter" data-target="87">0</div>
+                    <div class="category-status status-excellent">Excellent</div>
+                </div>
+
+                <div class="score-category">
+                    <div class="category-label">Budget Health</div>
+                    <div class="category-score counter" data-target="91">0</div>
+                    <div class="category-status status-excellent">Excellent</div>
+                </div>
+
+                <div class="score-category">
+                    <div class="category-label">Milestones</div>
+                    <div class="category-score counter" data-target="88">0</div>
+                    <div class="category-status status-excellent">Excellent</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Department Spotlight -->
+        <div class="section">
+            <div class="section-title">
+                <span class="section-icon">⭐</span>
+                Department Spotlight
+            </div>
+            <div class="dept-grid">
+                <div class="dept-card">
+                    <div class="dept-name">Marketing</div>
+                    <div class="dept-score">
+                        <div class="score-big">92</div>
+                        <div class="score-label">Recognition Score</div>
+                    </div>
+                    <div class="dept-metrics">
+                        <div class="dept-metric">
+                            <span class="dept-metric-label">Trend</span>
+                            <span class="dept-metric-value">↑ +12%</span>
+                        </div>
+                        <div class="dept-metric">
+                            <span class="dept-metric-label">Growth</span>
+                            <span class="dept-metric-value">+18%</span>
+                        </div>
+                        <div class="dept-metric">
+                            <span class="dept-metric-label">Manager Participation</span>
+                            <span class="dept-metric-value">92%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dept-card">
+                    <div class="dept-name">Sales</div>
+                    <div class="dept-score">
+                        <div class="score-big">88</div>
+                        <div class="score-label">Recognition Score</div>
+                    </div>
+                    <div class="dept-metrics">
+                        <div class="dept-metric">
+                            <span class="dept-metric-label">Trend</span>
+                            <span class="dept-metric-value">↑ +8%</span>
+                        </div>
+                        <div class="dept-metric">
+                            <span class="dept-metric-label">Growth</span>
+                            <span class="dept-metric-value">+14%</span>
+                        </div>
+                        <div class="dept-metric">
+                            <span class="dept-metric-label">Manager Participation</span>
+                            <span class="dept-metric-value">89%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dept-card">
+                    <div class="dept-name">Engineering</div>
+                    <div class="dept-score">
+                        <div class="score-big">81</div>
+                        <div class="score-label">Recognition Score</div>
+                    </div>
+                    <div class="dept-metrics">
+                        <div class="dept-metric">
+                            <span class="dept-metric-label">Trend</span>
+                            <span class="dept-metric-value">↑ +14%</span>
+                        </div>
+                        <div class="dept-metric">
+                            <span class="dept-metric-label">Growth</span>
+                            <span class="dept-metric-value">+22%</span>
+                        </div>
+                        <div class="dept-metric">
+                            <span class="dept-metric-label">Manager Participation</span>
+                            <span class="dept-metric-value">88%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dept-card">
+                    <div class="dept-name">Finance</div>
+                    <div class="dept-score">
+                        <div class="score-big">61</div>
+                        <div class="score-label">Recognition Score</div>
+                    </div>
+                    <div class="dept-metrics">
+                        <div class="dept-metric">
+                            <span class="dept-metric-label">Trend</span>
+                            <span class="dept-metric-value">↓ -5%</span>
+                        </div>
+                        <div class="dept-metric">
+                            <span class="dept-metric-label">Growth</span>
+                            <span class="dept-metric-value">-3%</span>
+                        </div>
+                        <div class="dept-metric">
+                            <span class="dept-metric-label">Manager Participation</span>
+                            <span class="dept-metric-value">52%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Executive Report -->
+        <div class="section">
+            <div class="section-title">
+                <span class="section-icon">📊</span>
+                Executive Report
+            </div>
+            <div class="report-grid">
+                <div class="report-preview">
+                    <div class="report-title">Q3 Recognition Program Review</div>
+                    <div class="report-content">
+                        <strong>Summary:</strong> Your recognition program continues to demonstrate healthy momentum with overall health score of 91/100. Participation increased 8% this week, and peer recognition continues growing at +22%. Marketing emerged as the top-performing department with exceptional collaborative culture. Budget utilization remains optimized at 87%.
+                        <br><br>
+                        <strong>Key Highlights:</strong> Cross-functional recognition up 26%, recognition comment quality improved 35%, and manager engagement stable at 85%. Work anniversaries approaching present immediate engagement opportunity.
+                        <br><br>
+                        <strong>Areas for Attention:</strong> Finance department requires leadership re-engagement to address -5% weekly decline in recognition activity. Recommend launching targeted manager campaign this week.
+                    </div>
+                </div>
+
+                <div class="report-actions">
+                    <div class="actions-title">Export Report</div>
+                    <button class="action-btn">📄 Download PDF</button>
+                    <button class="action-btn">📊 Download PowerPoint</button>
+                    <button class="action-btn">👥 Share with Leadership</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Assistant -->
+    <div class="ai-assistant">
+        <button class="ai-button" id="ai-button" title="Ask Recognition AI">💡</button>
+        <div class="ai-panel" id="ai-panel">
+            <div class="ai-panel-title">
+                <span>🤖 Ask Recognition AI</span>
+            </div>
+            <div class="ai-suggestion">Why did participation decrease?</div>
+            <div class="ai-suggestion">Summarize this month.</div>
+            <div class="ai-suggestion">Show departments needing attention.</div>
+            <div class="ai-suggestion">How can we improve manager participation?</div>
+            <div class="ai-suggestion">What should I discuss in my QBR?</div>
+        </div>
+    </div>
+
+    <script>
+        // Animate counters
+        function animateCounters() {
+            const counters = document.querySelectorAll('.counter');
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                let current = 0;
+                const increment = target / 30;
+
+                const updateCounter = () => {
+                    current += increment;
+                    if (current < target) {
+                        counter.textContent = Math.floor(current);
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        counter.textContent = target;
+                    }
+                };
+
+                updateCounter();
+            });
+        }
+
+        // AI Assistant Toggle
+        const aiButton = document.getElementById('ai-button');
+        const aiPanel = document.getElementById('ai-panel');
+
+        aiButton.addEventListener('click', () => {
+            aiPanel.classList.toggle('active');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.ai-assistant')) {
+                aiPanel.classList.remove('active');
+            }
+        });
+
+        // AI Suggestions
+        document.querySelectorAll('.ai-suggestion').forEach(suggestion => {
+            suggestion.addEventListener('click', function() {
+                const text = this.textContent;
+                alert('Recognition Intelligence AI Response:\n\n' +
+                    'Query: "' + text + '"\n\n' +
+                    'The AI would generate a contextual response based on your program data, providing actionable insights and recommendations.');
+                aiPanel.classList.remove('active');
+            });
+        });
+
+        // Action Buttons
+        document.querySelectorAll('.action-button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                alert('This would open a workflow to ' + this.textContent.trim());
+            });
+        });
+
+        // Export Buttons
+        document.querySelectorAll('.action-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const format = this.textContent.includes('PDF') ? 'PDF' :
+                              this.textContent.includes('PowerPoint') ? 'PowerPoint' : 'Share';
+                alert('Report would be ' + format + ' exported with current intelligence data.');
+            });
+        });
+
+        // Department Cards
+        document.querySelectorAll('.dept-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const dept = this.querySelector('.dept-name').textContent;
+                alert('Detailed analytics for ' + dept + ' would open here.');
+            });
+        });
+
+        // Finding Cards
+        document.querySelectorAll('.finding-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const title = this.querySelector('.finding-title').textContent;
+                alert('Deep dive into: ' + title);
+            });
+        });
+
+        // Initialize
+        window.addEventListener('DOMContentLoaded', () => {
+            animateCounters();
+        });
+
+        // Smooth animations on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'cardSlideIn 0.6s ease-out forwards';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section').forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
