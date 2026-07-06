@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Culture Pulse - Analytics Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-purple: #7c3aed;
+            --purple-dark: #6d28d9;
+            --purple-light: #a78bfa;
+            --accent-blue: #06b6d4;
+            --success-green: #10b981;
+            --warning-yellow: #f59e0b;
+            --error-red: #ef4444;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --bg-light: #f9fafb;
+            --bg-white: #ffffff;
+            --border-light: #e5e7eb;
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.18);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #f0f4ff 0%, #fdf2f8 50%, #f0f9ff 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Floating background particles */
+        .bg-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(124, 58, 237, 0.1);
+            border-radius: 50%;
+            animation: float-particle 20s infinite ease-in-out;
+        }
+
+        @keyframes float-particle {
+            0%, 100% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.3; }
+            50% { transform: translateY(-30px) translateX(10px) rotate(180deg); opacity: 0.6; }
+        }
+
+        /* Header */
+        .header {
+            padding: 2.5rem 2rem;
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(59, 130, 246, 0.05));
+            border-bottom: 1px solid var(--border-light);
+            animation: fadeInDown 0.8s ease-out;
+            sticky: top;
+            z-index: 100;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .header-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-purple), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            animation: slideInLeft 0.8s ease-out;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .header-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            font-weight: 400;
+            animation: slideInLeft 0.8s ease-out 0.1s both;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Section */
+        .section {
+            margin-bottom: 3rem;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-icon {
+            font-size: 1.75rem;
+        }
+
+        /* Card */
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: cardSlideIn 0.6s ease-out backwards;
+            box-shadow: 0 8px 32px rgba(124, 58, 237, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent);
+            pointer-events: none;
+        }
+
+        @keyframes cardSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 48px rgba(124, 58, 237, 0.15);
+            border-color: rgba(124, 58, 237, 0.3);
+        }
+
+        /* Executive Summary */
+        .summary-card {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(59, 130, 246, 0.05));
+            border-left: 4px solid var(--primary-purple);
+        }
+
+        .summary-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            position: relative;
+            z-index: 1;
+        }
+
+        .summary-content strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .ai-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(124, 58, 237, 0.2);
+            color: var(--primary-purple);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            animation: fadeIn 0.6s ease-out 0.3s both;
+        }
+
+        /* KPI Grid */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .kpi-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.4s ease;
+            animation: cardSlideIn 0.6s ease-out backwards;
+            box-shadow: 0 8px 32px rgba(124, 58, 237, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent);
+            pointer-events: none;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 48px rgba(124, 58, 237, 0.15);
+        }
+
+        .kpi-card:nth-child(1) { animation-delay: 0.1s; }
+        .kpi-card:nth-child(2) { animation-delay: 0.2s; }
+        .kpi-card:nth-child(3) { animation-delay: 0.3s; }
+        .kpi-card:nth-child(4) { animation-delay: 0.4s; }
+        .kpi-card:nth-child(5) { animation-delay: 0.5s; }
+
+        .kpi-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            animation: iconBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes iconBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        .kpi-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+        }
+
+        .kpi-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-purple), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: counterUp 1.5s ease-out;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes counterUp {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .kpi-change {
+            font-size: 0.9rem;
+            margin-top: 0.75rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+        }
+
+        .change-positive {
+            color: var(--success-green);
+        }
+
+        .change-negative {
+            color: var(--error-red);
+        }
+
+        /* Department Map */
+        .dept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .dept-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.75rem;
+            transition: all 0.4s ease;
+            animation: cardSlideIn 0.6s ease-out backwards;
+            box-shadow: 0 8px 32px rgba(124, 58, 237, 0.08);
+            position: relative;
+            overflow: hidden;
+            border-left: 4px solid;
+        }
+
+        .dept-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent);
+            pointer-events: none;
+        }
+
+        .dept-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 48px rgba(124, 58, 237, 0.15);
+        }
+
+        .dept-card:nth-child(1) { animation-delay: 0.1s; border-left-color: var(--success-green); }
+        .dept-card:nth-child(2) { animation-delay: 0.2s; border-left-color: var(--primary-purple); }
+        .dept-card:nth-child(3) { animation-delay: 0.3s; border-left-color: var(--warning-yellow); }
+        .dept-card:nth-child(4) { animation-delay: 0.4s; border-left-color: var(--accent-blue); }
+
+        .dept-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .dept-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .dept-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .status-high { background: var(--success-green); }
+        .status-medium { background: var(--primary-purple); }
+        .status-neutral { background: var(--warning-yellow); }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .dept-info {
+            position: relative;
+            z-index: 1;
+        }
+
+        .dept-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(124, 58, 237, 0.1);
+            font-size: 0.9rem;
+        }
+
+        .dept-item:last-child {
+            border-bottom: none;
+        }
+
+        .dept-label {
+            color: var(--text-secondary);
+        }
+
+        .dept-value {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .dept-trend {
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .trend-up {
+            color: var(--success-green);
+        }
+
+        .trend-down {
+            color: var(--error-red);
+        }
+
+        /* Value Trends */
+        .value-trend-item {
+            margin-bottom: 1.75rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .value-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+
+        .value-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .value-percentage {
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-purple), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .bar-container {
+            background: rgba(124, 58, 237, 0.1);
+            border-radius: 8px;
+            height: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-purple), var(--accent-blue));
+            border-radius: 8px;
+            animation: fillBar 1.5s ease-out;
+            box-shadow: 0 0 12px rgba(124, 58, 237, 0.4);
+        }
+
+        @keyframes fillBar {
+            from {
+                width: 0;
+            }
+            to {
+                width: var(--bar-width, 100%);
+            }
+        }
+
+        /* Network Visualization */
+        .network-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 400px;
+            position: relative;
+            overflow: hidden;
+            animation: cardSlideIn 0.6s ease-out;
+            box-shadow: 0 8px 32px rgba(124, 58, 237, 0.08);
+        }
+
+        .network-svg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .network-nodes {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .network-node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            animation: nodeFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes nodeFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .node-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-purple), var(--accent-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.25rem;
+            box-shadow: 0 8px 24px rgba(124, 58, 237, 0.3);
+            position: relative;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .node-circle::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid rgba(124, 58, 237, 0.3);
+            animation: networkPulse 2s ease-out infinite;
+        }
+
+        @keyframes networkPulse {
+            from {
+                transform: scale(1);
+                opacity: 1;
+            }
+            to {
+                transform: scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        .node-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+            animation: cardSlideIn 0.6s ease-out;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--primary-purple), transparent);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            padding-left: 1.5rem;
+            animation: slideInLeft 0.6s ease-out backwards;
+        }
+
+        .timeline-item:nth-child(1) { animation-delay: 0.1s; }
+        .timeline-item:nth-child(2) { animation-delay: 0.2s; }
+        .timeline-item:nth-child(3) { animation-delay: 0.3s; }
+        .timeline-item:nth-child(4) { animation-delay: 0.4s; }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -9px;
+            top: 0;
+            width: 16px;
+            height: 16px;
+            background: var(--primary-purple);
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px var(--primary-purple);
+        }
+
+        .timeline-title {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-detail {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Recommendations */
+        .rec-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .rec-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.75rem;
+            transition: all 0.4s ease;
+            animation: cardSlideIn 0.6s ease-out backwards;
+            box-shadow: 0 8px 32px rgba(124, 58, 237, 0.08);
+            position: relative;
+            overflow: hidden;
+            border-left: 4px solid;
+        }
+
+        .rec-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent);
+            pointer-events: none;
+        }
+
+        .rec-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 48px rgba(124, 58, 237, 0.15);
+        }
+
+        .rec-card:nth-child(1) { animation-delay: 0.1s; border-left-color: var(--warning-yellow); }
+        .rec-card:nth-child(2) { animation-delay: 0.2s; border-left-color: var(--success-green); }
+        .rec-card:nth-child(3) { animation-delay: 0.3s; border-left-color: var(--accent-blue); }
+
+        .rec-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .rec-priority {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .priority-high {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--error-red);
+        }
+
+        .priority-medium {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning-yellow);
+        }
+
+        .priority-low {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success-green);
+        }
+
+        .rec-title {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .rec-description {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Spotlight */
+        .spotlight-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .spotlight-card {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(59, 130, 246, 0.05));
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.75rem;
+            text-align: center;
+            transition: all 0.4s ease;
+            animation: cardSlideIn 0.6s ease-out backwards;
+            box-shadow: 0 8px 32px rgba(124, 58, 237, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .spotlight-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 48px rgba(124, 58, 237, 0.15);
+        }
+
+        .spotlight-card:nth-child(1) { animation-delay: 0.1s; }
+        .spotlight-card:nth-child(2) { animation-delay: 0.2s; }
+        .spotlight-card:nth-child(3) { animation-delay: 0.3s; }
+        .spotlight-card:nth-child(4) { animation-delay: 0.4s; }
+
+        .spotlight-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: iconBounce 2s ease-in-out infinite;
+        }
+
+        .spotlight-title {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+        }
+
+        .spotlight-team {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .spotlight-stat {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-purple), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Company Story */
+        .story-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 2.5rem;
+            animation: cardSlideIn 0.6s ease-out;
+            box-shadow: 0 8px 32px rgba(124, 58, 237, 0.08);
+            position: relative;
+            overflow: hidden;
+            line-height: 1.8;
+        }
+
+        .story-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent);
+            pointer-events: none;
+        }
+
+        .story-content {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            position: relative;
+            z-index: 1;
+        }
+
+        .story-content p {
+            margin-bottom: 1rem;
+        }
+
+        .story-content strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header {
+                padding: 1.5rem 1rem;
+            }
+
+            .header-title {
+                font-size: 1.75rem;
+            }
+
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dept-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .rec-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .spotlight-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+
+            .network-nodes {
+                gap: 1rem;
+            }
+
+            .node-circle {
+                width: 60px;
+                height: 60px;
+                font-size: 1rem;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(124, 58, 237, 0.05);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(124, 58, 237, 0.3);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(124, 58, 237, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Particles -->
+    <div class="bg-particles" id="particles"></div>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <div class="header-title">Culture Pulse</div>
+            <div class="header-subtitle">Understand how recognition is shaping your workplace.</div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Section 1: Executive Summary -->
+        <div class="section">
+            <div class="section-title">
+                <span class="section-icon">🎯</span>
+                Executive Summary
+            </div>
+            <div class="card summary-card">
+                <div class="ai-badge">
+                    <span>🤖</span>
+                    <span>AI Insight</span>
+                </div>
+                <div class="summary-content">
+                    <strong>Recognition participation increased by 14% this month</strong>, signaling stronger engagement across the organization. <strong>Collaboration remained the strongest company value</strong>, with peer-to-peer recognitions at an all-time high. Engineering increased peer recognition activity by 18%, while Finance showed reduced activity at -5%, likely due to seasonal budget cycles. <strong>Overall, recognition culture remains healthy</strong> with strong momentum in innovation and leadership themes.
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Recognition Health KPIs -->
+        <div class="section">
+            <div class="section-title">
+                <span class="section-icon">📊</span>
+                Recognition Health
+            </div>
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-icon">📈</div>
+                    <div class="kpi-label">Recognition Participation</div>
+                    <div class="kpi-value counter" data-target="78">0</div>
+                    <span style="font-size: 0.85rem; color: var(--text-secondary);">%</span>
+                    <div class="kpi-change change-positive">↑ 14% from last month</div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-icon">🚀</div>
+                    <div class="kpi-label">Recognition Growth</div>
+                    <div class="kpi-value counter" data-target="4280">0</div>
+                    <span style="font-size: 0.85rem; color: var(--text-secondary);">recognitions</span>
+                    <div class="kpi-change change-positive">↑ 22% YoY</div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-icon">🤝</div>
+                    <div class="kpi-label">Peer Recognition</div>
+                    <div class="kpi-value counter" data-target="64">0</div>
+                    <span style="font-size: 0.85rem; color: var(--text-secondary);">%</span>
+                    <div class="kpi-change change-positive">↑ 8% from last month</div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-icon">👔</div>
+                    <div class="kpi-label">Manager Recognition</div>
+                    <div class="kpi-value counter" data-target="36">0</div>
+                    <span style="font-size: 0.85rem; color: var(--text-secondary);">%</span>
+                    <div class="kpi-change change-negative">↓ 11% from last month</div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-icon">🎪</div>
+                    <div class="kpi-label">Campaign Participation</div>
+                    <div class="kpi-value counter" data-target="92">0</div>
+                    <span style="font-size: 0.85rem; color: var(--text-secondary);">%</span>
+                    <div class="kpi-change change-positive">↑ 6% from last month</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Department Culture Map -->
+        <div class="section">
+            <div class="section-title">
+                <span class="section-icon">🗺️</span>
+                Department Culture Map
+            </div>
+            <div class="dept-grid">
+                <div class="dept-card">
+                    <div class="dept-header">
+                        <div class="dept-name">Engineering</div>
+                        <div class="dept-status">
+                            <span class="status-dot status-high"></span>
+                            <span>High Activity</span>
+                        </div>
+                    </div>
+                    <div class="dept-info">
+                        <div class="dept-item">
+                            <span class="dept-label">Top Value</span>
+                            <span class="dept-value">Innovation</span>
+                        </div>
+                        <div class="dept-item">
+                            <span class="dept-label">Trend</span>
+                            <span class="dept-value dept-trend trend-up">↑ +18%</span>
+                        </div>
+                        <div class="dept-item">
+                            <span class="dept-label">Recognitions</span>
+                            <span class="dept-value">842</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dept-card">
+                    <div class="dept-header">
+                        <div class="dept-name">Marketing</div>
+                        <div class="dept-status">
+                            <span class="status-dot status-medium"></span>
+                            <span>Highly Collaborative</span>
+                        </div>
+                    </div>
+                    <div class="dept-info">
+                        <div class="dept-item">
+                            <span class="dept-label">Top Value</span>
+                            <span class="dept-value">Collaboration</span>
+                        </div>
+                        <div class="dept-item">
+                            <span class="dept-label">Trend</span>
+                            <span class="dept-value dept-trend trend-up">↑ +12%</span>
+                        </div>
+                        <div class="dept-item">
+                            <span class="dept-label">Recognitions</span>
+                            <span class="dept-value">568</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dept-card">
+                    <div class="dept-header">
+                        <div class="dept-name">Finance</div>
+                        <div class="dept-status">
+                            <span class="status-dot status-neutral"></span>
+                            <span>Stable</span>
+                        </div>
+                    </div>
+                    <div class="dept-info">
+                        <div class="dept-item">
+                            <span class="dept-label">Top Value</span>
+                            <span class="dept-value">Ownership</span>
+                        </div>
+                        <div class="dept-item">
+                            <span class="dept-label">Trend</span>
+                            <span class="dept-value dept-trend trend-down">↓ -5%</span>
+                        </div>
+                        <div class="dept-item">
+                            <span class="dept-label">Recognitions</span>
+                            <span class="dept-value">312</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dept-card">
+                    <div class="dept-header">
+                        <div class="dept-name">Sales</div>
+                        <div class="dept-status">
+                            <span class="status-dot status-high"></span>
+                            <span>Rising Fast</span>
+                        </div>
+                    </div>
+                    <div class="dept-info">
+                        <div class="dept-item">
+                            <span class="dept-label">Top Value</span>
+                            <span class="dept-value">Customer First</span>
+                        </div>
+                        <div class="dept-item">
+                            <span class="dept-label">Trend</span>
+                            <span class="dept-value dept-trend trend-up">↑ +24%</span>
+                        </div>
+                        <div class="dept-item">
+                            <span class="dept-label">Recognitions</span>
+                            <span class="dept-value">456</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Recognition Value Trends -->
+        <div class="section">
+            <div class="section-title">
+                <span class="section-icon">📈</span>
+                Recognition Value Trends
+            </div>
+            <div class="card">
+                <div class="value-trend-item">
+                    <div class="value-label">
+                        <span class="value-name">Collaboration</span>
+                        <span class="value-percentage">42%</span>
+                    </div>
+                    <div class="bar-container">
+                        <div class="bar-fill" style="--bar-width: 42%"></div>
+                    </div>
+                </div>
+
+                <div class="value-trend-item">
+                    <div class="value-label">
+                        <span class="value-name">Leadership</span>
+                        <span class="value-percentage">31%</span>
+                    </div>
+                    <div class="bar-container">
+                        <div class="bar-fill" style="--bar-width: 31%"></div>
+                    </div>
+                </div>
+
+                <div class="value-trend-item">
+                    <div class="value-label">
+                        <span class="value-name">Innovation</span>
+                        <span class="value-percentage">28%</span>
+                    </div>
+                    <div class="bar-container">
+                        <div class="bar-fill" style="--bar-width: 28%"></div>
+                    </div>
+                </div>
+
+                <div class="value-trend-item">
+                    <div class="value-label">
+                        <span class="value-name">Ownership</span>
+                        <span class="value-percentage">22%</span>
+                    </div>
+                    <div class="bar-container">
+                        <div class="bar-fill" style="--bar-width: 22%"></div>
+                    </div>
+                </div>
+
+                <div class="value-trend-item">
+                    <div class="value-label">
+                        <span class="value-name">Customer Centricity</span>
+                        <span class="value-percentage">18%</span>
+                    </div>
+                    <div class="bar-container">
+                        <div class="bar-fill" style="--bar-width: 18%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 5: Recognition Network -->
+        <div class="section">
+            <div class="section-title">
+                <span class="section-icon">🔗</span>
+                Recognition Network
+            </div>
+            <div class="network-container">
+                <svg class="network-svg" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet">
+                    <defs>
+                        <style>
+                            .network-line {
+                                stroke: rgba(124, 58, 237, 0.2);
+                                stroke-width: 2;
+                                animation: networkFlow 2s ease-in-out infinite;
+                            }
+                            @keyframes networkFlow {
+                                0%, 100% { stroke: rgba(124, 58, 237, 0.2); }
+                                50% { stroke: rgba(124, 58, 237, 0.4); }
+                            }
+                        </style>
+                    </defs>
+                    <line class="network-line" x1="150" y1="100" x2="300" y2="200"/>
+                    <line class="network-line" x1="300" y1="200" x2="450" y2="100"/>
+                    <line class="network-line" x1="300" y1="200" x2="600" y2="200"/>
+                    <line class="network-line" x1="150" y1="100" x2="450" y2="300"/>
+                    <line class="network-line" x1="450" y1="100" x2="600" y2="200"/>
+                </svg>
+                <div class="network-nodes">
+                    <div class="network-node">
+                        <div class="node-circle">EN</div>
+                        <div class="node-label">Engineering</div>
+                    </div>
+                    <div class="network-node">
+                        <div class="node-circle">MK</div>
+                        <div class="node-label">Marketing</div>
+                    </div>
+                    <div class="network-node">
+                        <div class="node-circle">SA</div>
+                        <div class="node-label">Sales</div>
+                    </div>
+                    <div class="network-node">
+                        <div class="node-circle">CS</div>
+                        <div class="node-label">Success</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 6: Culture Momentum Timeline -->
+        <div class="section">
+            <div class="section-title">
+                <span class="section-icon">⏱️</span>
+                Culture Momentum
+            </div>
+            <div class="card">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-title">This Month</div>
+                        <div class="timeline-detail">
+                            <strong>4,280 recognitions exchanged</strong> — the highest monthly total this quarter. Strong engagement across all departments.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Milestone Celebrations</div>
+                        <div class="timeline-detail">
+                            <strong>340 birthdays and anniversaries celebrated</strong> — 100% participation in milestone recognition programs.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Campaign Success</div>
+                        <div class="timeline-detail">
+                            <strong>Wellness Campaign participation increased 34%</strong> — employees actively recognizing health and wellbeing initiatives.
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Peak Values</div>
+                        <div class="timeline-detail">
+                            <strong>Innovation recognitions reached highest level this year</strong> — reflecting company's strategic focus on growth.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 7: AI Recommendations -->
+        <div class="section">
+            <div class="section-title">
+                <span class="section-icon">💡</span>
+                AI Recommendations
+            </div>
+            <div class="rec-grid">
+                <div class="rec-card">
+                    <div class="rec-header">
+                        <div class="rec-priority priority-high">High</div>
+                    </div>
+                    <div class="rec-title">Boost Manager Recognition</div>
+                    <div class="rec-description">
+                        Manager recognition frequency decreased 11% this month. Launch a targeted initiative to encourage manager appreciation and strengthen upward feedback loops.
+                    </div>
+                </div>
+
+                <div class="rec-card">
+                    <div class="rec-header">
+                        <div class="rec-priority priority-medium">Medium</div>
+                    </div>
+                    <div class="rec-title">Finance Department Revival</div>
+                    <div class="rec-description">
+                        Finance shows reduced activity (-5%). Consider launching a department-specific campaign or team-building recognition event to re-engage the team.
+                    </div>
+                </div>
+
+                <div class="rec-card">
+                    <div class="rec-header">
+                        <div class="rec-priority priority-low">Low</div>
+                    </div>
+                    <div class="rec-title">Cross-Department Collaboration</div>
+                    <div class="rec-description">
+                        Highlight the strong collaboration between Engineering and Product. Share their success story to inspire similar partnerships across teams.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 8: Manager Spotlight -->
+        <div class="section">
+            <div class="section-title">
+                <span class="section-icon">🏆</span>
+                Manager & Team Spotlight
+            </div>
+            <div class="spotlight-grid">
+                <div class="spotlight-card">
+                    <div class="spotlight-icon">🚀</div>
+                    <div class="spotlight-title">Most Improved Team</div>
+                    <div class="spotlight-team">Sales Department</div>
+                    <div class="spotlight-stat">+24%</div>
+                </div>
+
+                <div class="spotlight-card">
+                    <div class="spotlight-icon">👑</div>
+                    <div class="spotlight-title">Highest Participation</div>
+                    <div class="spotlight-team">Marketing Team</div>
+                    <div class="spotlight-stat">96%</div>
+                </div>
+
+                <div class="spotlight-card">
+                    <div class="spotlight-icon">🤝</div>
+                    <div class="spotlight-title">Best Collaboration</div>
+                    <div class="spotlight-team">Engineering Team</div>
+                    <div class="spotlight-stat">142</div>
+                </div>
+
+                <div class="spotlight-card">
+                    <div class="spotlight-icon">🌍</div>
+                    <div class="spotlight-title">Most Inclusive</div>
+                    <div class="spotlight-team">Product Team</div>
+                    <div class="spotlight-stat">89%</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 9: Company Story -->
+        <div class="section">
+            <div class="section-title">
+                <span class="section-icon">📰</span>
+                Company Culture Story
+            </div>
+            <div class="story-card">
+                <div class="story-content">
+                    <p>
+                        <strong>This month, our organization demonstrated stronger collaboration and engagement across departments.</strong> Recognition activity reached an all-time high with <strong>4,280 recognitions exchanged</strong>, signaling a healthier recognition culture.
+                    </p>
+                    <p>
+                        <strong>Cross-department connections strengthened significantly.</strong> Marketing and Sales exchanged recognitions at rates 34% higher than historical averages, reflecting our improved alignment on customer-focused initiatives. Engineering continued to lead in peer recognition and innovation-themed acknowledgments.
+                    </p>
+                    <p>
+                        <strong>Core values remain strong.</strong> Collaboration emerged as the top-recognized value (42% of all recognitions), followed by Leadership and Innovation. This reflects our organizational focus on teamwork and forward-thinking solutions.
+                    </p>
+                    <p>
+                        <strong>Looking ahead,</strong> we have an opportunity to reinvigorate manager recognition programs and re-engage the Finance team. By building on the momentum we've established, we can continue strengthening our recognition culture and reinforcing the behaviors that drive our success.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize particles
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 25;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        // Animate counters
+        function animateCounters() {
+            const counters = document.querySelectorAll('.counter');
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                let current = 0;
+                const increment = target / 30;
+
+                const updateCounter = () => {
+                    current += increment;
+                    if (current < target) {
+                        counter.textContent = Math.floor(current);
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        counter.textContent = target;
+                    }
+                };
+
+                updateCounter();
+            });
+        }
+
+        // Intersection Observer for lazy animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && entry.target.classList.contains('bar-fill')) {
+                    const width = entry.target.style.getPropertyValue('--bar-width');
+                    entry.target.style.animation = `fillBar 1.5s ease-out`;
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.bar-fill').forEach(bar => {
+            observer.observe(bar);
+        });
+
+        // Initialize
+        window.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            animateCounters();
+        });
+
+        // Add smooth scroll for sections
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
