@@ -514,6 +514,226 @@
         ::-webkit-scrollbar-thumb:hover {
             background: rgba(111, 63, 245, 0.4);
         }
+
+        /* AI Sidekick */
+        .ai-sidekick {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1000;
+        }
+
+        .ai-toggle-btn {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 8px 32px rgba(111, 63, 245, 0.4);
+            transition: all 0.3s ease;
+            animation: float 3s ease-in-out infinite;
+            position: relative;
+        }
+
+        .ai-toggle-btn::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+            animation: pulse-ring 2s infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1.3);
+                opacity: 0;
+            }
+        }
+
+        .ai-toggle-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 40px rgba(111, 63, 245, 0.5);
+        }
+
+        .ai-panel {
+            position: absolute;
+            bottom: 90px;
+            right: 0;
+            width: 420px;
+            max-height: 600px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            box-shadow: 0 16px 48px rgba(111, 63, 245, 0.25);
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .ai-panel.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: all;
+        }
+
+        .ai-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 1.25rem;
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .ai-close-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .ai-close-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .ai-content {
+            padding: 1.5rem;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .ai-message {
+            background: rgba(111, 63, 245, 0.05);
+            border-left: 3px solid var(--primary);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        .ai-message strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .ai-aire-insight {
+            background: linear-gradient(135deg, rgba(111, 63, 245, 0.08), rgba(37, 99, 235, 0.05));
+            border-left: 3px solid var(--primary);
+            padding: 0.875rem;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            font-size: 0.85rem;
+        }
+
+        .ai-aire-label {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.35rem;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .ai-aire-value {
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .ai-suggestions {
+            display: grid;
+            gap: 0.75rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(111, 63, 245, 0.1);
+        }
+
+        .ai-suggestion {
+            padding: 0.875rem;
+            background: rgba(111, 63, 245, 0.05);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            border-left: 2px solid transparent;
+            line-height: 1.4;
+        }
+
+        .ai-suggestion:hover {
+            background: rgba(111, 63, 245, 0.1);
+            border-left-color: var(--primary);
+            color: var(--text-primary);
+            transform: translateX(4px);
+        }
+
+        .ai-loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            color: var(--primary);
+            font-weight: 600;
+            padding: 2rem 1.5rem;
+        }
+
+        .ai-loading-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        .ai-loading-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .ai-loading-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        @media (max-width: 768px) {
+            .ai-panel {
+                width: 90vw;
+                max-width: 420px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -567,8 +787,8 @@
                         </div>
                     </div>
                     <div class="aie-framework">
-                        <div class="aie-title">AIRe Behavior Science Link:</div>
-                        <div class="aie-detail"><strong>Autonomy + Impact + Recognition</strong> - Recognition scores align with employees exercising autonomy in acknowledging peer contributions, measuring individual impact across teams.</div>
+                        <div class="aie-title">🧠 AIRe Framework Lens:</div>
+                        <div class="aie-detail"><strong>Appreciation (A):</strong> 2,847 recognitions show strong peer appreciation. <strong>Incentivization (I):</strong> Manager participation at 85% drives motivation. <strong>Reinforcement (R):</strong> 82% returning users indicate habit formation. <strong>Emotional Connect (E):</strong> Personal comments on recognitions create meaning and drive engagement.</div>
                     </div>
                 </div>
             </div>
@@ -602,8 +822,8 @@
                         </div>
                     </div>
                     <div class="aie-framework">
-                        <div class="aie-title">AIRe Behavior Science Link:</div>
-                        <div class="aie-detail"><strong>Voice + Belonging + Mastery</strong> - Pulse engagement measures employee voice in organizational direction, sense of belonging through feedback loops, mastery through professional development insights.</div>
+                        <div class="aie-title">🧠 AIRe Framework Lens:</div>
+                        <div class="aie-detail"><strong>Appreciation (A):</strong> 76% response rate shows employees feel valued. <strong>Incentivization (I):</strong> Action items created translate feedback to outcomes. <strong>Reinforcement (R):</strong> Consistent pulse cadence builds listening culture. <strong>Emotional Connect (E):</strong> 4.2/5.0 satisfaction shows employees feel genuinely heard.</div>
                     </div>
                 </div>
             </div>
@@ -637,8 +857,8 @@
                         </div>
                     </div>
                     <div class="aie-framework">
-                        <div class="aie-title">VFit Framework Link:</div>
-                        <div class="aie-detail"><strong>Holistic Wellness Model</strong> - Tracks physical health, mental wellbeing, and work-life balance. VFit uses a proprietary wellness framework distinct from AIRe behavior science.</div>
+                        <div class="aie-title">🏥 VFit Wellness Framework:</div>
+                        <div class="aie-detail"><strong>Holistic Approach:</strong> Physical health, mental wellbeing, work-life balance. <strong>Complementary to AIRe:</strong> While recognition creates Appreciation and Emotional Connect, VFit's wellness challenges reinforce belonging and personal mastery. Together they drive sustainable engagement and employee resilience.</div>
                     </div>
                 </div>
             </div>
@@ -840,6 +1060,29 @@
         </div>
     </div>
 
+    <!-- AI Sidekick -->
+    <div class="ai-sidekick">
+        <button class="ai-toggle-btn" id="ai-toggle" title="Ask Executive AI">🤖</button>
+        <div class="ai-panel" id="ai-panel">
+            <div class="ai-header">
+                <span>🧠 Executive AI Advisor</span>
+                <button class="ai-close-btn" id="ai-close">✕</button>
+            </div>
+            <div class="ai-content" id="ai-content">
+                <div class="ai-message">
+                    👋 Hi! I'm your Executive AI Advisor. I analyze your dashboards through the <strong>AIRe Framework lens</strong> (Appreciation, Incentivization, Reinforcement, Emotional Connect) to give you actionable insights.
+                </div>
+                <div class="ai-suggestions" id="ai-suggestions">
+                    <div class="ai-suggestion">📊 Analyze AIRe health across products</div>
+                    <div class="ai-suggestion">🎯 Which product needs AIRe focus?</div>
+                    <div class="ai-suggestion">💡 How to improve Emotional Connect?</div>
+                    <div class="ai-suggestion">📈 VRecognition vs VFit performance</div>
+                    <div class="ai-suggestion">🔍 Department-level AIRe gaps</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Configuration Modal -->
     <div class="modal" id="config-modal">
         <div class="modal-content">
@@ -908,6 +1151,54 @@
     </div>
 
     <script>
+        // AI Sidekick responses
+        const aiResponses = {
+            '📊 Analyze AIRe health across products': {
+                title: 'Cross-Product AIRe Analysis',
+                insights: [
+                    { label: 'Appreciation (A)', value: 'VRecognition leads at 91/100. VPulse strong at 76% participation. VFit 64% suggests room for celebratory moments.' },
+                    { label: 'Incentivization (I)', value: 'Manager participation high (85%), but Finance at 52% - structure incentives for leadership re-engagement.' },
+                    { label: 'Reinforcement (R)', value: '82% returning users shows habit formation. Weekly pulse cadence and recognition momentum sustaining engagement.' },
+                    { label: 'Emotional Connect (E)', value: 'Personal comments drive meaning. Recognition NPS strong, but VFit could increase peer celebration moments.' }
+                ]
+            },
+            '🎯 Which product needs AIRe focus?': {
+                title: 'Product-Level AIRe Recommendations',
+                insights: [
+                    { label: 'VRecognition', value: 'Strong across all AIRe pillars. Focus: Expand Reinforcement habits in Finance dept.' },
+                    { label: 'VPulse', value: 'Excellent Voice & Belonging. Opportunity: More Incentivization - reward teams acting on feedback.' },
+                    { label: 'VFit', value: 'Wellness is Appreciation baseline. Gap: Strengthen Emotional Connect through team celebrations and peer recognition of wellness wins.' }
+                ]
+            },
+            '💡 How to improve Emotional Connect?': {
+                title: 'Emotional Connect Enhancement Strategy',
+                insights: [
+                    { label: 'Recognition Comments', value: 'Encourage personal narratives in recognition. Current depth 4.2/5 - target 4.5 through manager coaching.' },
+                    { label: 'Pulse Storytelling', value: 'Share "what we did with your feedback" stories. Creates meaning and closes the loop on voice.' },
+                    { label: 'VFit Celebrations', value: 'Wellness wins need peer recognition - create micro-celebrations when teams hit goals together.' },
+                    { label: 'Cross-Product Moments', value: 'Recognize employees excelling across multiple programs - they demonstrate genuine commitment.' }
+                ]
+            },
+            '📈 VRecognition vs VFit performance': {
+                title: 'Product Performance Comparison',
+                insights: [
+                    { label: 'Recognition', value: 'Health: 91/100 | CSAT: 89/100 | MAU: 68% - Mature, stable program' },
+                    { label: 'VFit', value: 'Health: 64% | CSAT: 79/100 | Challenges: 58% completion - Growing, needs momentum' },
+                    { label: 'Opportunity', value: 'Cross-promote: Recognize wellness milestone achievers in VRecognition to boost VFit engagement.' },
+                    { label: 'AIRe Gap', value: 'VFit needs stronger Emotional Connect through recognition integration.' }
+                ]
+            },
+            '🔍 Department-level AIRe gaps': {
+                title: 'Department AIRe Assessment',
+                insights: [
+                    { label: 'Marketing', value: 'Excellent across AIRe (92/100). Model for Appreciation & Emotional Connect.' },
+                    { label: 'Engineering', value: 'Strong Appreciation (81/100). Opportunity: More peer Reinforcement through challenges.' },
+                    { label: 'Finance', value: 'GAP ALERT: Low Appreciation (61/100). Manager Incentivization only 52%. Need leadership training & pulse-to-action linkage.' },
+                    { label: 'Action', value: 'Finance focus: Manager appreciation campaign + connect pulse feedback directly to recognition moments.' }
+                ]
+            }
+        };
+
         // Widget management
         const grid = document.getElementById('widgets-grid');
         const editBtn = document.getElementById('edit-layout-btn');
@@ -915,6 +1206,13 @@
         const closeBtn = document.getElementById('close-config');
         const resetBtn = document.getElementById('reset-layout');
         const roleDisplay = document.getElementById('role-display');
+
+        // AI Sidekick
+        const aiToggle = document.getElementById('ai-toggle');
+        const aiPanel = document.getElementById('ai-panel');
+        const aiClose = document.getElementById('ai-close');
+        const aiContent = document.getElementById('ai-content');
+        const aiSuggestions = document.getElementById('ai-suggestions');
 
         // Initialize
         let activeProducts = ['recognition', 'pulse', 'fit'];
@@ -1043,6 +1341,72 @@
             roleDisplay.textContent = 'Global Admin';
             saveConfiguration();
         }
+
+        // AI Sidekick Handler
+        aiToggle.addEventListener('click', () => {
+            aiPanel.classList.toggle('active');
+        });
+
+        aiClose.addEventListener('click', () => {
+            aiPanel.classList.remove('active');
+        });
+
+        document.querySelectorAll('.ai-suggestion').forEach(suggestion => {
+            suggestion.addEventListener('click', function() {
+                const query = this.textContent;
+                const response = aiResponses[query];
+
+                if (response) {
+                    aiContent.innerHTML = '<div class="ai-loading"><span>Thinking</span><span class="ai-loading-dot"></span><span class="ai-loading-dot"></span><span class="ai-loading-dot"></span></div>';
+
+                    setTimeout(() => {
+                        let html = `
+                            <div class="ai-message" style="margin-bottom: 1.25rem;">
+                                <strong>${response.title}</strong>
+                            </div>
+                        `;
+
+                        response.insights.forEach(insight => {
+                            html += `
+                                <div class="ai-aire-insight">
+                                    <div class="ai-aire-label">🎯 ${insight.label}</div>
+                                    <div class="ai-aire-value">${insight.value}</div>
+                                </div>
+                            `;
+                        });
+
+                        html += `
+                            <div class="ai-suggestions" style="margin-top: 1.5rem;">
+                                <div style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.75rem;">Ask another question:</div>
+                                <div class="ai-suggestion">📊 Analyze AIRe health across products</div>
+                                <div class="ai-suggestion">🎯 Which product needs AIRe focus?</div>
+                                <div class="ai-suggestion">💡 How to improve Emotional Connect?</div>
+                                <div class="ai-suggestion">📈 VRecognition vs VFit performance</div>
+                                <div class="ai-suggestion">🔍 Department-level AIRe gaps</div>
+                            </div>
+                        `;
+
+                        aiContent.innerHTML = html;
+
+                        // Rebind suggestions
+                        document.querySelectorAll('.ai-suggestion').forEach(s => {
+                            s.addEventListener('click', function() {
+                                const q = this.textContent;
+                                const r = aiResponses[q];
+                                if (r) this.closest('.ai-panel').querySelector('.ai-suggestion').click.call(this);
+                            });
+                        });
+                    }, 1200);
+                }
+            });
+        });
+
+        // Close AI panel on outside click
+        window.addEventListener('click', (e) => {
+            if (!e.target.closest('.ai-sidekick') && !e.target.closest('.ai-panel')) {
+                aiPanel.classList.remove('active');
+            }
+        });
 
         // Animate counters
         function animateCounters() {
