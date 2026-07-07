@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vantage Circle AIRe Dashboard - Complete</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #6F3FF5;
+            --primary-dark: #5a2ed4;
+            --primary-light: #8857ff;
+            --accent-blue: #2563eb;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --bg-white: #ffffff;
+            --bg-light: #f8f9fb;
+            --border-light: #e5e7eb;
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.18);
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-white);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f8f9fb 0%, #faf7ff 50%, #f8f9fb 100%);
+            z-index: -1;
+        }
+        .header {
+            padding: 2.5rem 2rem;
+            background: var(--bg-white);
+            border-bottom: 1px solid var(--border-light);
+        }
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .greeting {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+        .score-badge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 16px;
+            color: white;
+            box-shadow: 0 8px 24px rgba(111, 63, 245, 0.2);
+        }
+        .score-number { font-size: 2.5rem; font-weight: 800; }
+        .score-label { font-size: 0.75rem; opacity: 0.9; margin-top: 0.25rem; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+        .btn { background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(111, 63, 245, 0.3); }
+        .widgets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+        .widget {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.75rem;
+            box-shadow: 0 4px 12px rgba(111, 63, 245, 0.06);
+            position: relative;
+            overflow: hidden;
+        }
+        .widget::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+            pointer-events: none;
+        }
+        .widget-title { font-weight: 700; font-size: 1.1rem; margin-bottom: 1rem; position: relative; z-index: 1; }
+        .widget-content { position: relative; z-index: 1; }
+        .metric-value { font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--primary-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.3rem; }
+        .factor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 0.75rem;
+            margin: 1rem 0;
+        }
+        .factor-card {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 0.875rem;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 3px solid var(--primary);
+        }
+        .factor-name { font-size: 0.75rem; color: var(--text-secondary); font-weight: 600; margin-bottom: 0.5rem; }
+        .factor-score { font-size: 1.75rem; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--primary-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal.show { display: flex; }
+        .modal-content {
+            background: var(--bg-white);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .modal-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; }
+        .question-group { margin-bottom: 1.75rem; }
+        .question-text { font-weight: 600; margin-bottom: 1rem; }
+        .question-options { display: grid; gap: 0.75rem; }
+        .option {
+            padding: 0.75rem;
+            background: var(--bg-light);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .option:hover { background: rgba(111, 63, 245, 0.1); }
+        .option input { margin-right: 0.5rem; }
+        .modal-buttons { display: flex; gap: 1rem; margin-top: 2rem; }
+        .modal-buttons button { flex: 1; }
+        .ai-button {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 8px 32px rgba(111, 63, 245, 0.4);
+            transition: all 0.3s;
+            animation: float 3s ease-in-out infinite;
+            z-index: 1000;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .ai-button:hover { transform: scale(1.1); }
+        .ai-panel {
+            position: fixed;
+            bottom: 90px;
+            right: 2rem;
+            width: 420px;
+            max-height: 600px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            box-shadow: 0 16px 48px rgba(111, 63, 245, 0.25);
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+            pointer-events: none;
+            transition: all 0.3s;
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+        }
+        .ai-panel.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: all;
+        }
+        .ai-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 1.25rem;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 16px 16px 0 0;
+        }
+        .ai-close { background: rgba(255, 255, 255, 0.2); border: none; color: white; width: 32px; height: 32px; border-radius: 6px; cursor: pointer; }
+        .ai-content { padding: 1.5rem; overflow-y: auto; flex: 1; }
+        .ai-message { background: rgba(111, 63, 245, 0.05); border-left: 3px solid var(--primary); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.95rem; line-height: 1.6; color: var(--text-secondary); }
+        .ai-suggestion { padding: 0.875rem; background: rgba(111, 63, 245, 0.05); border-radius: 8px; margin-bottom: 0.75rem; cursor: pointer; transition: all 0.2s; font-size: 0.9rem; font-weight: 500; color: var(--text-secondary); border-left: 2px solid transparent; }
+        .ai-suggestion:hover { background: rgba(111, 63, 245, 0.1); border-left-color: var(--primary); color: var(--text-primary); transform: translateX(4px); }
+        @media (max-width: 768px) {
+            .widgets-grid { grid-template-columns: 1fr; }
+            .modal-content { max-width: 95vw; }
+            .ai-panel { width: 90vw; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="greeting">Good Morning, Sarah 👋</div>
+            <div style="display: flex; gap: 2rem; align-items: center; margin-top: 1.5rem; flex-wrap: wrap;">
+                <div class="score-badge">
+                    <div class="score-number" id="health-score">84</div>
+                    <div class="score-label">AIRe Health</div>
+                </div>
+                <div>
+                    <h2 style="font-size: 1.25rem; font-weight: 700;">Recognition Program Intelligence</h2>
+                    <p style="color: var(--text-secondary);">Multi-product insights powered by AIRe Framework</p>
+                </div>
+                <button class="btn" id="assessment-btn">📋 Take Assessment</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="widgets-grid" id="widgets-grid">
+            <!-- Assessment Results Widget -->
+            <div class="widget">
+                <div class="widget-title">🧠 AIRe Assessment Results</div>
+                <div class="widget-content">
+                    <div style="margin-bottom: 1rem;">
+                        <div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Assessment Status: <span id="assessment-status">Not Started</span></div>
+                        <div style="width: 100%; background: rgba(111, 63, 245, 0.1); border-radius: 8px; height: 8px; overflow: hidden;">
+                            <div id="assessment-progress" style="width: 0%; background: linear-gradient(90deg, var(--primary), var(--primary-light)); height: 100%; transition: width 0.3s;"></div>
+                        </div>
+                    </div>
+                    <div class="factor-grid" id="factor-display">
+                        <div class="factor-card">
+                            <div class="factor-name">Personalization</div>
+                            <div class="factor-score">--</div>
+                        </div>
+                        <div class="factor-card">
+                            <div class="factor-name">Delivery</div>
+                            <div class="factor-score">--</div>
+                        </div>
+                        <div class="factor-card">
+                            <div class="factor-name">Coverage</div>
+                            <div class="factor-score">--</div>
+                        </div>
+                        <div class="factor-card">
+                            <div class="factor-name">Emotion</div>
+                            <div class="factor-score">--</div>
+                        </div>
+                    </div>
+                    <button class="btn" id="assessment-btn2" style="width: 100%; margin-top: 1rem;">Start Assessment →</button>
+                </div>
+            </div>
+
+            <!-- VRecognition Widget -->
+            <div class="widget">
+                <div class="widget-title">✨ VRecognition Health</div>
+                <div class="widget-content">
+                    <div class="metric-value">91</div>
+                    <div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1rem;">Overall Score</div>
+                    <div style="background: rgba(111, 63, 245, 0.05); padding: 1rem; border-radius: 8px; font-size: 0.9rem; line-height: 1.6; color: var(--text-secondary);">
+                        <div style="margin-bottom: 0.5rem;"><strong>🎉 Appreciation:</strong> 2,847 recognitions show strong peer-to-peer appreciation culture</div>
+                        <div style="margin-bottom: 0.5rem;"><strong>🎁 Incentivization:</strong> 85% manager participation indicates leadership engagement</div>
+                        <div style="margin-bottom: 0.5rem;"><strong>🔄 Reinforcement:</strong> 82% returning users demonstrate sustained habit formation</div>
+                        <div><strong>❤️ Emotional Connect:</strong> Personal comments create authentic emotional resonance</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VPulse Widget -->
+            <div class="widget">
+                <div class="widget-title">💓 VPulse Engagement</div>
+                <div class="widget-content">
+                    <div class="metric-value">76</div>
+                    <div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1rem;">Response Rate %</div>
+                    <div style="background: rgba(111, 63, 245, 0.05); padding: 1rem; border-radius: 8px; font-size: 0.9rem; line-height: 1.6; color: var(--text-secondary);">
+                        <div style="margin-bottom: 0.5rem;"><strong>🎉 Appreciation:</strong> 76% response rate shows employees feel valued</div>
+                        <div style="margin-bottom: 0.5rem;"><strong>🎁 Incentivization:</strong> 28 action items translate voice into outcomes</div>
+                        <div style="margin-bottom: 0.5rem;"><strong>🔄 Reinforcement:</strong> Consistent pulse cadence builds listening culture</div>
+                        <div><strong>❤️ Emotional Connect:</strong> 4.2/5.0 satisfaction reflects genuine connection</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VFit Widget -->
+            <div class="widget">
+                <div class="widget-title">💪 VFit Wellness</div>
+                <div class="widget-content">
+                    <div class="metric-value">64</div>
+                    <div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1rem;">Participation %</div>
+                    <div style="background: rgba(111, 63, 245, 0.05); padding: 1rem; border-radius: 8px; font-size: 0.9rem; line-height: 1.6; color: var(--text-secondary);">
+                        <div style="margin-bottom: 0.5rem;"><strong>🎉 Appreciation:</strong> Wellness milestones celebrated as achievements</div>
+                        <div style="margin-bottom: 0.5rem;"><strong>❤️ Emotional Connect:</strong> Shared goals build emotional bonds</div>
+                        <div style="margin-bottom: 0.5rem;"><strong>🔄 Reinforcement:</strong> Wellness habits reinforce org values</div>
+                        <div><strong>🎁 Incentivization:</strong> Multi-layered incentives beyond rewards</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assessment Modal -->
+    <div class="modal" id="assessment-modal">
+        <div class="modal-content">
+            <div class="modal-title">🧠 AIRe Framework Assessment</div>
+            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Answer 10 questions about your recognition program design and execution.</p>
+
+            <div id="questions-container"></div>
+
+            <div class="modal-buttons">
+                <button class="btn" id="submit-assessment">Submit Assessment</button>
+                <button class="btn" style="background: var(--border-light); color: var(--text-primary);" id="close-assessment">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Advisor -->
+    <button class="ai-button" id="ai-toggle">🤖</button>
+    <div class="ai-panel" id="ai-panel">
+        <div class="ai-header">
+            <span>🧠 AIRe Advisor</span>
+            <button class="ai-close" id="ai-close">✕</button>
+        </div>
+        <div class="ai-content" id="ai-content">
+            <div class="ai-message">
+                Hi! I'm your AIRe Advisor. Ask me anything about optimizing your recognition program through the AIRe Framework (Appreciation, Incentivization, Reinforcement, Emotional Connect).
+            </div>
+            <div id="suggestions-container"></div>
+        </div>
+    </div>
+
+    <script>
+        // Assessment Questions
+        const questions = [
+            {
+                q: "How personalized are your recognition messages?",
+                f: "personalization",
+                opts: ["Generic templates", "Some personalization", "Highly personalized", "AI-driven personalization"]
+            },
+            {
+                q: "What's the average recognition delivery time?",
+                f: "delivery",
+                opts: ["Days later", "Next day", "Within hours", "Real-time/instant"]
+            },
+            {
+                q: "What % of employees receive recognition monthly?",
+                f: "coverage",
+                opts: ["Below 40%", "40-60%", "60-80%", "Above 80%"]
+            },
+            {
+                q: "How do employees feel recognized (emotional connection)?",
+                f: "emotion",
+                opts: ["Transactional", "Somewhat valued", "Genuinely appreciated", "Deeply connected"]
+            },
+            {
+                q: "Manager participation level in recognition?",
+                f: "personalization",
+                opts: ["Below 50%", "50-70%", "70-85%", "Above 85%"]
+            },
+            {
+                q: "Recognition comment quality?",
+                f: "emotion",
+                opts: ["Minimal/generic", "Brief/adequate", "Detailed/personal", "Narrative/meaningful"]
+            },
+            {
+                q: "How often do employees recognize peers?",
+                f: "delivery",
+                opts: ["Rarely", "Monthly", "Weekly", "Daily"]
+            },
+            {
+                q: "Recognition tied to company values?",
+                f: "coverage",
+                opts: ["Loosely aligned", "Somewhat aligned", "Well aligned", "Deeply embedded"]
+            },
+            {
+                q: "Cross-functional recognition rate?",
+                f: "coverage",
+                opts: ["Below 20%", "20-40%", "40-70%", "Above 70%"]
+            },
+            {
+                q: "Frequency of recognition program reviews?",
+                f: "personalization",
+                opts: ["Never", "Annually", "Quarterly", "Monthly"]
+            }
+        ];
+
+        const scoreMap = { 0: 25, 1: 50, 2: 75, 3: 100 };
+        let assessmentData = { responses: [] };
+
+        // Load assessment
+        function loadAssessment() {
+            const saved = localStorage.getItem('assessment');
+            if (saved) assessmentData = JSON.parse(saved);
+            if (assessmentData.responses.length > 0) updateDisplay();
+        }
+
+        function renderQuestions() {
+            const container = document.getElementById('questions-container');
+            container.innerHTML = questions.map((q, i) => `
+                <div class="question-group">
+                    <div class="question-text">${i + 1}. ${q.q}</div>
+                    <div class="question-options">
+                        ${q.opts.map((opt, j) => `
+                            <label class="option">
+                                <input type="radio" name="q${i}" value="${j}" ${assessmentData.responses[i] === j ? 'checked' : ''}>
+                                ${opt}
+                            </label>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function calculateScores() {
+            assessmentData.responses = questions.map((_, i) => {
+                const ans = document.querySelector(`input[name="q${i}"]:checked`);
+                return ans ? parseInt(ans.value) : -1;
+            });
+
+            if (assessmentData.responses.includes(-1)) {
+                alert('Please answer all questions');
+                return false;
+            }
+
+            const factors = {};
+            questions.forEach((q, i) => {
+                if (!factors[q.f]) factors[q.f] = [];
+                factors[q.f].push(scoreMap[assessmentData.responses[i]]);
+            });
+
+            assessmentData.scores = {};
+            assessmentData.score = 0;
+            Object.keys(factors).forEach(f => {
+                const avg = Math.round(factors[f].reduce((a, b) => a + b) / factors[f].length);
+                assessmentData.scores[f] = avg;
+                assessmentData.score += avg;
+            });
+            assessmentData.score = Math.round(assessmentData.score / Object.keys(factors).length);
+
+            localStorage.setItem('assessment', JSON.stringify(assessmentData));
+            return true;
+        }
+
+        function updateDisplay() {
+            if (!assessmentData.scores) return;
+            document.getElementById('health-score').textContent = assessmentData.score;
+            const pct = Math.round(assessmentData.responses.length / questions.length * 100);
+            document.getElementById('assessment-status').textContent = `${assessmentData.responses.length}/10 Complete (${pct}%)`;
+            document.getElementById('assessment-progress').style.width = pct + '%';
+
+            const displays = ['personalization', 'delivery', 'coverage', 'emotion'];
+            const factors = document.querySelectorAll('.factor-card');
+            displays.forEach((f, i) => {
+                const score = assessmentData.scores[f] || '--';
+                factors[i].querySelector('.factor-score').textContent = score;
+            });
+        }
+
+        // AI Advisor
+        const aiResponses = {
+            '📊 Analyze my AIRe scores': () => {
+                const scores = assessmentData.scores || {};
+                return `<strong>Your AIRe Scores:</strong><br>Personalization: ${scores.personalization || '--'}<br>Delivery: ${scores.delivery || '--'}<br>Coverage: ${scores.coverage || '--'}<br>Emotion: ${scores.emotion || '--'}<br><br>Focus on areas scoring below 75 for maximum impact.`;
+            },
+            '💡 How to improve Emotional Connect?': () => {
+                return `<strong>Emotional Connect Strategy:</strong><br>• Use narrative in recognition comments<br>• Share "why this matters" stories<br>• Celebrate team milestones together<br>• Recognize across departments<br>• Connect recognition to org values`;
+            },
+            '🎯 Close coverage gaps': () => {
+                return `<strong>Coverage Expansion:</strong><br>• Target departments below 60%<br>• Create peer recognition nudges<br>• Implement manager coaching<br>• Enable cross-functional recognition<br>• Track participation monthly`;
+            },
+            '⚡ Accelerate delivery': () => {
+                return `<strong>Delivery Optimization:</strong><br>• Enable mobile recognition<br>• Create quick-send templates<br>• Real-time recognition triggers<br>• Manager push notifications<br>• Remove approval workflows`;
+            }
+        };
+
+        // Event Listeners
+        document.getElementById('assessment-btn').addEventListener('click', () => {
+            document.getElementById('assessment-modal').classList.add('show');
+            renderQuestions();
+        });
+        document.getElementById('assessment-btn2').addEventListener('click', () => {
+            document.getElementById('assessment-modal').classList.add('show');
+            renderQuestions();
+        });
+
+        document.getElementById('close-assessment').addEventListener('click', () => {
+            document.getElementById('assessment-modal').classList.remove('show');
+        });
+
+        document.getElementById('submit-assessment').addEventListener('click', () => {
+            if (calculateScores()) {
+                updateDisplay();
+                document.getElementById('assessment-modal').classList.remove('show');
+            }
+        });
+
+        document.getElementById('ai-toggle').addEventListener('click', () => {
+            document.getElementById('ai-panel').classList.toggle('active');
+        });
+
+        document.getElementById('ai-close').addEventListener('click', () => {
+            document.getElementById('ai-panel').classList.remove('active');
+        });
+
+        // Initialize
+        loadAssessment();
+        document.getElementById('suggestions-container').innerHTML = Object.keys(aiResponses).map(key =>
+            `<div class="ai-suggestion" onclick="showResponse('${key}')">${key}</div>`
+        ).join('');
+
+        window.showResponse = function(query) {
+            const response = aiResponses[query]();
+            const content = document.getElementById('ai-content');
+            content.innerHTML = `
+                <div class="ai-message" style="margin-bottom: 1rem;">${response}</div>
+                <div style="border-top: 1px solid rgba(111, 63, 245, 0.2); padding-top: 1rem; margin-top: 1rem;">
+                    ${Object.keys(aiResponses).map(key =>
+                        `<div class="ai-suggestion" onclick="showResponse('${key}')">${key}</div>`
+                    ).join('')}
+                </div>
+            `;
+        };
+    </script>
+</body>
+</html>
