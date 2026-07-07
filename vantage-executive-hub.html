@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vantage Circle Executive Hub - Multi-Product Intelligence</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6F3FF5;
+            --primary-dark: #5a2ed4;
+            --primary-light: #8857ff;
+            --accent-blue: #2563eb;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --bg-white: #ffffff;
+            --bg-light: #f8f9fb;
+            --border-light: #e5e7eb;
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.18);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-white);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f8f9fb 0%, #faf7ff 50%, #f8f9fb 100%);
+            z-index: -1;
+        }
+
+        /* Header */
+        .header {
+            padding: 2rem;
+            background: var(--bg-white);
+            border-bottom: 1px solid var(--border-light);
+            animation: fadeInDown 0.6s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header-top {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .header-title {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .role-badge {
+            background: rgba(111, 63, 245, 0.1);
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .edit-layout-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .edit-layout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(111, 63, 245, 0.3);
+        }
+
+        .product-filters {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            color: var(--text-secondary);
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Widget Grid */
+        .widgets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .widget {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.75rem;
+            animation: cardSlideIn 0.6s ease-out backwards;
+            box-shadow: 0 4px 12px rgba(111, 63, 245, 0.06);
+            position: relative;
+            overflow: hidden;
+            display: none;
+        }
+
+        .widget.show {
+            display: block;
+        }
+
+        .widget::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+            pointer-events: none;
+        }
+
+        @keyframes cardSlideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .widget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .widget-title {
+            font-weight: 700;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .product-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.3rem 0.6rem;
+            background: rgba(111, 63, 245, 0.15);
+            color: var(--primary);
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .widget-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .metric-display {
+            margin-bottom: 1rem;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.3rem;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-trend {
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .trend-up { color: var(--success); }
+        .trend-down { color: var(--danger); }
+
+        .widget-list {
+            display: grid;
+            gap: 0.75rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem;
+            background: rgba(111, 63, 245, 0.05);
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .list-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .list-value {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .aie-framework {
+            background: linear-gradient(135deg, rgba(111, 63, 245, 0.08), rgba(37, 99, 235, 0.05));
+            border-left: 3px solid var(--primary);
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            position: relative;
+            z-index: 1;
+            line-height: 1.5;
+        }
+
+        .aie-title {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .aie-detail {
+            color: var(--text-secondary);
+        }
+
+        .csat-widget {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(37, 99, 235, 0.05));
+        }
+
+        .csat-widgets {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .csat-item {
+            background: rgba(111, 63, 245, 0.05);
+            padding: 0.75rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .csat-product {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+        }
+
+        .csat-score {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-white);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .widget-config {
+            margin-bottom: 1.5rem;
+        }
+
+        .config-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+
+        .config-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            background: var(--bg-light);
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .config-checkbox input {
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+        }
+
+        .close-modal-btn {
+            display: block;
+            margin-top: 1.5rem;
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(111, 63, 245, 0.3);
+        }
+
+        .reset-layout-btn {
+            background: var(--border-light);
+            color: var(--text-primary);
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 1rem;
+        }
+
+        .reset-layout-btn:hover {
+            background: var(--text-secondary);
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .widgets-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header-top {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .header-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(111, 63, 245, 0.05);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(111, 63, 245, 0.25);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(111, 63, 245, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-top">
+            <div class="header-title">Vantage Circle Executive Hub</div>
+            <div class="header-controls">
+                <div class="role-badge" id="role-display">Global Admin</div>
+                <button class="edit-layout-btn" id="edit-layout-btn">⚙️ Configure Layout</button>
+            </div>
+        </div>
+
+        <div class="product-filters">
+            <button class="filter-btn active" data-product="all">All Products</button>
+            <button class="filter-btn" data-product="recognition">VRecognition</button>
+            <button class="filter-btn" data-product="pulse">VPulse</button>
+            <button class="filter-btn" data-product="fit">VFit</button>
+            <button class="filter-btn" data-product="aiere">AIRe Insights</button>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <div class="widgets-grid" id="widgets-grid">
+            <!-- Recognition Health Widget -->
+            <div class="widget show" data-product="recognition" data-widget="recognition-health">
+                <div class="widget-header">
+                    <div class="widget-title">
+                        <span>✨</span> Recognition Health
+                        <span class="product-badge">VRecognition</span>
+                    </div>
+                </div>
+                <div class="widget-content">
+                    <div class="metric-display">
+                        <div class="metric-label">Overall Score</div>
+                        <div class="metric-value counter" data-target="91">0</div>
+                        <div class="metric-trend trend-up">↑ +8% from last week</div>
+                    </div>
+                    <div class="widget-list">
+                        <div class="list-item">
+                            <span class="list-label">Monthly Active Users</span>
+                            <span class="list-value">6,842 (68%)</span>
+                        </div>
+                        <div class="list-item">
+                            <span class="list-label">Returning Users</span>
+                            <span class="list-value">82%</span>
+                        </div>
+                        <div class="list-item">
+                            <span class="list-label">Recognition Sent</span>
+                            <span class="list-value">2,847 ↑12%</span>
+                        </div>
+                    </div>
+                    <div class="aie-framework">
+                        <div class="aie-title">AIRe Behavior Science Link:</div>
+                        <div class="aie-detail"><strong>Autonomy + Impact + Recognition</strong> - Recognition scores align with employees exercising autonomy in acknowledging peer contributions, measuring individual impact across teams.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pulse Engagement Widget -->
+            <div class="widget show" data-product="pulse" data-widget="pulse-engagement">
+                <div class="widget-header">
+                    <div class="widget-title">
+                        <span>💓</span> Pulse Engagement
+                        <span class="product-badge">VPulse</span>
+                    </div>
+                </div>
+                <div class="widget-content">
+                    <div class="metric-display">
+                        <div class="metric-label">Latest Response Rate</div>
+                        <div class="metric-value counter" data-target="76">0</div><span style="font-size: 1.25rem;">%</span>
+                        <div class="metric-trend trend-up">↑ +4% WoW</div>
+                    </div>
+                    <div class="widget-list">
+                        <div class="list-item">
+                            <span class="list-label">Total Responses</span>
+                            <span class="list-value">4,120</span>
+                        </div>
+                        <div class="list-item">
+                            <span class="list-label">Avg Satisfaction</span>
+                            <span class="list-value">4.2/5.0</span>
+                        </div>
+                        <div class="list-item">
+                            <span class="list-label">Action Items Created</span>
+                            <span class="list-value">28</span>
+                        </div>
+                    </div>
+                    <div class="aie-framework">
+                        <div class="aie-title">AIRe Behavior Science Link:</div>
+                        <div class="aie-detail"><strong>Voice + Belonging + Mastery</strong> - Pulse engagement measures employee voice in organizational direction, sense of belonging through feedback loops, mastery through professional development insights.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VFit Wellness Widget -->
+            <div class="widget show" data-product="fit" data-widget="vfit-wellness">
+                <div class="widget-header">
+                    <div class="widget-title">
+                        <span>💪</span> VFit Wellness
+                        <span class="product-badge">VFit</span>
+                    </div>
+                </div>
+                <div class="widget-content">
+                    <div class="metric-display">
+                        <div class="metric-label">Program Participation</div>
+                        <div class="metric-value counter" data-target="64">0</div><span style="font-size: 1.25rem;">%</span>
+                        <div class="metric-trend trend-up">↑ +6% MoM</div>
+                    </div>
+                    <div class="widget-list">
+                        <div class="list-item">
+                            <span class="list-label">Active Employees</span>
+                            <span class="list-value">4,290</span>
+                        </div>
+                        <div class="list-item">
+                            <span class="list-label">Challenges Completed</span>
+                            <span class="list-value">1,847</span>
+                        </div>
+                        <div class="list-item">
+                            <span class="list-label">Wellness Score</span>
+                            <span class="list-value">7.1/10</span>
+                        </div>
+                    </div>
+                    <div class="aie-framework">
+                        <div class="aie-title">VFit Framework Link:</div>
+                        <div class="aie-detail"><strong>Holistic Wellness Model</strong> - Tracks physical health, mental wellbeing, and work-life balance. VFit uses a proprietary wellness framework distinct from AIRe behavior science.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CSAT Analysis Widget -->
+            <div class="widget csat-widget show" data-product="all" data-widget="csat-analysis">
+                <div class="widget-header">
+                    <div class="widget-title">
+                        <span>😊</span> Customer Satisfaction
+                    </div>
+                </div>
+                <div class="widget-content">
+                    <div class="metric-display">
+                        <div class="metric-label">Cross-Product CSAT Average</div>
+                        <div class="metric-value counter" data-target="84">0</div>
+                        <div class="metric-trend trend-up">↑ +3% this month</div>
+                    </div>
+                    <div class="csat-widgets">
+                        <div class="csat-item">
+                            <div class="csat-product">VRecognition CSAT</div>
+                            <div class="csat-score counter" data-target="89">0</div>
+                        </div>
+                        <div class="csat-item">
+                            <div class="csat-product">VFit CSAT</div>
+                            <div class="csat-score counter" data-target="79">0</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 1rem; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                        <strong>Calculated from:</strong> Feature usage, NPS responses, support tickets, user feedback surveys across both products.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Department Performance Widget -->
+            <div class="widget show" data-product="recognition" data-widget="dept-performance">
+                <div class="widget-header">
+                    <div class="widget-title">
+                        <span>🏢</span> Department Performance
+                        <span class="product-badge">VRecognition</span>
+                    </div>
+                </div>
+                <div class="widget-content">
+                    <div class="widget-list">
+                        <div class="list-item">
+                            <span class="list-label">Marketing</span>
+                            <span class="list-value">92 ↑12%</span>
+                        </div>
+                        <div class="list-item">
+                            <span class="list-label">Engineering</span>
+                            <span class="list-value">81 ↑7%</span>
+                        </div>
+                        <div class="list-item">
+                            <span class="list-label">Sales</span>
+                            <span class="list-value">88 ↑8%</span>
+                        </div>
+                        <div class="list-item">
+                            <span class="list-label">Finance</span>
+                            <span class="list-value">61 ↓5%</span>
+                        </div>
+                    </div>
+                    <div class="aie-framework">
+                        <div class="aie-title">AIRe Lens:</div>
+                        <div class="aie-detail">Marketing excels at collaborative autonomy. Finance needs support in voice activation and belonging initiatives.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Engagement Trends Widget -->
+            <div class="widget show" data-product="pulse" data-widget="engagement-trends">
+                <div class="widget-header">
+                    <div class="widget-title">
+                        <span>📈</span> Engagement Trends
+                        <span class="product-badge">VPulse</span>
+                    </div>
+                </div>
+                <div class="widget-content">
+                    <div class="widget-list">
+                        <div class="list-item">
+                            <span class="list-label">Q3 Engagement</span>
+                            <span class="list-value">↑ +14%</span>
+                        </div>
+                        <div class="list-item">
+                            <span class="list-label">Response Consistency</span>
+                            <span class="list-value">78%</span>
+                        </div>
+                        <div class="list-item">
+                            <span class="list-label">Sentiment Trend</span>
+                            <span class="list-value">Positive ↑</span>
+                        </div>
+                        <div class="list-item">
+                            <span class="list-label">eNPS Score</span>
+                            <span class="list-value">+42</span>
+                        </div>
+                    </div>
+                    <div class="aie-framework">
+                        <div class="aie-title">AIRe Connection:</div>
+                        <div class="aie-detail"><strong>Belonging + Voice</strong> - Increased pulse engagement signals employees feel heard and valued. Positive eNPS reflects strong psychological safety and organizational belonging.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Wellness Participation Widget -->
+            <div class="widget show" data-product="fit" data-widget="wellness-participation">
+                <div class="widget-header">
+                    <div class="widget-title">
+                        <span>🏆</span> Wellness Participation
+                        <span class="product-badge">VFit</span>
+                    </div>
+                </div>
+                <div class="widget-content">
+                    <div class="widget-list">
+                        <div class="list-item">
+                            <span class="list-label">Monthly Challenges</span>
+                            <span class="list-value">8 Active</span>
+                        </div>
+                        <div class="list-item">
+                            <span class="list-label">Team Participation</span>
+                            <span class="list-value">71%</span>
+                        </div>
+                        <div class="list-item">
+                            <span class="list-label">Completion Rate</span>
+                            <span class="list-value">58%</span>
+                        </div>
+                        <div class="list-item">
+                            <span class="list-label">Avg Challenge Days</span>
+                            <span class="list-value">18/30</span>
+                        </div>
+                    </div>
+                    <div class="aie-framework">
+                        <div class="aie-title">VFit Framework:</div>
+                        <div class="aie-detail">Wellness challenges drive team cohesion and individual accountability. Program complements organizational culture and employee satisfaction metrics.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Budget Health Widget -->
+            <div class="widget show" data-product="recognition" data-widget="budget-health">
+                <div class="widget-header">
+                    <div class="widget-title">
+                        <span>💰</span> Budget Health
+                        <span class="product-badge">VRecognition</span>
+                    </div>
+                </div>
+                <div class="widget-content">
+                    <div class="metric-display">
+                        <div class="metric-label">Budget Utilization</div>
+                        <div class="metric-value counter" data-target="87">0</div><span style="font-size: 1.25rem;">%</span>
+                        <div class="metric-trend trend-up">Optimal velocity</div>
+                    </div>
+                    <div class="widget-list">
+                        <div class="list-item">
+                            <span class="list-label">Allocated</span>
+                            <span class="list-value">$84,000</span>
+                        </div>
+                        <div class="list-item">
+                            <span class="list-label">Spent</span>
+                            <span class="list-value">$73,080</span>
+                        </div>
+                        <div class="list-item">
+                            <span class="list-label">Remaining</span>
+                            <span class="list-value">$10,920</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Overall Health Widget -->
+            <div class="widget show" data-product="all" data-widget="overall-health">
+                <div class="widget-header">
+                    <div class="widget-title">
+                        <span>🎯</span> Organizational Health
+                    </div>
+                </div>
+                <div class="widget-content">
+                    <div class="widget-list">
+                        <div class="list-item">
+                            <span class="list-label">Employee Engagement</span>
+                            <span class="list-value">78%</span>
+                        </div>
+                        <div class="list-item">
+                            <span class="list-label">Culture Score</span>
+                            <span class="list-value">8.2/10</span>
+                        </div>
+                        <div class="list-item">
+                            <span class="list-label">Program ROI</span>
+                            <span class="list-value">+22% YoY</span>
+                        </div>
+                        <div class="list-item">
+                            <span class="list-label">Retention Impact</span>
+                            <span class="list-value">+8% vs Ctrl</span>
+                        </div>
+                    </div>
+                    <div class="aie-framework">
+                        <div class="aie-title">Integrated View:</div>
+                        <div class="aie-detail">Cross-product data reveals strong AIRe alignment: employees have voice (Pulse), autonomy in recognition (VRecognition), and wellbeing support (VFit), creating comprehensive organizational health.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Configuration Modal -->
+    <div class="modal" id="config-modal">
+        <div class="modal-content">
+            <div class="modal-title">Configure Your Dashboard Layout</div>
+
+            <div class="widget-config">
+                <label class="config-label">Show Widgets By Product:</label>
+                <label class="config-checkbox">
+                    <input type="checkbox" class="product-toggle" value="recognition" checked> VRecognition Widgets
+                </label>
+                <label class="config-checkbox">
+                    <input type="checkbox" class="product-toggle" value="pulse" checked> VPulse Widgets
+                </label>
+                <label class="config-checkbox">
+                    <input type="checkbox" class="product-toggle" value="fit" checked> VFit Widgets
+                </label>
+            </div>
+
+            <div class="widget-config">
+                <label class="config-label">Show Specific Widgets:</label>
+                <label class="config-checkbox">
+                    <input type="checkbox" class="widget-toggle" value="recognition-health" checked> Recognition Health
+                </label>
+                <label class="config-checkbox">
+                    <input type="checkbox" class="widget-toggle" value="pulse-engagement" checked> Pulse Engagement
+                </label>
+                <label class="config-checkbox">
+                    <input type="checkbox" class="widget-toggle" value="vfit-wellness" checked> VFit Wellness
+                </label>
+                <label class="config-checkbox">
+                    <input type="checkbox" class="widget-toggle" value="csat-analysis" checked> CSAT Analysis
+                </label>
+                <label class="config-checkbox">
+                    <input type="checkbox" class="widget-toggle" value="dept-performance" checked> Department Performance
+                </label>
+                <label class="config-checkbox">
+                    <input type="checkbox" class="widget-toggle" value="engagement-trends" checked> Engagement Trends
+                </label>
+                <label class="config-checkbox">
+                    <input type="checkbox" class="widget-toggle" value="wellness-participation" checked> Wellness Participation
+                </label>
+                <label class="config-checkbox">
+                    <input type="checkbox" class="widget-toggle" value="budget-health" checked> Budget Health
+                </label>
+                <label class="config-checkbox">
+                    <input type="checkbox" class="widget-toggle" value="overall-health" checked> Organizational Health
+                </label>
+            </div>
+
+            <div class="widget-config">
+                <label class="config-label">Admin Role:</label>
+                <label class="config-checkbox">
+                    <input type="radio" name="admin-role" value="global" checked> Global Admin (All widgets)
+                </label>
+                <label class="config-checkbox">
+                    <input type="radio" name="admin-role" value="regional"> Regional Admin (Department focus)
+                </label>
+                <label class="config-checkbox">
+                    <input type="radio" name="admin-role" value="manager"> Manager (Team focus)
+                </label>
+            </div>
+
+            <button class="reset-layout-btn" id="reset-layout">↺ Reset to Default</button>
+            <button class="close-modal-btn" id="close-config">Save Configuration</button>
+        </div>
+    </div>
+
+    <script>
+        // Widget management
+        const grid = document.getElementById('widgets-grid');
+        const editBtn = document.getElementById('edit-layout-btn');
+        const modal = document.getElementById('config-modal');
+        const closeBtn = document.getElementById('close-config');
+        const resetBtn = document.getElementById('reset-layout');
+        const roleDisplay = document.getElementById('role-display');
+
+        // Initialize
+        let activeProducts = ['recognition', 'pulse', 'fit'];
+        let activeWidgets = ['recognition-health', 'pulse-engagement', 'vfit-wellness', 'csat-analysis',
+                            'dept-performance', 'engagement-trends', 'wellness-participation', 'budget-health', 'overall-health'];
+        let userRole = 'global';
+
+        // Product filters
+        document.querySelectorAll('[data-product]').forEach(btn => {
+            if (btn.classList.contains('filter-btn')) {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+
+                    const product = this.dataset.product;
+                    filterByProduct(product);
+                });
+            }
+        });
+
+        function filterByProduct(product) {
+            const widgets = document.querySelectorAll('.widget');
+            widgets.forEach(w => {
+                const widgetProducts = w.dataset.product.split(' ');
+                if (product === 'all' || widgetProducts.includes(product)) {
+                    w.classList.add('show');
+                } else {
+                    w.classList.remove('show');
+                }
+            });
+        }
+
+        // Edit layout
+        editBtn.addEventListener('click', () => modal.classList.add('show'));
+        closeBtn.addEventListener('click', () => {
+            saveConfiguration();
+            modal.classList.remove('show');
+        });
+        resetBtn.addEventListener('click', resetToDefault);
+
+        // Product toggles
+        document.querySelectorAll('.product-toggle').forEach(toggle => {
+            toggle.addEventListener('change', function() {
+                const product = this.value;
+                if (this.checked) {
+                    if (!activeProducts.includes(product)) {
+                        activeProducts.push(product);
+                    }
+                } else {
+                    activeProducts = activeProducts.filter(p => p !== product);
+                }
+            });
+        });
+
+        // Widget toggles
+        document.querySelectorAll('.widget-toggle').forEach(toggle => {
+            toggle.addEventListener('change', function() {
+                const widget = this.value;
+                if (this.checked) {
+                    if (!activeWidgets.includes(widget)) {
+                        activeWidgets.push(widget);
+                    }
+                } else {
+                    activeWidgets = activeWidgets.filter(w => w !== widget);
+                }
+            });
+        });
+
+        // Role selection
+        document.querySelectorAll('[name="admin-role"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                userRole = this.value;
+                roleDisplay.textContent = this.value.charAt(0).toUpperCase() + this.value.slice(1) + ' Admin';
+                applyRoleDefaults();
+            });
+        });
+
+        function applyRoleDefaults() {
+            if (userRole === 'regional') {
+                // Regional admin focuses on department performance
+                activeWidgets = ['dept-performance', 'engagement-trends', 'recognition-health'];
+            } else if (userRole === 'manager') {
+                // Manager focuses on team metrics
+                activeWidgets = ['recognition-health', 'csat-analysis', 'wellness-participation'];
+            } else {
+                // Global admin sees everything
+                activeWidgets = ['recognition-health', 'pulse-engagement', 'vfit-wellness', 'csat-analysis',
+                                'dept-performance', 'engagement-trends', 'wellness-participation', 'budget-health', 'overall-health'];
+            }
+            saveConfiguration();
+        }
+
+        function saveConfiguration() {
+            const widgets = document.querySelectorAll('.widget');
+            widgets.forEach(w => {
+                const widgetId = w.dataset.widget;
+                const widgetProducts = w.dataset.product.split(' ');
+
+                const showByProduct = widgetProducts.some(p => activeProducts.includes(p) || p === 'all');
+                const showByWidget = activeWidgets.includes(widgetId);
+
+                if (showByProduct && showByWidget) {
+                    w.classList.add('show');
+                } else {
+                    w.classList.remove('show');
+                }
+            });
+
+            localStorage.setItem('dashboardConfig', JSON.stringify({
+                products: activeProducts,
+                widgets: activeWidgets,
+                role: userRole
+            }));
+        }
+
+        function resetToDefault() {
+            activeProducts = ['recognition', 'pulse', 'fit'];
+            activeWidgets = ['recognition-health', 'pulse-engagement', 'vfit-wellness', 'csat-analysis',
+                            'dept-performance', 'engagement-trends', 'wellness-participation', 'budget-health', 'overall-health'];
+            userRole = 'global';
+
+            document.querySelectorAll('.product-toggle').forEach(t => t.checked = true);
+            document.querySelectorAll('.widget-toggle').forEach(t => t.checked = true);
+            document.querySelector('[value="global"]').checked = true;
+
+            roleDisplay.textContent = 'Global Admin';
+            saveConfiguration();
+        }
+
+        // Animate counters
+        function animateCounters() {
+            const counters = document.querySelectorAll('.counter');
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                let current = 0;
+                const increment = target / 30;
+
+                const updateCounter = () => {
+                    current += increment;
+                    if (current < target) {
+                        counter.textContent = Math.floor(current);
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        counter.textContent = target;
+                    }
+                };
+
+                updateCounter();
+            });
+        }
+
+        // Close modal
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('show');
+            }
+        });
+
+        // Initialize
+        window.addEventListener('DOMContentLoaded', () => {
+            animateCounters();
+            const saved = localStorage.getItem('dashboardConfig');
+            if (saved) {
+                const config = JSON.parse(saved);
+                activeProducts = config.products;
+                activeWidgets = config.widgets;
+                userRole = config.role;
+
+                document.querySelectorAll('.product-toggle').forEach(t => {
+                    t.checked = activeProducts.includes(t.value);
+                });
+                document.querySelectorAll('.widget-toggle').forEach(t => {
+                    t.checked = activeWidgets.includes(t.value);
+                });
+                document.querySelector(`[value="${userRole}"]`).checked = true;
+                roleDisplay.textContent = userRole.charAt(0).toUpperCase() + userRole.slice(1) + ' Admin';
+
+                saveConfiguration();
+            }
+        });
+    </script>
+</body>
+</html>
