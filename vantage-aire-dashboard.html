@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vantage Circle AIRe Dashboard - Recognition Intelligence</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6F3FF5;
+            --primary-dark: #5a2ed4;
+            --primary-light: #8857ff;
+            --accent-blue: #2563eb;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --bg-white: #ffffff;
+            --bg-light: #f8f9fb;
+            --border-light: #e5e7eb;
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.18);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-white);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f8f9fb 0%, #faf7ff 50%, #f8f9fb 100%);
+            z-index: -1;
+        }
+
+        .shapes-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.03;
+            filter: blur(40px);
+        }
+
+        .shape-1 {
+            width: 400px;
+            height: 400px;
+            background: var(--primary);
+            top: -100px;
+            right: -100px;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .shape-2 {
+            width: 300px;
+            height: 300px;
+            background: var(--accent-blue);
+            bottom: -50px;
+            left: -50px;
+            animation: float 25s infinite ease-in-out reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-30px) translateX(20px); }
+        }
+
+        .header {
+            padding: 2.5rem 2rem;
+            background: var(--bg-white);
+            border-bottom: 1px solid var(--border-light);
+            animation: fadeInDown 0.6s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .greeting {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .score-badge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 16px;
+            color: white;
+            box-shadow: 0 8px 24px rgba(111, 63, 245, 0.2);
+            animation: scaleIn 0.6s ease-out;
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .score-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .score-label {
+            font-size: 0.75rem;
+            opacity: 0.9;
+            margin-top: 0.25rem;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .role-badge {
+            background: rgba(111, 63, 245, 0.1);
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(111, 63, 245, 0.3);
+        }
+
+        .product-filters {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            color: var(--text-secondary);
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .widgets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .widget {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.75rem;
+            animation: cardSlideIn 0.6s ease-out backwards;
+            box-shadow: 0 4px 12px rgba(111, 63, 245, 0.06);
+            position: relative;
+            overflow: hidden;
+            display: none;
+            transition: all 0.3s ease;
+        }
+
+        .widget.show {
+            display: block;
+        }
+
+        .widget::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+            pointer-events: none;
+        }
+
+        @keyframes cardSlideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .widget:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(111, 63, 245, 0.12);
+        }
+
+        .widget-title {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .product-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.3rem 0.6rem;
+            background: rgba(111, 63, 245, 0.15);
+            color: var(--primary);
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-left: auto;
+        }
+
+        .widget-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .metric-display {
+            margin-bottom: 1rem;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.3rem;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-trend {
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .trend-up { color: var(--success); }
+        .trend-down { color: var(--danger); }
+
+        .widget-list {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem;
+            background: rgba(111, 63, 245, 0.05);
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .list-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .list-value {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .aire-framework {
+            background: linear-gradient(135deg, rgba(111, 63, 245, 0.08), rgba(37, 99, 235, 0.05));
+            border-left: 3px solid var(--primary);
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            line-height: 1.6;
+        }
+
+        .aire-title {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .aire-detail {
+            color: var(--text-secondary);
+        }
+
+        .aire-assessment {
+            background: linear-gradient(135deg, rgba(111, 63, 245, 0.1), rgba(37, 99, 235, 0.08));
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border: 1px solid rgba(111, 63, 245, 0.2);
+        }
+
+        .assessment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+        }
+
+        .assessment-title {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        .assessment-progress {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            background: rgba(111, 63, 245, 0.08);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+        }
+
+        .factor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .factor-card {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 0.875rem;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 3px solid var(--primary);
+        }
+
+        .factor-name {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .factor-score {
+            font-size: 1.75rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .assessment-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            width: 100%;
+        }
+
+        .assessment-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(111, 63, 245, 0.3);
+        }
+
+        .ai-sidekick {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1000;
+        }
+
+        .ai-button {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 8px 32px rgba(111, 63, 245, 0.4);
+            transition: all 0.3s ease;
+            animation: float 3s ease-in-out infinite;
+            position: relative;
+        }
+
+        .ai-button::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+            animation: pulse-ring 2s infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.3); opacity: 0; }
+        }
+
+        .ai-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 40px rgba(111, 63, 245, 0.5);
+        }
+
+        .ai-panel {
+            position: absolute;
+            bottom: 90px;
+            right: 0;
+            width: 420px;
+            max-height: 600px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            box-shadow: 0 16px 48px rgba(111, 63, 245, 0.25);
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+            pointer-events: none;
+            transition: all 0.3s ease;
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .ai-panel.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: all;
+        }
+
+        .ai-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 1.25rem;
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .ai-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .ai-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .ai-content {
+            padding: 1.5rem;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .ai-message {
+            background: rgba(111, 63, 245, 0.05);
+            border-left: 3px solid var(--primary);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        .ai-message strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .ai-suggestion {
+            padding: 0.875rem;
+            background: rgba(111, 63, 245, 0.05);
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            border-left: 2px solid transparent;
+            line-height: 1.4;
+        }
+
+        .ai-suggestion:hover {
+            background: rgba(111, 63, 245, 0.1);
+            border-left-color: var(--primary);
+            color: var(--text-primary);
+            transform: translateX(4px);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .widgets-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header-top {
+                flex-direction: column;
+            }
+
+            .ai-panel {
+                width: 90vw;
+                max-width: 420px;
+            }
+
+            .factor-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="shapes-bg">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <div class="greeting">Good Morning, Sarah 👋</div>
+            <div class="header-top">
+                <div class="score-badge">
+                    <div class="score-number counter" data-target="84">0</div>
+                    <div class="score-label">AIRe Health</div>
+                </div>
+                <div style="flex: 1;">
+                    <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;">Recognition Program Intelligence</h2>
+                    <p style="font-size: 0.95rem; color: var(--text-secondary);">Multi-product insights powered by AIRe Framework assessment</p>
+                </div>
+                <div class="header-controls">
+                    <div class="role-badge" id="role-display">Global Admin</div>
+                    <button class="btn-primary" id="config-btn">⚙️ Configure</button>
+                </div>
+            </div>
+
+            <div class="product-filters">
+                <button class="filter-btn active" data-filter="all">All Products</button>
+                <button class="filter-btn" data-filter="recognition">VRecognition</button>
+                <button class="filter-btn" data-filter="pulse">VPulse</button>
+                <button class="filter-btn" data-filter="fit">VFit</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Container -->
+    <div class="container">
+        <div class="widgets-grid" id="widgets-grid">
+            <!-- AIRe Assessment Widget -->
+            <div class="widget show" data-product="all" data-widget="aire-assessment">
+                <div class="widget-title">
+                    🧠 AIRe Assessment Tool
+                </div>
+                <div class="widget-content">
+                    <div class="aire-assessment">
+                        <div class="assessment-header">
+                            <div class="assessment-title">Assessment Status</div>
+                            <div class="assessment-progress">8/10 Questions</div>
+                        </div>
+                        <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1rem; line-height: 1.5;">Answer 10 structured questions across recognition program design, execution, and alignment with AIRe Framework principles.</p>
+
+                        <div class="factor-grid">
+                            <div class="factor-card">
+                                <div class="factor-name">Personalization</div>
+                                <div class="factor-score">92</div>
+                            </div>
+                            <div class="factor-card">
+                                <div class="factor-name">Delivery</div>
+                                <div class="factor-score">78</div>
+                            </div>
+                            <div class="factor-card">
+                                <div class="factor-name">Coverage</div>
+                                <div class="factor-score">85</div>
+                            </div>
+                            <div class="factor-card">
+                                <div class="factor-name">Emotion</div>
+                                <div class="factor-score">81</div>
+                            </div>
+                        </div>
+
+                        <button class="assessment-btn">Complete Assessment →</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VRecognition Widget -->
+            <div class="widget show" data-product="recognition" data-widget="recognition">
+                <div class="widget-title">
+                    ✨ Recognition Health
+                    <span class="product-badge">VRecognition</span>
+                </div>
+                <div class="widget-content">
+                    <div class="metric-display">
+                        <div class="metric-label">Overall Score</div>
+                        <div class="metric-value counter" data-target="91">0</div>
+                        <div class="metric-trend trend-up">↑ +8% from last week</div>
+                    </div>
+                    <div class="widget-list">
+                        <div class="list-item">
+                            <span class="list-label">MAU</span>
+                            <span class="list-value">6,842 (68%)</span>
+                        </div>
+                        <div class="list-item">
+                            <span class="list-label">Recognitions Sent</span>
+                            <span class="list-value">2,847 ↑12%</span>
+                        </div>
+                        <div class="list-item">
+                            <span class="list-label">Manager Participation</span>
+                            <span class="list-value">85%</span>
+                        </div>
+                    </div>
+                    <div class="aire-framework">
+                        <div class="aire-title">🧠 AIRe Lens:</div>
+                        <div class="aire-detail"><strong>Appreciation:</strong> 2,847 recognitions | <strong>Incentivization:</strong> 85% manager participation | <strong>Reinforcement:</strong> 82% returning users | <strong>Emotional Connect:</strong> Personal comments drive engagement</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VPulse Widget -->
+            <div class="widget show" data-product="pulse" data-widget="pulse">
+                <div class="widget-title">
+                    💓 Pulse Engagement
+                    <span class="product-badge">VPulse</span>
+                </div>
+                <div class="widget-content">
+                    <div class="metric-display">
+                        <div class="metric-label">Response Rate</div>
+                        <div class="metric-value counter" data-target="76">0</div><span style="font-size: 1.25rem;">%</span>
+                        <div class="metric-trend trend-up">↑ +4% WoW</div>
+                    </div>
+                    <div class="widget-list">
+                        <div class="list-item">
+                            <span class="list-label">Total Responses</span>
+                            <span class="list-value">4,120</span>
+                        </div>
+                        <div class="list-item">
+                            <span class="list-label">eNPS Score</span>
+                            <span class="list-value">+42</span>
+                        </div>
+                        <div class="list-item">
+                            <span class="list-label">Action Items</span>
+                            <span class="list-value">28</span>
+                        </div>
+                    </div>
+                    <div class="aire-framework">
+                        <div class="aire-title">🧠 AIRe Lens:</div>
+                        <div class="aire-detail"><strong>Appreciation:</strong> 76% feel valued | <strong>Incentivization:</strong> Action items translate feedback | <strong>Reinforcement:</strong> Pulse cadence builds culture | <strong>Emotional Connect:</strong> 4.2/5.0 satisfaction</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VFit Widget -->
+            <div class="widget show" data-product="fit" data-widget="fit">
+                <div class="widget-title">
+                    💪 VFit Wellness
+                    <span class="product-badge">VFit</span>
+                </div>
+                <div class="widget-content">
+                    <div class="metric-display">
+                        <div class="metric-label">Participation</div>
+                        <div class="metric-value counter" data-target="64">0</div><span style="font-size: 1.25rem;">%</span>
+                        <div class="metric-trend trend-up">↑ +6% MoM</div>
+                    </div>
+                    <div class="widget-list">
+                        <div class="list-item">
+                            <span class="list-label">Active Employees</span>
+                            <span class="list-value">4,290</span>
+                        </div>
+                        <div class="list-item">
+                            <span class="list-label">Challenges Completed</span>
+                            <span class="list-value">1,847</span>
+                        </div>
+                        <div class="list-item">
+                            <span class="list-label">Wellness Score</span>
+                            <span class="list-value">7.1/10</span>
+                        </div>
+                    </div>
+                    <div class="aire-framework">
+                        <div class="aire-title">🏥 Wellness Integration:</div>
+                        <div class="aire-detail">VFit complements AIRe with holistic wellness. Recognition creates <strong>Appreciation</strong> + <strong>Emotional Connect</strong>, while wellness challenges reinforce <strong>Belonging</strong> and <strong>Mastery</strong>.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CSAT Widget -->
+            <div class="widget show" data-product="all" data-widget="csat">
+                <div class="widget-title">
+                    😊 Customer Satisfaction
+                </div>
+                <div class="widget-content">
+                    <div class="metric-display">
+                        <div class="metric-label">Cross-Product CSAT</div>
+                        <div class="metric-value counter" data-target="84">0</div>
+                        <div class="metric-trend trend-up">↑ +3% this month</div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin-top: 1rem;">
+                        <div style="background: rgba(16, 185, 129, 0.08); padding: 1rem; border-radius: 8px; text-align: center; border-left: 3px solid var(--success);">
+                            <div style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 600; margin-bottom: 0.5rem;">VRecognition</div>
+                            <div style="font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--primary-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">89</div>
+                        </div>
+                        <div style="background: rgba(16, 185, 129, 0.08); padding: 1rem; border-radius: 8px; text-align: center; border-left: 3px solid var(--success);">
+                            <div style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 600; margin-bottom: 0.5rem;">VFit</div>
+                            <div style="font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--primary-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">79</div>
+                        </div>
+                    </div>
+                    <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 1rem; line-height: 1.5;">
+                        <strong>Calculated from:</strong> Feature adoption, NPS, support satisfaction, engagement surveys
+                    </div>
+                </div>
+            </div>
+
+            <!-- Assessment Report Widget -->
+            <div class="widget show" data-product="all" data-widget="report">
+                <div class="widget-title">
+                    📊 Assessment Report Preview
+                </div>
+                <div class="widget-content">
+                    <div class="aire-assessment">
+                        <div class="assessment-title" style="margin-bottom: 1rem;">Comprehensive Program Assessment</div>
+                        <div class="widget-list" style="margin-bottom: 1rem;">
+                            <div class="list-item">
+                                <span class="list-label">Program Design Score</span>
+                                <span class="list-value counter" data-target="87">0</span>
+                            </div>
+                            <div class="list-item">
+                                <span class="list-label">Execution Effectiveness</span>
+                                <span class="list-value counter" data-target="82">0</span>
+                            </div>
+                            <div class="list-item">
+                                <span class="list-label">AIRe Alignment</span>
+                                <span class="list-value counter" data-target="84">0</span>
+                            </div>
+                        </div>
+                        <div style="background: rgba(111, 63, 245, 0.05); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.9rem; line-height: 1.5; color: var(--text-secondary);">
+                            <strong style="color: var(--text-primary);">Key Findings:</strong> Program demonstrates strong Appreciation & Incentivization. Opportunity to enhance Delivery mechanisms in Finance dept and strengthen Emotional Connect through VFit integration.
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                            <button class="assessment-btn" style="margin: 0; width: 100%;">📄 PDF Report</button>
+                            <button class="assessment-btn" style="margin: 0; width: 100%;">📊 PowerPoint</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Optimization Opportunities -->
+            <div class="widget show" data-product="all" data-widget="opportunities">
+                <div class="widget-title">
+                    🎯 Optimization Opportunities
+                </div>
+                <div class="widget-content">
+                    <div class="widget-list">
+                        <div class="list-item" style="flex-direction: column; align-items: flex-start; gap: 0.5rem;">
+                            <span class="list-label" style="display: block; width: 100%;">Personalization Gap</span>
+                            <span style="font-size: 0.85rem; color: var(--text-secondary);">Recognition templates lack role-specific messaging. Implement AI-driven personalization.</span>
+                            <span style="font-size: 0.8rem; color: var(--primary); font-weight: 700;">Impact: +8 points</span>
+                        </div>
+                        <div class="list-item" style="flex-direction: column; align-items: flex-start; gap: 0.5rem;">
+                            <span class="list-label" style="display: block; width: 100%;">Delivery Velocity</span>
+                            <span style="font-size: 0.85rem; color: var(--text-secondary);">Manager recognition delay 2.1 days avg. Enable mobile push for instant recognition.</span>
+                            <span style="font-size: 0.8rem; color: var(--primary); font-weight: 700;">Impact: +6 points</span>
+                        </div>
+                        <div class="list-item" style="flex-direction: column; align-items: flex-start; gap: 0.5rem;">
+                            <span class="list-label" style="display: block; width: 100%;">Coverage Expansion</span>
+                            <span style="font-size: 0.85rem; color: var(--text-secondary);">Finance dept coverage 42%. Targeted campaign + manager training required.</span>
+                            <span style="font-size: 0.8rem; color: var(--primary); font-weight: 700;">Impact: +9 points</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Sidekick -->
+    <div class="ai-sidekick">
+        <button class="ai-button" id="ai-toggle" title="Ask AIRe Advisor">🤖</button>
+        <div class="ai-panel" id="ai-panel">
+            <div class="ai-header">
+                <span>🧠 AIRe Intelligence Advisor</span>
+                <button class="ai-close" id="ai-close">✕</button>
+            </div>
+            <div class="ai-content" id="ai-content">
+                <div class="ai-message">
+                    👋 Hi! I'm your AIRe Advisor. I help you optimize recognition programs using the <strong>AIRe Framework</strong> (Appreciation, Incentivization, Reinforcement, Emotional Connect).
+                </div>
+                <div style="display: grid; gap: 0.75rem; margin-top: 1rem;">
+                    <div class="ai-suggestion">📋 Interpret assessment factors</div>
+                    <div class="ai-suggestion">🎯 Close AIRe gaps by department</div>
+                    <div class="ai-suggestion">💡 Maximize Emotional Connect</div>
+                    <div class="ai-suggestion">📊 Multi-product optimization</div>
+                    <div class="ai-suggestion">🔍 Assessment deep dive</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Product filters
+        document.querySelectorAll('[data-filter]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('[data-filter]').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                const filter = this.dataset.filter;
+                filterWidgets(filter);
+            });
+        });
+
+        function filterWidgets(filter) {
+            document.querySelectorAll('.widget').forEach(w => {
+                const products = w.dataset.product.split(' ');
+                if (filter === 'all' || products.includes(filter)) {
+                    w.classList.add('show');
+                } else {
+                    w.classList.remove('show');
+                }
+            });
+        }
+
+        // AI Sidekick
+        const aiToggle = document.getElementById('ai-toggle');
+        const aiPanel = document.getElementById('ai-panel');
+        const aiClose = document.getElementById('ai-close');
+
+        aiToggle.addEventListener('click', () => aiPanel.classList.toggle('active'));
+        aiClose.addEventListener('click', () => aiPanel.classList.remove('active'));
+
+        document.querySelectorAll('.ai-suggestion').forEach(s => {
+            s.addEventListener('click', function() {
+                const text = this.textContent;
+                alert('AIRe Advisor Response: ' + text + '\n\nThis would provide contextual AIRe-based insights based on your dashboard data.');
+                aiPanel.classList.remove('active');
+            });
+        });
+
+        // Animate counters
+        function animateCounters() {
+            document.querySelectorAll('.counter').forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                let current = 0;
+                const increment = target / 30;
+                const updateCounter = () => {
+                    current += increment;
+                    if (current < target) {
+                        counter.textContent = Math.floor(current);
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        counter.textContent = target;
+                    }
+                };
+                updateCounter();
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', animateCounters);
+    </script>
+</body>
+</html>
