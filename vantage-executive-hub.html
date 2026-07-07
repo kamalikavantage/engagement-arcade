@@ -298,10 +298,50 @@
             font-weight: 700;
             color: var(--primary);
             margin-bottom: 0.5rem;
+            font-size: 0.9rem;
         }
 
         .aie-detail {
             color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .csat-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .csat-item {
+            background: rgba(16, 185, 129, 0.08);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 3px solid var(--success);
+        }
+
+        .csat-product {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .csat-score {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .csat-note {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 1rem;
+            line-height: 1.5;
         }
 
         .csat-widget {
@@ -492,7 +532,6 @@
             <button class="filter-btn" data-product="recognition">VRecognition</button>
             <button class="filter-btn" data-product="pulse">VPulse</button>
             <button class="filter-btn" data-product="fit">VFit</button>
-            <button class="filter-btn" data-product="aiere">AIRe Insights</button>
         </div>
     </div>
 
@@ -605,7 +644,7 @@
             </div>
 
             <!-- CSAT Analysis Widget -->
-            <div class="widget csat-widget show" data-product="all" data-widget="csat-analysis">
+            <div class="widget show" data-product="all" data-widget="csat-analysis">
                 <div class="widget-header">
                     <div class="widget-title">
                         <span>😊</span> Customer Satisfaction
@@ -617,7 +656,7 @@
                         <div class="metric-value counter" data-target="84">0</div>
                         <div class="metric-trend trend-up">↑ +3% this month</div>
                     </div>
-                    <div class="csat-widgets">
+                    <div class="csat-grid">
                         <div class="csat-item">
                             <div class="csat-product">VRecognition CSAT</div>
                             <div class="csat-score counter" data-target="89">0</div>
@@ -627,8 +666,8 @@
                             <div class="csat-score counter" data-target="79">0</div>
                         </div>
                     </div>
-                    <div style="margin-top: 1rem; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
-                        <strong>Calculated from:</strong> Feature usage, NPS responses, support tickets, user feedback surveys across both products.
+                    <div class="csat-note">
+                        <strong>Calculated from:</strong> Feature adoption rates, NPS responses, support satisfaction, and user engagement surveys across both products.
                     </div>
                 </div>
             </div>
