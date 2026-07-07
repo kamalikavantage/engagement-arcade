@@ -285,6 +285,8 @@
             border-left: 3px solid var(--primary);
         }
         .dept-header { font-weight: 700; margin-bottom: 0.5rem; }
+        .page { display: none; }
+        .page.active { display: block; }
         .ai-button {
             position: fixed;
             bottom: 2rem;
@@ -298,10 +300,10 @@
             cursor: pointer;
             font-size: 2rem;
             box-shadow: 0 8px 32px rgba(111, 63, 245, 0.4);
-            animation: float 3s ease-in-out infinite;
+            animation: floatBtn 3s ease-in-out infinite;
             z-index: 1000;
         }
-        @keyframes float {
+        @keyframes floatBtn {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-8px); }
         }
@@ -401,206 +403,305 @@
             </div>
 
             <div class="product-filters">
-                <button class="filter-btn active">All Modules</button>
-                <button class="filter-btn">VRecognition</button>
-                <button class="filter-btn">VPulse</button>
-                <button class="filter-btn">VFit</button>
-                <button class="filter-btn">AIRe</button>
+                <button class="filter-btn active" data-page="all">All Modules</button>
+                <button class="filter-btn" data-page="recognition">VRecognition</button>
+                <button class="filter-btn" data-page="vpulse">VPulse</button>
+                <button class="filter-btn" data-page="vfit">VFit</button>
+                <button class="filter-btn" data-page="aire">AIRe</button>
             </div>
         </div>
     </div>
 
     <div class="container">
-        <div class="widgets-grid">
-            <!-- VRecognition Health -->
-            <div class="widget">
-                <div class="widget-title">✨ VRecognition Health</div>
-                <div class="widget-content">
-                    <div class="metric-value">91</div>
-                    <div class="metric-label">Overall Score</div>
-                    <div class="metric-row">
-                        <span class="metric-row-label">Recognitions Sent</span>
-                        <span class="metric-row-value">2,847</span>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-row-label">Monthly Active Users</span>
-                        <span class="metric-row-value">6,842</span>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-row-label">Manager Participation</span>
-                        <span class="metric-row-value">85%</span>
-                    </div>
-                    <div class="aire-framework">
-                        <div class="aire-title">🧠 AIRe Framework:</div>
-                        <div class="aire-detail"><strong>Appreciation:</strong> 2,847 recognitions | <strong>Incentivization:</strong> 85% manager engagement | <strong>Reinforcement:</strong> 82% returning users | <strong>Emotional Connect:</strong> Personal comments drive meaning</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- VPulse Surveys -->
-            <div class="widget">
-                <div class="widget-title">💬 VPulse - Employee Voice</div>
-                <div class="widget-content">
-                    <div class="metric-value">76</div>
-                    <div class="metric-label">Response Rate %</div>
-                    <div class="metric-row">
-                        <span class="metric-row-label">Total Responses</span>
-                        <span class="metric-row-value">4,120</span>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-row-label">Avg Engagement</span>
-                        <span class="metric-row-value">4.2/5</span>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-row-label">eNPS Score</span>
-                        <span class="metric-row-value">+42</span>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-row-label">Recognition Feeling</span>
-                        <span class="metric-row-value">4.1/5</span>
-                    </div>
-                    <div class="aire-framework">
-                        <div class="aire-title">🧠 AIRe Connection:</div>
-                        <div class="aire-detail"><strong>Voice:</strong> 76% participation | <strong>Belonging:</strong> 4.2/5 engagement | <strong>Mastery:</strong> Action items created from feedback</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- VFit Challenges -->
-            <div class="widget">
-                <div class="widget-title">💪 VFit - Wellness Programs</div>
-                <div class="widget-content">
-                    <div class="metric-value">64</div>
-                    <div class="metric-label">Participation %</div>
-                    <div class="challenge-card">
-                        <div class="challenge-title">🏃 Running Challenge</div>
-                        <div class="challenge-stat">Miles: 45/60 (75%)</div>
-                        <div class="progress-bar"><div class="progress-fill" style="width: 75%"></div></div>
-                    </div>
-                    <div class="challenge-card">
-                        <div class="challenge-title">🧘 Meditation Quest</div>
-                        <div class="challenge-stat">Minutes: 240/300 (80%)</div>
-                        <div class="progress-bar"><div class="progress-fill" style="width: 80%"></div></div>
-                    </div>
-                    <div class="challenge-card">
-                        <div class="challenge-title">💧 Hydration Challenge</div>
-                        <div class="challenge-stat">Days: 18/30 (60%)</div>
-                        <div class="progress-bar"><div class="progress-fill" style="width: 60%"></div></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Budget Utilization -->
-            <div class="widget">
-                <div class="widget-title">💰 Budget Utilization</div>
-                <div class="widget-content">
-                    <div class="metric-label">Total Budget</div>
-                    <div class="metric-value">$84K</div>
-                    <div style="margin-bottom: 1rem; margin-top: 1rem;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-                            <span>Recognition Rewards</span>
-                            <span style="font-weight: 700;">$45.2K (54%)</span>
+        <!-- All Modules View -->
+        <div class="page active" data-page="all">
+            <div class="widgets-grid">
+                <div class="widget">
+                    <div class="widget-title">✨ VRecognition Health</div>
+                    <div class="widget-content">
+                        <div class="metric-value">91</div>
+                        <div class="metric-label">Overall Score</div>
+                        <div class="metric-row">
+                            <span class="metric-row-label">Recognitions Sent</span>
+                            <span class="metric-row-value">2,847</span>
                         </div>
-                        <div class="progress-bar"><div class="progress-fill" style="width: 54%"></div></div>
-                    </div>
-                    <div style="margin-bottom: 1rem;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-                            <span>Wellness Programs</span>
-                            <span style="font-weight: 700;">$27.9K (33%)</span>
+                        <div class="metric-row">
+                            <span class="metric-row-label">Monthly Active Users</span>
+                            <span class="metric-row-value">6,842</span>
                         </div>
-                        <div class="progress-bar"><div class="progress-fill" style="width: 33%"></div></div>
-                    </div>
-                    <div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-                            <span>Awards/Gifts</span>
-                            <span style="font-weight: 700;">$10.8K (13%)</span>
+                        <div class="metric-row">
+                            <span class="metric-row-label">Manager Participation</span>
+                            <span class="metric-row-value">85%</span>
                         </div>
-                        <div class="progress-bar"><div class="progress-fill" style="width: 13%"></div></div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Department Performance -->
-            <div class="widget">
-                <div class="widget-title">🏢 Department Health</div>
-                <div class="widget-content">
-                    <div class="dept-card">
-                        <div class="dept-header">⚙️ Engineering: 92/100</div>
-                        <div style="font-size: 0.85rem; color: var(--text-secondary);">Budget: $24K | Growth: +18%</div>
-                    </div>
-                    <div class="dept-card">
-                        <div class="dept-header">📢 Marketing: 88/100</div>
-                        <div style="font-size: 0.85rem; color: var(--text-secondary);">Budget: $18K | Growth: +12%</div>
-                    </div>
-                    <div class="dept-card">
-                        <div class="dept-header">💼 Sales: 85/100</div>
-                        <div style="font-size: 0.85rem; color: var(--text-secondary);">Budget: $22K | Growth: +8%</div>
-                    </div>
-                    <div class="dept-card">
-                        <div class="dept-header">💰 Finance: 78/100</div>
-                        <div style="font-size: 0.85rem; color: var(--text-secondary);">Budget: $20K | Growth: -5%</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Badges & Awards -->
-            <div class="widget">
-                <div class="widget-title">🏆 Badges & Awards</div>
-                <div class="widget-content">
-                    <div class="badge-grid">
-                        <div class="badge-card"><div class="badge-icon">⭐</div><div class="badge-name">Recognition Star</div></div>
-                        <div class="badge-card"><div class="badge-icon">🎯</div><div class="badge-name">Team Player</div></div>
-                        <div class="badge-card"><div class="badge-icon">🔥</div><div class="badge-name">Hot Streak</div></div>
-                        <div class="badge-card"><div class="badge-icon">💎</div><div class="badge-name">Premium</div></div>
-                        <div class="badge-card"><div class="badge-icon">🚀</div><div class="badge-name">Rising Star</div></div>
-                        <div class="badge-card"><div class="badge-icon">👑</div><div class="badge-name">Leader</div></div>
-                    </div>
-                    <div style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-secondary);">
-                        <strong>Top Award:</strong> "Excellence in Recognition" - Jane Smith (Engineering)
-                    </div>
-                </div>
-            </div>
-
-            <!-- AIRe Assessment -->
-            <div class="widget">
-                <div class="widget-title">🧠 AIRe Assessment Results</div>
-                <div class="widget-content">
-                    <div class="metric-row">
-                        <span class="metric-row-label">Personalization</span>
-                        <span class="metric-row-value">92</span>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-row-label">Delivery</span>
-                        <span class="metric-row-value">78</span>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-row-label">Coverage</span>
-                        <span class="metric-row-value">85</span>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-row-label">Emotion</span>
-                        <span class="metric-row-value">81</span>
-                    </div>
-                    <div style="margin-top: 1rem; font-size: 0.85rem; color: var(--text-secondary); padding-top: 1rem; border-top: 1px solid rgba(111, 63, 245, 0.1);">
-                        <strong>Assessment Complete:</strong> 8/10 questions answered. Next assessment available in 30 days.
-                    </div>
-                </div>
-            </div>
-
-            <!-- CSAT Analysis -->
-            <div class="widget">
-                <div class="widget-title">😊 Customer Satisfaction (CSAT)</div>
-                <div class="widget-content">
-                    <div class="metric-value">84</div>
-                    <div class="metric-label">Cross-Product CSAT</div>
-                    <div style="margin-top: 1rem;">
-                        <div style="background: rgba(111, 63, 245, 0.05); padding: 0.75rem; border-radius: 8px; margin-bottom: 0.75rem;">
-                            <div style="font-weight: 600; margin-bottom: 0.3rem;">VRecognition CSAT</div>
-                            <div style="font-size: 1.75rem; font-weight: 800; color: var(--primary);">89</div>
+                <div class="widget">
+                    <div class="widget-title">💬 VPulse - Employee Voice</div>
+                    <div class="widget-content">
+                        <div class="metric-value">76</div>
+                        <div class="metric-label">Response Rate %</div>
+                        <div class="metric-row">
+                            <span class="metric-row-label">Total Responses</span>
+                            <span class="metric-row-value">4,120</span>
                         </div>
-                        <div style="background: rgba(111, 63, 245, 0.05); padding: 0.75rem; border-radius: 8px;">
-                            <div style="font-weight: 600; margin-bottom: 0.3rem;">VFit CSAT</div>
-                            <div style="font-size: 1.75rem; font-weight: 800; color: var(--primary);">79</div>
+                        <div class="metric-row">
+                            <span class="metric-row-label">Avg Engagement</span>
+                            <span class="metric-row-value">4.2/5</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-row-label">eNPS Score</span>
+                            <span class="metric-row-value">+42</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <div class="widget-title">💪 VFit - Wellness Programs</div>
+                    <div class="widget-content">
+                        <div class="metric-value">64</div>
+                        <div class="metric-label">Participation %</div>
+                        <div class="challenge-card">
+                            <div class="challenge-title">🏃 Running Challenge</div>
+                            <div class="challenge-stat">Miles: 45/60 (75%)</div>
+                            <div class="progress-bar"><div class="progress-fill" style="width: 75%"></div></div>
+                        </div>
+                        <div class="challenge-card">
+                            <div class="challenge-title">🧘 Meditation Quest</div>
+                            <div class="challenge-stat">Minutes: 240/300 (80%)</div>
+                            <div class="progress-bar"><div class="progress-fill" style="width: 80%"></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <div class="widget-title">💰 Budget Utilization</div>
+                    <div class="widget-content">
+                        <div class="metric-label">Total Budget</div>
+                        <div class="metric-value">$84K</div>
+                        <div style="margin-bottom: 1rem; margin-top: 1rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span>Recognition Rewards</span>
+                                <span style="font-weight: 700;">$45.2K (54%)</span>
+                            </div>
+                            <div class="progress-bar"><div class="progress-fill" style="width: 54%"></div></div>
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span>Wellness Programs</span>
+                                <span style="font-weight: 700;">$27.9K (33%)</span>
+                            </div>
+                            <div class="progress-bar"><div class="progress-fill" style="width: 33%"></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <div class="widget-title">🏢 Department Health</div>
+                    <div class="widget-content">
+                        <div class="dept-card">
+                            <div class="dept-header">⚙️ Engineering: 92/100</div>
+                            <div style="font-size: 0.85rem; color: var(--text-secondary);">Budget: $24K | Growth: +18%</div>
+                        </div>
+                        <div class="dept-card">
+                            <div class="dept-header">📢 Marketing: 88/100</div>
+                            <div style="font-size: 0.85rem; color: var(--text-secondary);">Budget: $18K | Growth: +12%</div>
+                        </div>
+                        <div class="dept-card">
+                            <div class="dept-header">💼 Sales: 85/100</div>
+                            <div style="font-size: 0.85rem; color: var(--text-secondary);">Budget: $22K | Growth: +8%</div>
+                        </div>
+                        <div class="dept-card">
+                            <div class="dept-header">💰 Finance: 78/100</div>
+                            <div style="font-size: 0.85rem; color: var(--text-secondary);">Budget: $20K | Growth: -5%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <div class="widget-title">🏆 Badges & Awards</div>
+                    <div class="widget-content">
+                        <div class="badge-grid">
+                            <div class="badge-card"><div class="badge-icon">⭐</div><div class="badge-name">Recognition Star</div></div>
+                            <div class="badge-card"><div class="badge-icon">🎯</div><div class="badge-name">Team Player</div></div>
+                            <div class="badge-card"><div class="badge-icon">🔥</div><div class="badge-name">Hot Streak</div></div>
+                            <div class="badge-card"><div class="badge-icon">💎</div><div class="badge-name">Premium</div></div>
+                            <div class="badge-card"><div class="badge-icon">🚀</div><div class="badge-name">Rising Star</div></div>
+                            <div class="badge-card"><div class="badge-icon">👑</div><div class="badge-name">Leader</div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <div class="widget-title">🧠 AIRe Assessment Results</div>
+                    <div class="widget-content">
+                        <div class="metric-row">
+                            <span class="metric-row-label">Personalization</span>
+                            <span class="metric-row-value">92</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-row-label">Delivery</span>
+                            <span class="metric-row-value">78</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-row-label">Coverage</span>
+                            <span class="metric-row-value">85</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-row-label">Emotion</span>
+                            <span class="metric-row-value">81</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <div class="widget-title">😊 Customer Satisfaction (CSAT)</div>
+                    <div class="widget-content">
+                        <div class="metric-value">84</div>
+                        <div class="metric-label">Cross-Product CSAT</div>
+                        <div style="margin-top: 1rem;">
+                            <div style="background: rgba(111, 63, 245, 0.05); padding: 0.75rem; border-radius: 8px; margin-bottom: 0.75rem;">
+                                <div style="font-weight: 600; margin-bottom: 0.3rem;">VRecognition CSAT</div>
+                                <div style="font-size: 1.75rem; font-weight: 800; color: var(--primary);">89</div>
+                            </div>
+                            <div style="background: rgba(111, 63, 245, 0.05); padding: 0.75rem; border-radius: 8px;">
+                                <div style="font-weight: 600; margin-bottom: 0.3rem;">VFit CSAT</div>
+                                <div style="font-size: 1.75rem; font-weight: 800; color: var(--primary);">79</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VRecognition Only -->
+        <div class="page" data-page="recognition">
+            <div class="widgets-grid">
+                <div class="widget" style="grid-column: 1/-1;">
+                    <div class="widget-title">✨ VRecognition - Detailed View</div>
+                    <div class="widget-content">
+                        <div class="metric-row">
+                            <span class="metric-row-label">Overall Health Score</span>
+                            <span class="metric-row-value">91/100</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-row-label">Total Recognitions Sent</span>
+                            <span class="metric-row-value">2,847</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-row-label">Monthly Active Users</span>
+                            <span class="metric-row-value">6,842</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-row-label">Manager Participation Rate</span>
+                            <span class="metric-row-value">85%</span>
+                        </div>
+                        <div class="aire-framework">
+                            <div class="aire-title">🧠 AIRe Breakdown:</div>
+                            <div class="aire-detail"><strong>Appreciation:</strong> 2,847 recognitions sent | <strong>Incentivization:</strong> 85% manager engagement | <strong>Reinforcement:</strong> 82% returning users | <strong>Emotional Connect:</strong> Personal comments drive meaning</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VPulse Only -->
+        <div class="page" data-page="vpulse">
+            <div class="widgets-grid">
+                <div class="widget" style="grid-column: 1/-1;">
+                    <div class="widget-title">💬 VPulse - Employee Voice Analytics</div>
+                    <div class="widget-content">
+                        <div class="metric-row">
+                            <span class="metric-row-label">Survey Response Rate</span>
+                            <span class="metric-row-value">76%</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-row-label">Total Responses Collected</span>
+                            <span class="metric-row-value">4,120</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-row-label">Average Engagement Rating</span>
+                            <span class="metric-row-value">4.2/5</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-row-label">Recognition Feeling Score</span>
+                            <span class="metric-row-value">4.1/5</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-row-label">eNPS (Employee Net Promoter Score)</span>
+                            <span class="metric-row-value">+42</span>
+                        </div>
+                        <div class="aire-framework">
+                            <div class="aire-title">🧠 AIRe Connection:</div>
+                            <div class="aire-detail"><strong>Voice:</strong> 76% participation | <strong>Belonging:</strong> 4.2/5 engagement | <strong>Mastery:</strong> Action items created from feedback</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VFit Only -->
+        <div class="page" data-page="vfit">
+            <div class="widgets-grid">
+                <div class="widget" style="grid-column: 1/-1;">
+                    <div class="widget-title">💪 VFit - Wellness Programs</div>
+                    <div class="widget-content">
+                        <div class="metric-row">
+                            <span class="metric-row-label">Overall Participation Rate</span>
+                            <span class="metric-row-value">64%</span>
+                        </div>
+                        <div style="margin: 1.5rem 0;">
+                            <div class="challenge-card">
+                                <div class="challenge-title">🏃 Running Challenge</div>
+                                <div class="challenge-stat">Miles: 45 / 60 (75%)</div>
+                                <div class="progress-bar"><div class="progress-fill" style="width: 75%"></div></div>
+                                <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem;">Participants: 1,203 | Ends: July 31</div>
+                            </div>
+                            <div class="challenge-card">
+                                <div class="challenge-title">🧘 Meditation Quest</div>
+                                <div class="challenge-stat">Minutes: 240 / 300 (80%)</div>
+                                <div class="progress-bar"><div class="progress-fill" style="width: 80%"></div></div>
+                                <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem;">Participants: 856 | Ends: July 31</div>
+                            </div>
+                            <div class="challenge-card">
+                                <div class="challenge-title">💧 Hydration Challenge</div>
+                                <div class="challenge-stat">Days: 18 / 30 (60%)</div>
+                                <div class="progress-bar"><div class="progress-fill" style="width: 60%"></div></div>
+                                <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem;">Participants: 2,104 | Ends: July 31</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AIRe Only -->
+        <div class="page" data-page="aire">
+            <div class="widgets-grid">
+                <div class="widget" style="grid-column: 1/-1;">
+                    <div class="widget-title">🧠 AIRe Framework Assessment</div>
+                    <div class="widget-content">
+                        <div class="metric-row">
+                            <span class="metric-row-label">Personalization</span>
+                            <span class="metric-row-value">92/100</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-row-label">Delivery (Incentivization)</span>
+                            <span class="metric-row-value">78/100</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-row-label">Coverage (Reinforcement)</span>
+                            <span class="metric-row-value">85/100</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-row-label">Emotion (Emotional Connect)</span>
+                            <span class="metric-row-value">81/100</span>
+                        </div>
+                        <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(111, 63, 245, 0.1);">
+                            <div style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                                <strong>Overall AIRe Health: 84/100</strong><br>
+                                Your recognition program demonstrates strong personalization and coverage. Focus on improving delivery consistency and emotional authenticity in peer comments to reach excellence.
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -609,12 +710,12 @@
     </div>
 
     <!-- AI Advisor -->
-    <button class="ai-button" id="ai-toggle" title="Ask AIRe Advisor">🤖</button>
+    <button class="ai-button" id="ai-toggle">🤖</button>
     <div class="ai-panel" id="ai-panel">
         <div class="ai-header">🧠 AIRe Intelligence Advisor</div>
         <div class="ai-content" id="ai-content">
             <div class="ai-message">
-                Hi! I'm your AIRe Advisor. Ask me anything about optimizing your recognition program through the AIRe Framework (Appreciation, Incentivization, Reinforcement, Emotional Connect).
+                Hi! I'm your AIRe Advisor. Ask me anything about optimizing your recognition program through the AIRe Framework.
             </div>
             <div id="suggestions-container"></div>
         </div>
@@ -622,10 +723,10 @@
 
     <script>
         const aiResponses = {
-            '📊 Analyze all departments': () => `<strong>Department Analysis:</strong><br>Engineering: 92/100 (Excellent) - Strong AIRe across all pillars<br>Marketing: 88/100 (Good) - High collaboration<br>Sales: 85/100 (Good) - Needs emotion boost<br>Finance: 78/100 (Attention) - Focus on voice activation and belonging initiatives.`,
-            '💡 Optimize Emotional Connect': () => `<strong>Emotional Connect Strategy:</strong><br>• Narrative recognition comments (+8 points)<br>• "Why this matters" storytelling<br>• Cross-dept celebrations<br>• Connect recognition to org values<br>• Share impact stories monthly`,
-            '🎯 Close VPulse gaps': () => `<strong>Voice Activation Plan:</strong><br>• Current response rate: 76% (strong)<br>• Target areas: Finance (52% engagement)<br>• Implement quick-pulse micro-surveys<br>• Weekly manager listening sessions<br>• Public action from feedback (ROI trust)`,
-            '⚡ VFit acceleration': () => `<strong>Wellness Program Growth:</strong><br>• Current: 64% participation<br>• Recognize wellness winners in VRecognition<br>• Cross-badge with recognition milestones<br>• Monthly wellness vs recognition tie-ins<br>• Expected lift: +12% participation`,
+            '📊 Analyze all departments': () => `<strong>Department Analysis:</strong><br>Engineering: 92/100 (Excellent)<br>Marketing: 88/100 (Good)<br>Sales: 85/100 (Good)<br>Finance: 78/100 (Attention needed)`,
+            '💡 Optimize Emotional Connect': () => `<strong>Emotional Strategy:</strong><br>• Narrative recognition comments<br>• Share impact stories monthly<br>• Cross-dept celebrations<br>• Connect to org values`,
+            '🎯 Close VPulse gaps': () => `<strong>Voice Activation:</strong><br>• Response rate: 76% (strong)<br>• Target: Finance dept<br>• Weekly listening sessions<br>• Public action on feedback`,
+            '⚡ VFit acceleration': () => `<strong>Wellness Growth:</strong><br>• Current: 64% participation<br>• Recognize wellness wins<br>• Cross-badge with recognition<br>• Expected lift: +12%`,
         };
 
         document.getElementById('ai-toggle').addEventListener('click', () => {
@@ -648,6 +749,19 @@
                 </div>
             `;
         };
+
+        // Filter button navigation
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const page = this.getAttribute('data-page');
+
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+
+                this.classList.add('active');
+                document.querySelector(`.page[data-page="${page}"]`).classList.add('active');
+            });
+        });
     </script>
 </body>
 </html>
