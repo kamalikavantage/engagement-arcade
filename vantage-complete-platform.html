@@ -27,8 +27,7 @@
             color: var(--text-primary);
             min-height: 100vh;
         }
-        .login-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, var(--primary), var(--primary-light)); z-index: 3000; align-items: center; justify-content: center; }
-        .login-screen.show { display: flex; }
+        .login-screen { display: none !important; }
         .login-box {
             background: white;
             padding: 3rem;
@@ -80,8 +79,7 @@
             transition: all 0.3s;
         }
         .login-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(111, 63, 245, 0.3); }
-        .main-app { display: none; }
-        .main-app.show { display: block; }
+        .main-app { display: block; }
         .sidebar {
             position: fixed;
             left: 0;
@@ -584,7 +582,7 @@
     </div>
 
     <script>
-        let currentUser = null;
+        let currentUser = { role: 'admin', dept: 'engineering', deptName: 'Engineering', name: 'Admin User' };
         let currentPage = 'dashboard';
         let departments = {
             engineering: { name: 'Engineering', icon: '⚙️', score: 92, budget: 24000 },
@@ -612,8 +610,6 @@
                 return;
             }
             currentUser = { ...currentUser, name, deptName: departments[currentUser.dept].name };
-            document.getElementById('login-screen').classList.remove('show');
-            document.getElementById('main-app').classList.add('show');
             updateProfile();
             loadDashboard();
         }
@@ -666,6 +662,8 @@
         }
 
         // Initialize
+        updateProfile();
+        loadDashboard();
         navigateTo('dashboard');
     </script>
 </body>
