@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vantage Circle - Complete Platform</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #6F3FF5;
+            --primary-dark: #5a2ed4;
+            --primary-light: #8857ff;
+            --accent-blue: #2563eb;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --bg-white: #ffffff;
+            --bg-light: #f8f9fb;
+            --border-light: #e5e7eb;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #f8f9fb 0%, #faf7ff 50%, #f8f9fb 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+        .login-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, var(--primary), var(--primary-light)); z-index: 3000; align-items: center; justify-content: center; }
+        .login-screen.show { display: flex; }
+        .login-box {
+            background: white;
+            padding: 3rem;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        .login-title { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; background: linear-gradient(135deg, var(--primary), var(--primary-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .login-subtitle { color: var(--text-secondary); margin-bottom: 2rem; }
+        .login-form { display: grid; gap: 1rem; }
+        .form-group { display: grid; gap: 0.5rem; }
+        .form-label { font-weight: 600; }
+        .form-input { padding: 0.75rem; border: 1px solid var(--border-light); border-radius: 8px; font-size: 1rem; }
+        .form-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(111, 63, 245, 0.1); }
+        .user-options { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem; }
+        .user-option {
+            padding: 1rem;
+            background: var(--bg-light);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .user-option.selected { background: var(--primary); color: white; border-color: var(--primary); }
+        .dept-options { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem; }
+        .dept-option {
+            padding: 0.75rem;
+            background: var(--bg-light);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+        .dept-option.selected { background: var(--primary); color: white; }
+        .login-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .login-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(111, 63, 245, 0.3); }
+        .main-app { display: none; }
+        .main-app.show { display: block; }
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: var(--bg-white);
+            border-right: 1px solid var(--border-light);
+            padding: 2rem 1rem;
+            overflow-y: auto;
+            z-index: 100;
+        }
+        .sidebar-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+        }
+        .nav-item {
+            padding: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        .nav-item:hover { background: var(--bg-light); }
+        .nav-item.active { background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: white; }
+        .user-profile {
+            background: var(--bg-light);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        .profile-name { font-weight: 700; }
+        .profile-role { font-size: 0.85rem; color: var(--text-secondary); }
+        .logout-btn {
+            width: 100%;
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .main-content {
+            margin-left: 280px;
+            padding: 2rem;
+        }
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        .page-title { font-size: 2rem; font-weight: 800; }
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+        .card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); }
+        .card-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem; }
+        .metric-row { display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid var(--border-light); }
+        .metric-value { font-size: 1.5rem; font-weight: 800; color: var(--primary); }
+        .badge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 1rem; }
+        .badge {
+            text-align: center;
+            padding: 1rem;
+            background: var(--bg-light);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .badge:hover { background: linear-gradient(135deg, rgba(111, 63, 245, 0.1), rgba(37, 99, 235, 0.1)); }
+        .badge-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .badge-name { font-size: 0.85rem; font-weight: 600; }
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--bg-light);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 0.75rem 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            transition: width 0.3s;
+        }
+        .challenge-card {
+            background: linear-gradient(135deg, rgba(111, 63, 245, 0.08), rgba(37, 99, 235, 0.05));
+            border-left: 4px solid var(--primary);
+            padding: 1.25rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        .challenge-title { font-weight: 700; margin-bottom: 0.5rem; }
+        .challenge-stat { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.75rem; }
+        .survey-question { margin-bottom: 1.5rem; }
+        .question-text { font-weight: 600; margin-bottom: 0.75rem; }
+        .survey-options { display: grid; gap: 0.5rem; }
+        .survey-option {
+            padding: 0.75rem;
+            background: var(--bg-light);
+            border: 2px solid transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .survey-option:hover { background: rgba(111, 63, 245, 0.1); }
+        .survey-option.selected { border-color: var(--primary); background: rgba(111, 63, 245, 0.1); }
+        .button { background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+        .button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(111, 63, 245, 0.3); }
+        .stat-box {
+            background: linear-gradient(135deg, rgba(111, 63, 245, 0.1), rgba(37, 99, 235, 0.05));
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+        .stat-label { color: var(--text-secondary); font-size: 0.9rem; }
+        .stat-value { font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--primary-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .dept-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .dept-badge {
+            text-align: center;
+            padding: 1.5rem;
+            background: white;
+            border: 2px solid var(--border-light);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        .dept-badge.active { border-color: var(--primary); background: linear-gradient(135deg, rgba(111, 63, 245, 0.1), rgba(37, 99, 235, 0.05)); }
+        @media (max-width: 768px) {
+            .sidebar { width: 70px; }
+            .main-content { margin-left: 70px; padding: 1rem; }
+            .nav-item { padding: 0.75rem; text-align: center; }
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="login-screen show" id="login-screen">
+        <div class="login-box">
+            <div class="login-title">Vantage Circle</div>
+            <div class="login-subtitle">Recognition & Engagement Platform</div>
+
+            <div class="login-form">
+                <div class="form-group">
+                    <label class="form-label">Select Role:</label>
+                    <div class="user-options">
+                        <div class="user-option" onclick="selectRole('employee')">👤 Employee</div>
+                        <div class="user-option" onclick="selectRole('manager')">👨‍💼 Manager</div>
+                        <div class="user-option" onclick="selectRole('admin')">🔐 Admin</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Select Department:</label>
+                    <div class="dept-options">
+                        <div class="dept-option" onclick="selectDept('engineering')">Engineering</div>
+                        <div class="dept-option" onclick="selectDept('marketing')">Marketing</div>
+                        <div class="dept-option" onclick="selectDept('sales')">Sales</div>
+                        <div class="dept-option" onclick="selectDept('finance')">Finance</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Full Name:</label>
+                    <input type="text" class="form-input" id="fullname" placeholder="Your name" value="Sarah Chen">
+                </div>
+
+                <button class="login-btn" onclick="login()">Sign In</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div class="main-app" id="main-app">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">VC</div>
+            <div class="nav-item active" onclick="navigateTo('dashboard')">📊 Dashboard</div>
+            <div class="nav-item" onclick="navigateTo('recognition')">⭐ Recognition</div>
+            <div class="nav-item" onclick="navigateTo('vpulse')">💬 VPulse</div>
+            <div class="nav-item" onclick="navigateTo('vfit')">💪 VFit</div>
+            <div class="nav-item" onclick="navigateTo('badges')">🏆 Badges</div>
+            <div class="nav-item" onclick="navigateTo('budget')">💰 Budget</div>
+            <div class="nav-item" onclick="navigateTo('assessment')">🧠 AIRe</div>
+
+            <div class="user-profile">
+                <div class="profile-name" id="profile-name">Sarah Chen</div>
+                <div class="profile-role" id="profile-role">Employee</div>
+                <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.5rem;" id="profile-dept">Engineering</div>
+            </div>
+
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Dashboard Page -->
+            <div id="page-dashboard" class="page">
+                <div class="header-bar">
+                    <div class="page-title">Dashboard</div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="card">
+                        <div class="card-title">🎯 Recognition Health</div>
+                        <div class="stat-box">
+                            <div class="stat-label">Overall Score</div>
+                            <div class="stat-value">91</div>
+                        </div>
+                        <div class="metric-row">
+                            <span>Recognitions Sent</span>
+                            <span class="metric-value">142</span>
+                        </div>
+                        <div class="metric-row">
+                            <span>Recognitions Received</span>
+                            <span class="metric-value">67</span>
+                        </div>
+                        <div class="metric-row">
+                            <span>Streak (Days)</span>
+                            <span class="metric-value">12</span>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">💰 Budget Utilization</div>
+                        <div style="margin-bottom: 1rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span>Total Budget</span>
+                                <span style="font-weight: 700;">$84,000</span>
+                            </div>
+                            <div class="progress-bar"><div class="progress-fill" style="width: 87%"></div></div>
+                            <div style="font-size: 0.9rem; color: var(--text-secondary);">$73,080 / $84,000 (87%)</div>
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span>Recognition Rewards</span>
+                                <span style="font-weight: 700;">$45,200</span>
+                            </div>
+                            <div class="progress-bar"><div class="progress-fill" style="width: 62%"></div></div>
+                        </div>
+                        <div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span>Wellness Programs</span>
+                                <span style="font-weight: 700;">$27,880</span>
+                            </div>
+                            <div class="progress-bar"><div class="progress-fill" style="width: 38%"></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top: 1.5rem;">
+                    <div class="card-title">🏢 Department Performance</div>
+                    <div id="dept-performance"></div>
+                </div>
+            </div>
+
+            <!-- Recognition Page -->
+            <div id="page-recognition" class="page" style="display: none;">
+                <div class="header-bar">
+                    <div class="page-title">Send Recognition</div>
+                </div>
+                <div class="card">
+                    <div class="card-title">📝 Create Recognition</div>
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label class="form-label">Recipient:</label>
+                        <input type="text" class="form-input" placeholder="Select colleague">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label class="form-label">Recognition Type:</label>
+                        <select class="form-input">
+                            <option>⭐ Appreciation</option>
+                            <option>🎁 Incentive</option>
+                            <option>🔄 Reinforcement</option>
+                            <option>❤️ Emotional Connect</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label class="form-label">Message:</label>
+                        <textarea class="form-input" rows="4" placeholder="Write your recognition..."></textarea>
+                    </div>
+                    <button class="button">Send Recognition ✨</button>
+                </div>
+            </div>
+
+            <!-- VPulse Page -->
+            <div id="page-vpulse" class="page" style="display: none;">
+                <div class="header-bar">
+                    <div class="page-title">VPulse - Employee Surveys</div>
+                </div>
+                <div class="grid-2">
+                    <div class="card">
+                        <div class="card-title">📊 Current Pulse Survey</div>
+                        <div class="survey-question">
+                            <div class="question-text">How engaged do you feel at work?</div>
+                            <div class="survey-options">
+                                <div class="survey-option" onclick="this.classList.toggle('selected')">Very Disengaged</div>
+                                <div class="survey-option" onclick="this.classList.toggle('selected')">Somewhat Disengaged</div>
+                                <div class="survey-option" onclick="this.classList.toggle('selected')">Neutral</div>
+                                <div class="survey-option" onclick="this.classList.toggle('selected')">Engaged</div>
+                                <div class="survey-option" onclick="this.classList.toggle('selected')">Very Engaged</div>
+                            </div>
+                        </div>
+                        <div class="survey-question">
+                            <div class="question-text">Do you feel recognized for your work?</div>
+                            <div class="survey-options">
+                                <div class="survey-option" onclick="this.classList.toggle('selected')">Never</div>
+                                <div class="survey-option" onclick="this.classList.toggle('selected')">Rarely</div>
+                                <div class="survey-option" onclick="this.classList.toggle('selected')">Sometimes</div>
+                                <div class="survey-option" onclick="this.classList.toggle('selected')">Often</div>
+                                <div class="survey-option" onclick="this.classList.toggle('selected')">Always</div>
+                            </div>
+                        </div>
+                        <button class="button">Submit Feedback</button>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">📈 Your Pulse Insights</div>
+                        <div class="stat-box">
+                            <div class="stat-label">Response Rate</div>
+                            <div class="stat-value">76%</div>
+                        </div>
+                        <div class="metric-row">
+                            <span>Surveys Completed</span>
+                            <span class="metric-value">12</span>
+                        </div>
+                        <div class="metric-row">
+                            <span>Avg Engagement</span>
+                            <span class="metric-value">4.2/5</span>
+                        </div>
+                        <div class="metric-row">
+                            <span>Recognition Feeling</span>
+                            <span class="metric-value">4.1/5</span>
+                        </div>
+                        <div class="metric-row">
+                            <span>eNPS Score</span>
+                            <span class="metric-value">+42</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VFit Page -->
+            <div id="page-vfit" class="page" style="display: none;">
+                <div class="header-bar">
+                    <div class="page-title">VFit - Wellness & Challenges</div>
+                </div>
+                <div class="card" style="margin-bottom: 1.5rem;">
+                    <div class="card-title">💪 Your Fitness Stats</div>
+                    <div class="metric-row">
+                        <span>Challenges Joined</span>
+                        <span class="metric-value">8</span>
+                    </div>
+                    <div class="metric-row">
+                        <span>Completed</span>
+                        <span class="metric-value">5</span>
+                    </div>
+                    <div class="metric-row">
+                        <span>Current Streak</span>
+                        <span class="metric-value">12 days</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">🏆 Active Challenges</div>
+                    <div class="challenge-card">
+                        <div class="challenge-title">🏃 July Running Challenge</div>
+                        <div class="challenge-stat">Miles: 45 / 60 (75%)</div>
+                        <div class="progress-bar"><div class="progress-fill" style="width: 75%"></div></div>
+                        <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem;">Ends: July 31</div>
+                    </div>
+                    <div class="challenge-card">
+                        <div class="challenge-title">🧘 Meditation Quest</div>
+                        <div class="challenge-stat">Minutes: 240 / 300 (80%)</div>
+                        <div class="progress-bar"><div class="progress-fill" style="width: 80%"></div></div>
+                        <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem;">Ends: July 31</div>
+                    </div>
+                    <div class="challenge-card">
+                        <div class="challenge-title">💧 Hydration Challenge</div>
+                        <div class="challenge-stat">Days: 18 / 30 (60%)</div>
+                        <div class="progress-bar"><div class="progress-fill" style="width: 60%"></div></div>
+                        <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem;">Ends: July 31</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Badges Page -->
+            <div id="page-badges" class="page" style="display: none;">
+                <div class="header-bar">
+                    <div class="page-title">Badges & Awards</div>
+                </div>
+
+                <div class="card" style="margin-bottom: 1.5rem;">
+                    <div class="card-title">🏅 Your Badges</div>
+                    <div class="badge-grid">
+                        <div class="badge"><div class="badge-icon">⭐</div><div class="badge-name">Recognition Star</div></div>
+                        <div class="badge"><div class="badge-icon">🎯</div><div class="badge-name">Team Player</div></div>
+                        <div class="badge"><div class="badge-icon">🔥</div><div class="badge-name">Hot Streak</div></div>
+                        <div class="badge"><div class="badge-icon">💎</div><div class="badge-name">Premium Contributor</div></div>
+                        <div class="badge"><div class="badge-icon">🚀</div><div class="badge-name">Rising Star</div></div>
+                        <div class="badge"><div class="badge-icon">👑</div><div class="badge-name">Leader</div></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">🏆 Department Awards</div>
+                    <div id="dept-awards"></div>
+                </div>
+            </div>
+
+            <!-- Budget Page -->
+            <div id="page-budget" class="page" style="display: none;">
+                <div class="header-bar">
+                    <div class="page-title">Budget & Spending</div>
+                </div>
+                <div class="grid-2">
+                    <div class="card">
+                        <div class="card-title">📊 Budget Overview</div>
+                        <div class="stat-box">
+                            <div class="stat-label">Total Annual Budget</div>
+                            <div class="stat-value">$84K</div>
+                        </div>
+                        <div class="metric-row">
+                            <span>Spent YTD</span>
+                            <span class="metric-value">$73.1K</span>
+                        </div>
+                        <div class="metric-row">
+                            <span>Remaining</span>
+                            <span class="metric-value">$10.9K</span>
+                        </div>
+                        <div class="metric-row">
+                            <span>Utilization Rate</span>
+                            <span class="metric-value">87%</span>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">💸 Spending Breakdown</div>
+                        <div style="margin-bottom: 1rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span>Recognition Rewards</span>
+                                <span style="font-weight: 700;">$45.2K (54%)</span>
+                            </div>
+                            <div class="progress-bar"><div class="progress-fill" style="width: 54%"></div></div>
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span>Wellness Programs</span>
+                                <span style="font-weight: 700;">$27.9K (33%)</span>
+                            </div>
+                            <div class="progress-bar"><div class="progress-fill" style="width: 33%"></div></div>
+                        </div>
+                        <div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span>Awards/Gifts</span>
+                                <span style="font-weight: 700;">$10.8K (13%)</span>
+                            </div>
+                            <div class="progress-bar"><div class="progress-fill" style="width: 13%"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AIRe Assessment Page -->
+            <div id="page-assessment" class="page" style="display: none;">
+                <div class="header-bar">
+                    <div class="page-title">AIRe Assessment</div>
+                </div>
+                <div class="card">
+                    <div class="card-title">🧠 Take Assessment</div>
+                    <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Answer 10 questions to evaluate your recognition program's health across AIRe framework principles.</p>
+                    <button class="button" onclick="navigateTo('assessment')">Start 10-Question Assessment →</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+        let currentPage = 'dashboard';
+        let departments = {
+            engineering: { name: 'Engineering', icon: '⚙️', score: 92, budget: 24000 },
+            marketing: { name: 'Marketing', icon: '📢', score: 88, budget: 18000 },
+            sales: { name: 'Sales', icon: '💼', score: 85, budget: 22000 },
+            finance: { name: 'Finance', icon: '💰', score: 78, budget: 20000 }
+        };
+
+        function selectRole(role) {
+            document.querySelectorAll('.user-option').forEach(el => el.classList.remove('selected'));
+            event.target.classList.add('selected');
+            currentUser = { ...currentUser, role };
+        }
+
+        function selectDept(dept) {
+            document.querySelectorAll('.dept-option').forEach(el => el.classList.remove('selected'));
+            event.target.classList.add('selected');
+            currentUser = { ...currentUser, dept };
+        }
+
+        function login() {
+            const name = document.getElementById('fullname').value;
+            if (!currentUser?.role || !currentUser?.dept || !name) {
+                alert('Please fill in all fields');
+                return;
+            }
+            currentUser = { ...currentUser, name, deptName: departments[currentUser.dept].name };
+            document.getElementById('login-screen').classList.remove('show');
+            document.getElementById('main-app').classList.add('show');
+            updateProfile();
+            loadDashboard();
+        }
+
+        function updateProfile() {
+            document.getElementById('profile-name').textContent = currentUser.name;
+            document.getElementById('profile-role').textContent = currentUser.role.charAt(0).toUpperCase() + currentUser.role.slice(1);
+            document.getElementById('profile-dept').textContent = currentUser.deptName;
+        }
+
+        function navigateTo(page) {
+            document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(`page-${page}`).style.display = 'block';
+            event.target?.classList.add('active');
+            currentPage = page;
+        }
+
+        function loadDashboard() {
+            const html = Object.keys(departments).map(key => {
+                const dept = departments[key];
+                return `
+                    <div class="metric-row">
+                        <span>${dept.icon} ${dept.name}</span>
+                        <span class="metric-value">${dept.score}</span>
+                    </div>
+                `;
+            }).join('');
+            document.getElementById('dept-performance').innerHTML = html;
+
+            const awards = Object.keys(departments).map(key => {
+                const dept = departments[key];
+                return `
+                    <div style="margin-bottom: 1rem; padding: 1rem; background: var(--bg-light); border-radius: 8px;">
+                        <div style="font-weight: 600; margin-bottom: 0.5rem;">${dept.icon} ${dept.name}</div>
+                        <div>🏆 Top Performer: John Smith</div>
+                        <div>⭐ Most Improved: Alice Johnson</div>
+                    </div>
+                `;
+            }).join('');
+            document.getElementById('dept-awards').innerHTML = awards;
+        }
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('login-screen').classList.add('show');
+            document.getElementById('main-app').classList.remove('show');
+            document.getElementById('fullname').value = 'Sarah Chen';
+            document.querySelectorAll('.user-option, .dept-option').forEach(el => el.classList.remove('selected'));
+        }
+
+        // Initialize
+        navigateTo('dashboard');
+    </script>
+</body>
+</html>
