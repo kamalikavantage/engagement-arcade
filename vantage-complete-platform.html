@@ -282,13 +282,13 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="sidebar-header">VC</div>
-            <div class="nav-item active" onclick="navigateTo('dashboard')">📊 Dashboard</div>
-            <div class="nav-item" onclick="navigateTo('recognition')">⭐ Recognition</div>
-            <div class="nav-item" onclick="navigateTo('vpulse')">💬 VPulse</div>
-            <div class="nav-item" onclick="navigateTo('vfit')">💪 VFit</div>
-            <div class="nav-item" onclick="navigateTo('badges')">🏆 Badges</div>
-            <div class="nav-item" onclick="navigateTo('budget')">💰 Budget</div>
-            <div class="nav-item" onclick="navigateTo('assessment')">🧠 AIRe</div>
+            <div class="nav-item active" onclick="navigateTo('dashboard', this)">📊 Dashboard</div>
+            <div class="nav-item" onclick="navigateTo('recognition', this)">⭐ Recognition</div>
+            <div class="nav-item" onclick="navigateTo('vpulse', this)">💬 VPulse</div>
+            <div class="nav-item" onclick="navigateTo('vfit', this)">💪 VFit</div>
+            <div class="nav-item" onclick="navigateTo('badges', this)">🏆 Badges</div>
+            <div class="nav-item" onclick="navigateTo('budget', this)">💰 Budget</div>
+            <div class="nav-item" onclick="navigateTo('assessment', this)">🧠 AIRe</div>
 
             <div class="user-profile">
                 <div class="profile-name" id="profile-name">Sarah Chen</div>
@@ -620,11 +620,11 @@
             document.getElementById('profile-dept').textContent = currentUser.deptName;
         }
 
-        function navigateTo(page) {
+        function navigateTo(page, element) {
             document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.getElementById(`page-${page}`).style.display = 'block';
-            event.target?.classList.add('active');
+            if (element) element.classList.add('active');
             currentPage = page;
         }
 
@@ -664,7 +664,7 @@
         // Initialize
         updateProfile();
         loadDashboard();
-        navigateTo('dashboard');
+        document.querySelector('.nav-item.active').classList.add('active');
     </script>
 </body>
 </html>
