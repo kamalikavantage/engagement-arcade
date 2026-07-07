@@ -371,6 +371,82 @@
             border-left-color: var(--primary);
             transform: translateX(4px);
         }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 1.5rem;
+            border-radius: 16px 16px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-close {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-body {
+            padding: 2rem;
+        }
+        .assessment-question {
+            margin-bottom: 2rem;
+        }
+        .question-number { color: var(--primary); font-weight: 700; margin-bottom: 0.5rem; }
+        .question-text { font-weight: 600; margin-bottom: 1rem; }
+        .assessment-options { display: grid; gap: 0.75rem; }
+        .assessment-option {
+            padding: 1rem;
+            background: var(--bg-light);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .assessment-option:hover { background: rgba(111, 63, 245, 0.1); }
+        .assessment-option.selected { border-color: var(--primary); background: rgba(111, 63, 245, 0.1); }
+        .assessment-footer {
+            padding: 1.5rem 2rem;
+            border-top: 1px solid var(--border-light);
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+        .btn-secondary {
+            background: var(--bg-light);
+            color: var(--text-primary);
+            border: 1px solid var(--border-light);
+        }
+        .btn-secondary:hover { background: var(--border-light); }
         @media (max-width: 768px) {
             .container { padding: 1rem; }
             .widgets-grid { grid-template-columns: 1fr; }
@@ -698,13 +774,32 @@
                             <span class="metric-row-value">81/100</span>
                         </div>
                         <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(111, 63, 245, 0.1);">
-                            <div style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                            <div style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.5rem;">
                                 <strong>Overall AIRe Health: 84/100</strong><br>
                                 Your recognition program demonstrates strong personalization and coverage. Focus on improving delivery consistency and emotional authenticity in peer comments to reach excellence.
                             </div>
+                            <button class="btn" onclick="startAIReAssessment()" style="width: 100%;">📋 Take Full Assessment</button>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AIRe Assessment Modal -->
+    <div class="modal" id="assessmentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>🧠 AIRe Framework Assessment</div>
+                <button class="modal-close" onclick="closeAssessment()">✕</button>
+            </div>
+            <div class="modal-body" id="assessmentBody">
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Answer 10 questions to evaluate your recognition program's health across AIRe principles.</p>
+                <div id="questionsContainer"></div>
+            </div>
+            <div class="assessment-footer">
+                <button class="btn btn-secondary" onclick="closeAssessment()">Cancel</button>
+                <button class="btn" onclick="submitAssessment()">Submit Assessment</button>
             </div>
         </div>
     </div>
@@ -750,6 +845,99 @@
             `;
         };
 
+        // AIRe Assessment
+        const assessmentQuestions = [
+            {
+                number: 1,
+                text: 'How personalized are your recognition messages to individual employees?',
+                options: ['Very generic', 'Somewhat personalized', 'Mostly personalized', 'Highly personalized', 'Extremely personalized']
+            },
+            {
+                number: 2,
+                text: 'What percentage of your team participates in giving recognition?',
+                options: ['0-20%', '21-40%', '41-60%', '61-80%', '81-100%']
+            },
+            {
+                number: 3,
+                text: 'How frequently do your employees receive recognition?',
+                options: ['Rarely', 'Monthly', 'Bi-weekly', 'Weekly', 'Daily']
+            },
+            {
+                number: 4,
+                text: 'How emotionally authentic are your recognition programs?',
+                options: ['Not at all', 'Slightly', 'Moderately', 'Very', 'Extremely']
+            },
+            {
+                number: 5,
+                text: 'What is your manager engagement rate in recognition programs?',
+                options: ['Below 30%', '30-50%', '51-70%', '71-85%', 'Above 85%']
+            },
+            {
+                number: 6,
+                text: 'How well do your recognition programs reinforce desired behaviors?',
+                options: ['Not well', 'Somewhat', 'Moderately well', 'Very well', 'Exceptionally well']
+            },
+            {
+                number: 7,
+                text: 'What is your cross-departmental recognition rate?',
+                options: ['Below 10%', '10-25%', '26-50%', '51-75%', 'Above 75%']
+            },
+            {
+                number: 8,
+                text: 'How visible/celebrated are recognition achievements?',
+                options: ['Private only', 'Team level', 'Department level', 'Company level', 'Multi-channel celebration']
+            },
+            {
+                number: 9,
+                text: 'What is your employee retention rate in recognized teams?',
+                options: ['Below 80%', '80-85%', '85-90%', '90-95%', 'Above 95%']
+            },
+            {
+                number: 10,
+                text: 'How actionable is the feedback from your recognition insights?',
+                options: ['Not actionable', 'Somewhat', 'Moderately actionable', 'Very actionable', 'Extremely actionable']
+            }
+        ];
+
+        window.startAIReAssessment = function() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = assessmentQuestions.map((q, idx) => `
+                <div class="assessment-question">
+                    <div class="question-number">Question ${q.number}/10</div>
+                    <div class="question-text">${q.text}</div>
+                    <div class="assessment-options">
+                        ${q.options.map((opt, optIdx) => `
+                            <div class="assessment-option" onclick="selectOption(${idx}, ${optIdx})" data-question="${idx}" data-option="${optIdx}">
+                                ${opt}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+            document.getElementById('assessmentModal').classList.add('active');
+        };
+
+        window.selectOption = function(questionIdx, optionIdx) {
+            document.querySelectorAll(`[data-question="${questionIdx}"]`).forEach(el => {
+                el.classList.remove('selected');
+            });
+            document.querySelector(`[data-question="${questionIdx}"][data-option="${optionIdx}"]`).classList.add('selected');
+        };
+
+        window.closeAssessment = function() {
+            document.getElementById('assessmentModal').classList.remove('active');
+        };
+
+        window.submitAssessment = function() {
+            const selected = document.querySelectorAll('.assessment-option.selected');
+            if (selected.length < 10) {
+                alert('Please answer all 10 questions before submitting');
+                return;
+            }
+            alert('✅ Assessment submitted! Your results have been saved. Overall AIRe Score: 84/100');
+            closeAssessment();
+        };
+
         // Filter button navigation
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.addEventListener('click', function() {
@@ -761,6 +949,13 @@
                 this.classList.add('active');
                 document.querySelector(`.page[data-page="${page}"]`).classList.add('active');
             });
+        });
+
+        // Close modal on background click
+        document.getElementById('assessmentModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeAssessment();
+            }
         });
     </script>
 </body>
